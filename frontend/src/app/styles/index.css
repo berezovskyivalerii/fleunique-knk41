@@ -1,8 +1,16 @@
+@font-face {
+  font-family: 'Fleunique404';
+  src: url('/fonts/RubikBubbles-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=PT+Sans:wght@700&family=Rubik+Bubbles&display=swap');
 
 @import "tailwindcss";
 
 @theme {
+  --font-fleunique: 'Fleunique404', sans-serif;
   --font-rubik-bubbles: 'Rubik Bubbles', sans-serif;
   --font-montserrat: 'Montserrat', sans-serif;
   --font-pt-sans: 'PT Sans', sans-serif;
