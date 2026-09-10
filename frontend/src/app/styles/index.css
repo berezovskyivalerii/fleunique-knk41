@@ -1,13 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=PT+Sans:wght@700&family=Rubik+Bubbles&display=swap');
+
+@import "tailwindcss";
+
 @font-face {
   font-family: 'Fleunique404';
   src: url('/fonts/RubikBubbles-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=PT+Sans:wght@700&family=Rubik+Bubbles&display=swap');
-
-@import "tailwindcss";
 
 @theme {
   --font-fleunique: 'Fleunique404', sans-serif;
@@ -57,4 +57,14 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+@media (max-height: 700px) {
+  .not-found-main {
+    top: 7vh;
+  }
+
+  .not-found-hero {
+    height: clamp(140px, 30vh, 230px);
+  }
 }
