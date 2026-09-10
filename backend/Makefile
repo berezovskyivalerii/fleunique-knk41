@@ -28,7 +28,7 @@ migrate:
 	$(ALEMBIC) upgrade head
 
 psql:
-	psql -U postgres -d fleunique_db'
+	psql -U postgres -d fleunique_db
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
