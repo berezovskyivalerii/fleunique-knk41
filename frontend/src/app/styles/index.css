@@ -2,7 +2,15 @@
 
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Fleunique404';
+  src: url('/fonts/RubikBubbles-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @theme {
+  --font-fleunique: 'Fleunique404', sans-serif;
   --font-rubik-bubbles: 'Rubik Bubbles', sans-serif;
   --font-montserrat: 'Montserrat', sans-serif;
   --font-pt-sans: 'PT Sans', sans-serif;
@@ -49,4 +57,14 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+@media (max-height: 700px) {
+  .not-found-main {
+    top: 7vh;
+  }
+
+  .not-found-hero {
+    height: clamp(140px, 30vh, 230px);
+  }
 }
