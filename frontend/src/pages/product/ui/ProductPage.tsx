@@ -1,43 +1,151 @@
-import { Header } from "../../../widgets/header.tsx";
-import { Footer } from "../../../widgets/footer.tsx";
+import { useState } from "react";
+import { Header } from "@/widgets/header";
+import { Footer } from "@/widgets/footer";
+import { Counter } from "@/shared/ui/counter";
+import { Button } from "@/shared/ui/button";
+import { Badge } from "@/shared/ui/badge";
 
-import photo from "../../../../assets/photo_flowers_product.png";
-import share from "../../../../assets/share_icon_product.png"
+import photo from "@/shared/assets/photo_flowers_product.png";
+import share from "@/shared/assets/share_icon_product.png";
+
+const backgroundBlobs = [
+  {
+    width: 651.4,
+    height: 465.5,
+    angle: 29.62,
+    opacity: 0.5,
+    top: -66.6,
+    left: 1400.3,
+    background:
+      "radial-gradient(50% 50% at 50% 50%, #04C6D1 0%, rgba(4, 198, 209, 0) 100%)",
+  },
+  {
+    width: 330.5,
+    height: 287.2,
+    angle: 131.18,
+    opacity: 0.5,
+    top: 168.9,
+    left: -22.0,
+    background: "radial-gradient(50% 50% at 50% 50%, #FBB2EA 0%, #F04BC9 100%)",
+  },
+  {
+    width: 531.2,
+    height: 461.6,
+    angle: 131.18,
+    opacity: 0.5,
+    top: 725.0,
+    left: -80,
+    background: "radial-gradient(50% 50% at 50% 50%, #04C6D1 0%, #FCFCFC 100%)",
+  },
+  {
+    width: 651.4,
+    height: 465.5,
+    angle: -97.41,
+    opacity: 0.5,
+    top: 747.1,
+    left: 1215.3,
+    background: "radial-gradient(50% 50% at 50% 50%, #FBB2EA 0%, #F04BC9 100%)",
+  },
+];
 
 export function ProductPage() {
+  const [quantity, setQuantity] = useState<number | string>(1);
+
+  const handleBlur = () => {
+    if (quantity === "" || Number(quantity) < 1) {
+      setQuantity(1);
+    }
+  };
   return (
-    <div>
-      <Header />
-      <main className="flex justify-between px-[160px] mt-16 mb-[192px]">
-        <div className="left_part_in_product_page">
-          <div>
-            <img src={photo} className="w-[644px] rounded-2xl" />
+    <div className="relative min-h-screen flex flex-col bg-white overflow-hidden">
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        {backgroundBlobs.map((blob, index) => (
+          <div
+            key={index}
+            style={{
+              position: "absolute",
+              width: `${blob.width}px`,
+              height: `${blob.height}px`,
+              transform: `rotate(${blob.angle}deg)`,
+              opacity: blob.opacity,
+              top: `${blob.top}px`,
+              left: `${blob.left}px`,
+              background: blob.background,
+            }}
+          />
+        ))}
+
+        <div
+          className="absolute inset-0"
+          style={{ backdropFilter: "blur(200px)" }}
+        ></div>
+      </div>
+
+      <div className="relative z-10 flex flex-col flex-grow w-full">
+        <Header />
+
+        <main className="flex-grow flex justify-center gap-[32px] px-10 xl:px-[160px] py-16 w-full max-w-[1440px] mx-auto mb-[128px]">
+          <div className="shrink-0">
+            <img
+              src={photo}
+              alt="Bouquet"
+              className="w-[500px] xl:w-[544px] object-cover rounded-2xl shadow-sm"
+            />
           </div>
-        </div>
-        <div className="ml-8">
-          <div className="flex justify-between items-center text-4xl">
-            <h1 className="font-bold">Name Of Bouquet</h1>
-            <div className="flex justify-center items-center text-[11px] border-2 border-[#079941] rounded-[10px] w-[97px] h-[21px]">In Stock</div>
+
+          <div className="max-w-[544px] flex flex-col justify-center gap-6">
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-center">
+                <h2 className="font-bold text-4xl uppercase text-[#033438] font-pt-sans">
+                  NAME OF BOUQUET
+                </h2>
+                <Badge>In Stock</Badge>
+              </div>
+
+              <div className="text-2xl font-pt-sans font-bold text-[#B3158E]">
+                $20
+              </div>
+
+              <p className="text-[#033438] font-montserrat text-[16px] leading-relaxed">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <div className="text-[#033438] font-montserrat text-lg">
+                Quantity:
+              </div>
+
+              <Counter
+                value={quantity}
+                onChange={setQuantity}
+                onBlur={handleBlur}
+              />
+            </div>
+
+            <div className="flex flex-col gap-16 justify-between">
+              <div className="flex gap-7">
+                <Button variant="primary">Add To Cart</Button>
+                <Button variant="outline">Buy Now</Button>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <p className="text-[11px] text-[#828282] font-montserrat">
+                  Delivery And Payment
+                </p>
+                <img
+                  src={share}
+                  alt="Share"
+                  className="w-5 h-5 cursor-pointer hover:opacity-70"
+                />
+              </div>
+            </div>
           </div>
-          <div className="text-xl font-bold text-[#B3158E] my-[5px]">$20</div>
-          <div className="disctiption_right_part_in_product_page">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-          <div className="mt-5 mb-[5px] text-[#057B83]">Quantity</div>
-          <div className="w-[125px] flex justify-between">
-            <button className="font-bold">-</button>
-            <p>1</p>
-            <button className="font-bold">+</button>
-          </div>
-          <div className="mt-[15px] flex justify-between">
-            <button className="w-[256px] h-[45px] rounded-[26px] font-bold bg-[#B3158E] text-[#FFFAFE]">Add To Cart</button>
-            <button className="w-[256px] h-[45px] rounded-[26px] font-bold bg-transparent border-2 border-[#057B83] text-[#057B83]">Buy Now</button>
-          </div>
-          <div className="mt-[70px] flex justify-between">
-            <p className="text-[11px] text-[#828282]">Delivery And Payment</p>
-            <img src={share}/>
-          </div>
-        </div>
-      </main>
-      <Footer />
+        </main>
+
+        <Footer />
+      </div>
     </div>
-  )
+  );
 }
