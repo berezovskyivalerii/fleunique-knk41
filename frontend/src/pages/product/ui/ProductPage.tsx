@@ -57,7 +57,7 @@ export function ProductPage() {
     }
   };
   return (
-    <div className="relative min-h-screen flex flex-col bg-white overflow-hidden">
+    <div className="relative min-h-screen flex flex-col bg-white overflow-hidden pt-24">
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         {backgroundBlobs.map((blob, index) => (
           <div
@@ -77,7 +77,7 @@ export function ProductPage() {
 
         <div
           className="absolute inset-0"
-          style={{ backdropFilter: "blur(200px)" }}
+          style={{ backdropFilter: "blur(300px)" }}
         ></div>
       </div>
 

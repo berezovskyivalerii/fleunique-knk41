@@ -8,7 +8,7 @@ export function Header() {
   const navigate = useNavigate();
 
   return (
-    <header className="w-[95%] mx-auto mt-8 h-16 flex justify-between items-center px-8 rounded-[32px] bg-white/[0.08] backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] z-50 relative">
+    <header className="fixed top-4 left-0 right-0 z-50 w-[95%] max-w-[1440px] mx-auto h-16 flex justify-between items-center px-8 rounded-[32px] bg-white/[0.08] backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)]">
       <div className="left_part_in_header flex items-center">
         <img
           src={logo}
