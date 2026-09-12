@@ -34,9 +34,13 @@ export function Counter({ value, onChange, onBlur }: CounterProps) {
       <button
         type="button"
         onClick={handleDecrease}
-        className="w-[24px] h-[24px] flex justify-center items-center rounded-full bg-[#FBB2EA33] leading-none hover:bg-[#FBB2EA66] transition-colors cursor-pointer"
+        className="group w-[24px] h-[24px] flex justify-center items-center rounded-full bg-[#FBB2EA33] hover:bg-[#033438] transition-colors cursor-pointer"
       >
-        <img src={minus} alt="minus" />
+        <img
+          src={minus}
+          alt="minus"
+          className="brightness-0 invert-0 group-hover:brightness-0 group-hover:invert transition-all"
+        />
       </button>
 
       <input
@@ -51,9 +55,13 @@ export function Counter({ value, onChange, onBlur }: CounterProps) {
       <button
         type="button"
         onClick={handleIncrease}
-        className="w-[24px] h-[24px] flex justify-center items-center rounded-full bg-[#FBB2EA33] leading-none hover:bg-[#FBB2EA66] transition-colors cursor-pointer"
+        className="group w-[24px] h-[24px] flex justify-center items-center rounded-full bg-[#FBB2EA33] hover:bg-[#033438] transition-colors cursor-pointer"
       >
-        <img src={plus} alt="plus" />
+        <img
+          src={plus}
+          alt="plus"
+          className="brightness-0 invert-0 group-hover:brightness-0 group-hover:invert transition-all"
+        />
       </button>
     </div>
   );

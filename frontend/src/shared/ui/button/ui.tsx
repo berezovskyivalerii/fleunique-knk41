@@ -10,12 +10,12 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    "flex-1 max-w-[256px] h-[45px] rounded-full font-montserrat font-bold text-[18px] leading-none tracking-normal text-center capitalize transition-colors cursor-pointer";
+    "flex-1 max-w-[256px] h-[45px] rounded-full font-montserrat font-bold text-[18px] leading-none tracking-normal text-center capitalize cursor-pointer flex items-center justify-center";
 
   const variants = {
-    primary: "bg-[#B3158E] text-white hover:bg-[#911072]",
+    primary: "bg-[#B3158E] text-white hover:bg-[#033438CC]",
     outline:
-      "bg-transparent border-2 border-[#B3158E] text-[#B3158E] hover:bg-[#FFF0F8]",
+      "bg-transparent border-2 border-[#B3158E] text-[#B3158E] hover:bg-[#FBB2EA80] transition-colors",
   };
 
   return (
