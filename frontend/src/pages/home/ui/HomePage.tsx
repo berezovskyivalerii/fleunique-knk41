@@ -110,9 +110,8 @@ export function HomePage() {
           />
 
           <div className="relative flex-grow w-full max-w-[1440px] mx-auto px-5 md:px-10 lg:px-[160px] pt-20 md:pt-26 lg:pt-[190px] flex flex-col">
-            <h1 className="relative w-full flex flex-col gap-0 items-center md:items-end font-pt-sans font-bold text-headline-2 md:text-headline-1 uppercase text-gray-900 z-20">
-              <span>Flowers that are as unique</span>
-              <span>as you</span>
+            <h1 className="relative ml-auto max-w-[880px] text-right font-pt-sans font-bold text-headline-1 uppercase text-gray-900 leading-tight z-20">
+              Flowers that are as unique as you
             </h1>
 
             <div className="relative flex flex-col lg:flex-row justify-end items-center lg:items-end flex-grow w-full mt-10 lg:mt-0">
@@ -232,17 +231,15 @@ export function HomePage() {
         {/* OUR UNIQUE CLIENTS SECTION */}
         <section className="w-full h-204.5 bg-forest-300 flex flex-col justify-center relative overflow-hidden">
           <div className="w-full max-w-[1440px] mx-auto relative h-full flex flex-col justify-center">
-            {/* Heading aligned with previous sections padding */}
             <h2 className="ml-36 font-pt-sans font-bold text-headline-2 mb-12 text-rose-50 uppercase z-10">
               Our Unique Clients
             </h2>
 
-            {/* Image track allowing horizontal scroll on small devices */}
             <div className="w-full flex items-center justify-between gap-4 lg:gap-0 overflow-x-auto pb-4 lg:pb-0">
               <img
                 src={client1}
                 alt="Client 1"
-                className="w-[266px] h-[390px] object-cover rounded-[16px] shrink-0"
+                className="w-[266px] h-[390px] object-cover rounded-[16px] max-[1440px]:rounded-l-none shrink-0"
               />
               <img
                 src={client2}
@@ -262,7 +259,7 @@ export function HomePage() {
               <img
                 src={client5}
                 alt="Client 5"
-                className="w-[266px] h-[390px] object-cover rounded-[16px] shrink-0"
+                className="w-[266px] h-[390px] object-cover rounded-[16px] max-[1440px]:rounded-r-none shrink-0"
               />
             </div>
           </div>
@@ -297,8 +294,7 @@ export function HomePage() {
           {/* WHY US? SECTION */}
           <section className="relative w-full max-w-[1440px] mx-auto py-20 lg:py-40 flex items-center justify-center overflow-hidden">
             <div className="flex flex-col items-center justify-center text-center text-rose-100 font-rubik-bubbles text-[120px] md:text-[240px] lg:text-[480px] leading-none lg:leading-[450px] select-none z-0">
-              <span>WHY</span>
-              <span>US?</span>
+              WHY US?
             </div>
 
             <div
