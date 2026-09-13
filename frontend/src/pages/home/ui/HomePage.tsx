@@ -324,7 +324,7 @@ export function HomePage() {
               <img
                 src={faqwoman}
                 alt="Florist preparing flowers"
-                className="w-full h-full object-cover rounded-[16px]"
+                className="w-full h-full object-cover rounded-[16px] max-[1441px]:rounded-l-none"
               />
             </div>
 
