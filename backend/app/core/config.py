@@ -1,6 +1,11 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+from typing import Optional
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Fleunique API"
     API_V1_STR: str = "/api/v1"
@@ -14,6 +19,11 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
+
+    ADMIN_EMAIL: str
+    ADMIN_FULL_NAME: str
+    ADMIN_PHONE_NUMBER: Optional[str] = None
+    ADMIN_PASSWORD: str
 
     @property
     def database_url(self) -> str:
