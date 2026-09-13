@@ -99,7 +99,7 @@ export function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="pb-20">
+      <main>
         {/*HERO IMAGE SECTION */}
         <section className="relative w-full h-[1024px] flex flex-col overflow-hidden">
           <img
@@ -161,11 +161,11 @@ export function HomePage() {
 
           {/* BEST PICKS SECTION */}
           <section className="w-full max-w-[1440px] mx-auto px-5 md:px-10 lg:px-[160px] py-16 md:py-24">
-            <h2 className="text-center font-pt-sans font-bold text-headline-2 text-forest-300 uppercase mb-10 md:mb-14">
+            <h2 className="text-center font-pt-sans font-bold text-headline-2 text-forest-300 uppercase mb-10 md:mb-10">
               Best Picks
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8">
               {MOCK_PRODUCTS.map((product) => (
                 <ProductCard
                   key={product.id}
@@ -180,7 +180,7 @@ export function HomePage() {
           </section>
 
           {/* ABOUT US SECTION */}
-          <section className="w-full max-w-[1440px] mx-auto px-5 md:px-10 lg:px-[160px] py-16 md:py-24 flex justify-center">
+          <section className="w-full max-w-[1440px] mx-auto px-5 md:px-10 lg:px-[160px] pb-24 flex justify-center">
             <div className="relative flex flex-col lg:block w-full max-w-[800px] lg:h-[480px]">
               <div className="lg:absolute lg:top-0 lg:left-0 w-full lg:w-[336px] z-20 mb-8 lg:mb-0">
                 <h2 className="font-pt-sans font-bold text-headline-2 text-forest-300 uppercase mb-3">
@@ -231,7 +231,7 @@ export function HomePage() {
         {/* OUR UNIQUE CLIENTS SECTION */}
         <section className="w-full h-204.5 bg-forest-300 flex flex-col justify-center relative overflow-hidden">
           <div className="w-full max-w-[1440px] mx-auto relative h-full flex flex-col justify-center">
-            <h2 className="ml-36 font-pt-sans font-bold text-headline-2 mb-12 text-rose-50 uppercase z-10">
+            <h2 className="ml-40 font-pt-sans font-bold text-headline-2 mb-12 text-rose-50 uppercase z-10">
               Our Unique Clients
             </h2>
 
@@ -239,7 +239,7 @@ export function HomePage() {
               <img
                 src={client1}
                 alt="Client 1"
-                className="w-[266px] h-[390px] object-cover rounded-[16px] max-[1440px]:rounded-l-none shrink-0"
+                className="w-[266px] h-[390px] object-cover rounded-[16px] max-[1441px]:rounded-l-none shrink-0"
               />
               <img
                 src={client2}
@@ -259,7 +259,7 @@ export function HomePage() {
               <img
                 src={client5}
                 alt="Client 5"
-                className="w-[266px] h-[390px] object-cover rounded-[16px] max-[1440px]:rounded-r-none shrink-0"
+                className="w-[266px] h-[390px] object-cover rounded-[16px] max-[1441px]:rounded-r-none shrink-0"
               />
             </div>
           </div>
@@ -292,7 +292,7 @@ export function HomePage() {
             className="absolute bottom-[-2%] right-[0%] w-[400px] pointer-events-none -z-10 object-contain"
           />
           {/* WHY US? SECTION */}
-          <section className="relative w-full max-w-[1440px] mx-auto py-20 lg:py-40 flex items-center justify-center overflow-hidden">
+          <section className="relative w-full max-w-[1440px] mx-auto mt-28 mb-22 flex items-center justify-center overflow-hidden">
             <div className="flex flex-col items-center justify-center text-center text-rose-100 font-rubik-bubbles text-[120px] md:text-[240px] lg:text-[480px] leading-none lg:leading-[450px] select-none z-0">
               WHY US?
             </div>
@@ -319,8 +319,8 @@ export function HomePage() {
           </section>
 
           {/* FAQ SECTION */}
-          <section className="relative w-full max-w-[1440px] mx-auto h-auto lg:h-[1024px] flex flex-col lg:flex-row items-start py-16 lg:py-0 gap-10 lg:gap-10">
-            <div className="w-full lg:w-1/2 h-100 lg:h-full lg:py-16">
+          <section className="relative w-full max-w-[1440px] mx-auto h-auto lg:h-[1024px] flex flex-col lg:flex-row items-start mb-28 gap-10 lg:gap-10">
+            <div className="w-full lg:w-1/2 h-100 lg:h-full">
               <img
                 src={faqwoman}
                 alt="Florist preparing flowers"
@@ -328,7 +328,7 @@ export function HomePage() {
               />
             </div>
 
-            <div className="w-full lg:w-[544px] flex flex-col justify-center pt-36">
+            <div className="w-full lg:w-[544px] flex flex-col justify-center pt-14">
               <h2 className="text-forest-300 font-pt-sans font-bold text-headline-2 uppercase mb-4">
                 Frequently Asked Questions
               </h2>
@@ -352,8 +352,32 @@ export function HomePage() {
                         <span className="font-montserrat text-headline-4 text-forest-300 pr-4">
                           {item.question}
                         </span>
-                        <span className="font-bold text-[24px] text-forest-200 select-none shrink-0 w-6 text-center">
-                          {isOpen ? "−" : "+"}
+                        <span className="shrink-0 w-8 h-8 flex items-center justify-center text-forest-200 select-none">
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="transition-transform duration-200"
+                          >
+                            <path
+                              d="M2.5 9H15.5"
+                              stroke="currentColor"
+                              strokeWidth="3"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            {!isOpen && (
+                              <path
+                                d="M9 2.5V15.5"
+                                stroke="currentColor"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            )}
+                          </svg>
                         </span>
                       </div>
                       {isOpen && (
@@ -367,10 +391,10 @@ export function HomePage() {
               </div>
 
               <div className="mt-12 flex flex-col w-full">
-                <span className="font-montserrat! text-[14px] text-forest-200 mb-4">
+                <span className="font-montserrat! text-[14px] text-forest-200 mb-4 tracking-wide">
                   Do you still have questions? Ask our agents directly!
                 </span>
-                <button className="w-full h-[50px] bg-rose-300 hover:bg-forest-300/80 transition-colors text-rose-50 rounded-full font-montserrat! font-semibold! text-headline-4">
+                <button className="w-full h-[45px] bg-rose-300 hover:bg-forest-300/80 transition-colors text-rose-50 rounded-full font-montserrat! font-semibold! text-headline-4 tracking-wide">
                   Contact Our Support
                 </button>
               </div>
@@ -378,12 +402,12 @@ export function HomePage() {
           </section>
 
           {/* CONTACT US SECTION */}
-          <section className="relative w-full max-w-[1440px] mx-auto lg:px-[140px] pb-24 z-10">
-            <h2 className="text-forest-300 font-pt-sans font-bold text-headline-2 md:text-[40px] uppercase mb-10 lg:mb-14">
+          <section className="relative w-full max-w-[1440px] mx-auto lg:px-[140px] pb-48 z-10">
+            <h2 className="text-forest-300 font-pt-sans font-bold text-headline-2 uppercase mb-6">
               Contact Us
             </h2>
 
-            <div className="flex flex-col lg:flex-row pl-44 justify-between items-center lg:items-start gap-12 w-full">
+            <div className="flex flex-col lg:flex-row pl-44 justify-between items-center lg:items-center gap-12 w-full">
               <div className="flex flex-col gap-4 lg:gap-5 w-full lg:w-auto lg:pl-10">
                 {/* Instagram */}
                 <div className="flex items-center gap-5">
@@ -426,11 +450,11 @@ export function HomePage() {
                 </div>
               </div>
 
-              <div className="w-full lg:w-[544px] shrink-0">
+              <div className="w-full lg:w-[544px] ">
                 <img
                   src={contactUs}
                   alt="Hands exchanging a bouquet of flowers"
-                  className="w-full lg:w-[544px] h-[360px] object-cover rounded-[16px]"
+                  className="w-full lg:w-[544px] h-[352px] object-cover rounded-[16px]"
                 />
               </div>
             </div>

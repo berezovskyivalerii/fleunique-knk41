@@ -36,10 +36,10 @@ export function ProductCard({
 
       <div className="relative z-10 p-4 pb-5 flex flex-col">
         <div className="flex justify-between items-center mb-1">
-          <span className="font-pt-sans font-bold text-silver-50 text-headline-5 truncate drop-shadow-md pr-2">
+          <span className="font-pt-sans font-bold text-silver-50 text-headline-5 truncate drop-shadow-md pr-5">
             {name}
           </span>
-          <span className="bg-rose-100 text-black-50 text-[12px] font-montserrat font-medium px-3 py-1 rounded-full shrink-0">
+          <span className="bg-rose-100 text-black-50 text-[12px] font-montserrat font-medium px-3.5 py-1 rounded-full shrink-0">
             {price}
           </span>
         </div>
