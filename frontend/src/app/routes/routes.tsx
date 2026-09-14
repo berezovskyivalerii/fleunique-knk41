@@ -1,13 +1,13 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from "react";
 
 type AppRoute = {
-  path: string
-  element: ReactNode
-}
+  path: string;
+  element: ReactNode;
+};
 
-const routeModules = import.meta.glob('../../pages/**/route.tsx', {
+const routeModules = import.meta.glob("../../pages/**/route.tsx", {
   eager: true,
-  import: 'route',
-}) as Record<string, AppRoute>
+  import: "route",
+}) as Record<string, AppRoute>;
 
-export const routes = Object.values(routeModules)
+export const routes = Object.values(routeModules);
