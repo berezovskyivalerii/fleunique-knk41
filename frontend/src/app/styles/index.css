@@ -3,16 +3,17 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'Fleunique404';
-  src: url('/fonts/RubikBubbles-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: "Fleunique404";
+    src: url("../../shared/assets/RubikBubbles-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
 }
 
 @theme {
-    --font-rubik-bubbles: "Rubik Bubbles", sans-serif;
+    --font-rubik-bubbles: "Fleunique404", sans-serif;
     --font-montserrat: "Montserrat", sans-serif;
     --font-pt-sans: "PT Sans", sans-serif;
+    --font-fleunique: "Fleunique404", sans-serif;
 
     --text-accent-headline: 480px;
     --text-large-button: 32px;

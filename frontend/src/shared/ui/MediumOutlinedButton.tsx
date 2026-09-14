@@ -2,10 +2,10 @@ import type { ReactNode } from 'react'
 import { Link, type LinkProps } from 'react-router-dom'
 
 const buttonClassName = [
-  'flex items-center justify-center rounded-[27px] border-2 border-[#B3158E]',
-  'bg-white/20 px-0 py-2 font-montserrat text-lg font-semibold text-[#B3158E]',
+  'flex items-center justify-center rounded-[27px] border-2 border-rose-300',
+  'bg-white/20 px-0 font-montserrat! text-lg font-semibold text-rose-300',
   'shadow-[0_2px_2px_rgba(61,59,60,0.1)] backdrop-blur-sm transition-all',
-  'hover:bg-[#B3158E] hover:text-white'
+  'hover:bg-rose-300 hover:text-white'
 ].join(' ')
 
 type MediumOutlinedButtonProps = LinkProps & {
