@@ -293,7 +293,7 @@ export function HomePage() {
           />
           {/* WHY US? SECTION */}
           <section className="relative w-full max-w-[1440px] mx-auto mt-28 mb-22 flex items-center justify-center overflow-hidden">
-            <div className="flex flex-col items-center justify-center text-center text-rose-100 font-rubik-bubbles text-[120px] md:text-[240px] lg:text-[480px] leading-none lg:leading-[450px] select-none z-0">
+            <div className="flex flex-col items-center justify-center text-center text-rose-100 font-rubik-bubbles! text-[120px] md:text-[240px] lg:text-[480px] leading-none lg:leading-[450px] select-none z-0">
               WHY US?
             </div>
 
