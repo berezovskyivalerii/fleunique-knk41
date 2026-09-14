@@ -45,7 +45,7 @@ export const NotFoundPage = () => {
 
       {/* Main content */}
       <main className="not-found-main absolute left-1/2 top-[clamp(96px,19vh,184px)] z-20 flex w-[min(1114px,calc(100%-32px))] -translate-x-1/2 flex-col items-center">
-        <div className="not-found-hero flex h-[clamp(160px,34vh,354px)] w-full items-center justify-between overflow-visible">
+        <div className="not-found-hero flex h-[clamp(160px,24.583vw,354px)] w-full items-center justify-between overflow-visible max-[640px]:h-[clamp(160px,34vh,354px)]">
           <span
             className="flex h-full w-[31.7%] items-center justify-center font-fleunique! text-[clamp(220px,33.333vw,480px)] font-normal leading-none text-forest-200 translate-y-[4px] max-[640px]:text-[clamp(96px,33.333vw,220px)]"
             aria-hidden="true"
