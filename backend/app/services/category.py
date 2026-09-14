@@ -80,5 +80,5 @@ def delete_category(db: Session, category_id: int):
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="Cannot delete category because it is still referenced by products.",
+            detail="Cannot delete category because it's still referenced by products.",
         )
