@@ -1,7 +1,15 @@
 from datetime import datetime
 from decimal import Decimal
 
-from sqlalchemy import Boolean, DateTime, Integer, Numeric, String, func
+from sqlalchemy import (
+    Boolean,
+    CheckConstraint,
+    DateTime,
+    Integer,
+    Numeric,
+    String,
+    func,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
@@ -21,3 +29,16 @@ class Promocode(Base):
     )
 
     orders: Mapped[list["Order"]] = relationship(back_populates="promocode_ref")
+
+    __table_args__ = (
+        CheckConstraint(
+            "(discount_percentage IS NOT NULL AND discount_fixed IS NULL) OR "
+            "(discount_percentage IS NULL AND discount_fixed IS NOT NULL)",
+            name="check_discount_mutually_exclusive",
+        ),
+        CheckConstraint(
+            "discount_percentage > 0 AND discount_percentage <= 100",
+            name="check_discount_percentage_range",
+        ),
+        CheckConstraint("discount_fixed > 0", name="check_discount_fixed_positive"),
+    )

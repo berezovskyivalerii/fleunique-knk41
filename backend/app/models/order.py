@@ -65,7 +65,7 @@ class Order(Base):
     items: Mapped[list["OrderItem"]] = relationship(
         back_populates="order", cascade="all, delete-orphan"
     )
-    promocode_ref: Mapped["Promocode"] = relationship(back_populates="orders")
+    promocode_ref: Mapped[Optional["Promocode"]] = relationship(back_populates="orders")
 
 
 class OrderItem(Base):
