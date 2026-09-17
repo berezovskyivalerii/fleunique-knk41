@@ -66,17 +66,17 @@ export function CheckoutPage() {
     value.replace(/[^0-9:\s—-]/g, "");
 
   return (
-    <div className="min-h-screen bg-rose-50 font-montserrat text-forest-300">
+    <div className="flex min-h-screen flex-col bg-[radial-gradient(circle_at_82%_68%,rgba(251,178,234,0.32),transparent_34%),linear-gradient(180deg,#fffafe_0%,#fffafe_62%,#fff5fc_100%)] font-montserrat text-forest-300">
       <Header checkout />
 
-      <main className="mx-auto w-full max-w-[1120px] px-0 pt-[24px] md:px-6 md:pt-[48px] min-[1184px]:px-0">
+      <main className="mx-auto w-full max-w-[1120px] flex-1 px-4 pt-6 sm:px-8 sm:pt-10 min-[1184px]:px-0 min-[1184px]:pt-12">
         {/* Title + progress */}
-        <div className="flex w-full items-center justify-center gap-[32px] px-8 max-[639px]:flex-col max-[639px]:items-start min-[640px]:px-0">
-          <h1 className="py-[7.5px] font-pt-sans text-[36px] font-bold uppercase leading-none">
+        <div className="flex w-full items-center justify-between gap-6 max-[740px]:flex-col-reverse sm:gap-8">
+          <h1 className="font-pt-sans text-[22px] font-bold uppercase leading-none sm:py-[7.5px] sm:text-[36px]">
             Checkout
           </h1>
 
-          <div className="flex h-8 w-[478px] shrink-0 items-center text-[13px] font-normal leading-none text-silver-200 max-[639px]:w-full">
+          <div className="mx-auto flex h-8 w-fit shrink-0 items-center justify-center text-[11px] font-normal leading-none text-silver-200 sm:mx-0 sm:w-[478px] sm:text-[13px]">
             <div className="flex shrink-0 items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-forest-100">
                 <img
@@ -86,44 +86,44 @@ export function CheckoutPage() {
                 />
               </div>
 
-              <span>Your Cart</span>
+              <span className="hidden sm:inline">Your Cart</span>
             </div>
 
-            <div className="mx-3 h-[2px] min-w-6 flex-1 bg-silver-100" />
+            <div className="mx-2 h-[2px] w-[48px] shrink-0 bg-silver-100 sm:mx-3 sm:w-auto sm:min-w-6 sm:flex-1" />
 
             <div className="flex shrink-0 items-center gap-2 text-forest-100">
               <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-forest-100 bg-transparent">
                 2
               </div>
 
-              <span>Checkout</span>
+              <span className="hidden sm:inline">Checkout</span>
             </div>
 
-            <div className="mx-3 h-[2px] min-w-6 flex-1 bg-silver-100" />
+            <div className="mx-2 h-[2px] w-[48px] shrink-0 bg-silver-100 sm:mx-3 sm:w-auto sm:min-w-6 sm:flex-1" />
 
             <div className="flex shrink-0 items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-silver-100 bg-transparent">
                 3
               </div>
 
-              <span>Order Complete</span>
+              <span className="hidden sm:inline">Order Complete</span>
             </div>
           </div>
         </div>
 
         {/* Main content */}
-        <div className="mt-8 grid grid-cols-1 gap-8 px-8 min-[640px]:mt-4 min-[1184px]:grid-cols-[544px_544px] min-[1184px]:items-start min-[1184px]:px-0">
+        <div className="mt-6 grid grid-cols-1 gap-8 sm:mt-8 min-[1184px]:mt-10 min-[1184px]:grid-cols-[544px_544px] min-[1184px]:items-start">
           {/* LEFT */}
           <section className="min-w-0 min-[1184px]:pt-[29px]">
-            <form className="space-y-8">
+            <form className="space-y-6 sm:space-y-8">
               {/* Contact */}
               <section>
                 <button
                   type="button"
                   onClick={() => toggleSection("contact")}
-                  className="mb-7 flex items-center gap-3"
+                  className="mb-4 flex items-center gap-3 sm:mb-7"
                 >
-                  <h2 className="font-pt-sans text-[22px] font-bold leading-none">
+                  <h2 className="font-pt-sans text-[18px] font-bold leading-none sm:text-[22px]">
                     Your Contact Information
                   </h2>
 
@@ -138,15 +138,15 @@ export function CheckoutPage() {
                 {openedSections.contact && (
                   <div className="space-y-4">
                     <label className="block">
-                      <span className="mb-[3px] ml-2 block text-[18px] font-normal leading-none">
+                      <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                         Full Name
                       </span>
 
-                      <div className="flex h-[56px] items-center gap-2 rounded-[16px] border-[2px] border-forest-400 px-4">
+                      <div className="flex h-[48px] items-center gap-2 rounded-[14px] border-[1.5px] border-forest-400 px-3 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4">
                         <img
                           src={userIcon}
                           alt=""
-                          className="h-8 w-8 shrink-0 object-contain"
+                          className="h-6 w-6 shrink-0 object-contain sm:h-8 sm:w-8"
                         />
 
                         <input
@@ -160,21 +160,21 @@ export function CheckoutPage() {
                               sanitizeName(event.target.value),
                             )
                           }
-                          className="h-full w-full bg-transparent text-[16px] outline-none placeholder:text-silver-100"
+                          className="h-full w-full bg-transparent text-[14px] outline-none placeholder:text-silver-100 sm:text-[16px]"
                         />
                       </div>
                     </label>
 
                     <label className="block">
-                      <span className="mb-[3px] ml-2 block text-[18px] font-normal leading-none">
+                      <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                         E-mail*
                       </span>
 
-                      <div className="flex h-[56px] items-center gap-2 rounded-[16px] border-[2px] border-forest-400 px-4">
+                      <div className="flex h-[48px] items-center gap-2 rounded-[14px] border-[1.5px] border-forest-400 px-3 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4">
                         <img
                           src={emailIcon}
                           alt=""
-                          className="h-8 w-8 shrink-0 object-contain"
+                          className="h-6 w-6 shrink-0 object-contain sm:h-8 sm:w-8"
                         />
 
                         <input
@@ -190,7 +190,7 @@ export function CheckoutPage() {
                               sanitizeEmail(event.target.value),
                             )
                           }
-                          className="h-full w-full bg-transparent text-[16px] outline-none placeholder:text-silver-100"
+                          className="h-full w-full bg-transparent text-[14px] outline-none placeholder:text-silver-100 sm:text-[16px]"
                         />
                       </div>
                     </label>
@@ -203,9 +203,9 @@ export function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() => toggleSection("receiver")}
-                  className="mb-7 flex items-center gap-3"
+                  className="mb-4 flex items-center gap-3 sm:mb-7"
                 >
-                  <h2 className="font-pt-sans text-[22px] font-bold leading-none">
+                  <h2 className="font-pt-sans text-[18px] font-bold leading-none sm:text-[22px]">
                     Your Receiver’s Information
                   </h2>
 
@@ -220,15 +220,15 @@ export function CheckoutPage() {
                 {openedSections.receiver && (
                   <div className="space-y-4">
                     <label className="block">
-                      <span className="mb-[3px] ml-2 block text-[18px] font-normal leading-none">
+                      <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                         Full Name*
                       </span>
 
-                      <div className="flex h-[56px] items-center gap-2 rounded-[16px] border-[2px] border-forest-400 px-4">
+                      <div className="flex h-[48px] items-center gap-2 rounded-[14px] border-[1.5px] border-forest-400 px-3 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4">
                         <img
                           src={userIcon}
                           alt=""
-                          className="h-8 w-8 shrink-0 object-contain"
+                          className="h-6 w-6 shrink-0 object-contain sm:h-8 sm:w-8"
                         />
 
                         <input
@@ -243,21 +243,21 @@ export function CheckoutPage() {
                               sanitizeName(event.target.value),
                             )
                           }
-                          className="h-full w-full bg-transparent text-[16px] outline-none placeholder:text-silver-100"
+                          className="h-full w-full bg-transparent text-[14px] outline-none placeholder:text-silver-100 sm:text-[16px]"
                         />
                       </div>
                     </label>
 
                     <label className="block">
-                      <span className="mb-[3px] ml-2 block text-[18px] font-normal leading-none">
+                      <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                         Phone number*
                       </span>
 
-                      <div className="flex h-[56px] items-center gap-2 rounded-[16px] border-[2px] border-forest-400 px-4">
+                      <div className="flex h-[48px] items-center gap-2 rounded-[14px] border-[1.5px] border-forest-400 px-3 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4">
                         <img
                           src={phoneIcon}
                           alt=""
-                          className="h-8 w-8 shrink-0 object-contain"
+                          className="h-6 w-6 shrink-0 object-contain sm:h-8 sm:w-8"
                         />
 
                         <input
@@ -273,12 +273,12 @@ export function CheckoutPage() {
                               sanitizePhone(event.target.value),
                             )
                           }
-                          className="h-full w-full bg-transparent text-[16px] outline-none placeholder:text-silver-100"
+                          className="h-full w-full bg-transparent text-[14px] outline-none placeholder:text-silver-100 sm:text-[16px]"
                         />
                       </div>
                     </label>
 
-                    <label className="flex w-fit cursor-pointer items-center gap-2 text-[16px]">
+                    <label className="flex w-fit cursor-pointer items-center gap-2 text-[13px] sm:text-[16px]">
                       <input
                         type="checkbox"
                         checked={isReceiver}
@@ -309,9 +309,9 @@ export function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() => toggleSection("delivery")}
-                  className="mb-7 flex items-center gap-3"
+                  className="mb-4 flex items-center gap-3 sm:mb-7"
                 >
-                  <h2 className="font-pt-sans text-[22px] font-bold leading-none">
+                  <h2 className="font-pt-sans text-[18px] font-bold leading-none sm:text-[22px]">
                     Delivery Information
                   </h2>
 
@@ -325,7 +325,7 @@ export function CheckoutPage() {
 
                 {openedSections.delivery && (
                   <div>
-                    <label className="flex w-fit cursor-pointer items-center gap-2 text-[16px]">
+                    <label className="flex w-fit cursor-pointer items-center gap-2 text-[13px] sm:text-[16px]">
                       <input
                         type="checkbox"
                         checked={scheduleDelivery}
@@ -349,9 +349,9 @@ export function CheckoutPage() {
                     </label>
 
                     {scheduleDelivery && (
-                      <div className="mt-4 grid grid-cols-2 gap-8">
+                      <div className="mt-4 grid grid-cols-2 gap-4 sm:gap-8">
                         <label className="block">
-                          <span className="mb-[3px] ml-2 block text-[18px] font-normal leading-none">
+                          <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                             Date*
                           </span>
 
@@ -367,12 +367,12 @@ export function CheckoutPage() {
                                 sanitizeDate(event.target.value),
                               )
                             }
-                            className="h-[56px] w-full rounded-[16px] border-[2px] border-forest-400 bg-transparent px-4 text-[16px] outline-none placeholder:text-silver-100"
+                            className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
                           />
                         </label>
 
                         <label className="block">
-                          <span className="mb-[3px] ml-2 block text-[18px] font-normal leading-none">
+                          <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                             Time
                           </span>
 
@@ -386,7 +386,7 @@ export function CheckoutPage() {
                                 sanitizeTime(event.target.value),
                               )
                             }
-                            className="h-[56px] w-full rounded-[16px] border-[2px] border-forest-400 bg-transparent px-4 text-[16px] outline-none placeholder:text-silver-100"
+                            className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
                           />
                         </label>
                       </div>
@@ -394,12 +394,12 @@ export function CheckoutPage() {
 
                     <button
                       type="button"
-                      className="mt-4 flex h-[56px] w-full items-center gap-2 rounded-[16px] border-[2px] border-silver-200 px-4 text-left text-[18px] font-semibold"
+                      className="mt-3 flex h-[48px] w-full items-center gap-2 rounded-[14px] border-[1.5px] border-silver-200 px-3 text-left text-[14px] font-semibold sm:mt-4 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[18px]"
                     >
                       <img
                         src={receiverIcon}
                         alt=""
-                        className="h-8 w-8 shrink-0 object-contain"
+                        className="h-6 w-6 shrink-0 object-contain sm:h-8 sm:w-8"
                       />
 
                       <span>Pick Up At Boutique</span>
@@ -407,19 +407,19 @@ export function CheckoutPage() {
 
                     <button
                       type="button"
-                      className="mt-4 flex h-[56px] w-full items-center gap-2 rounded-[16px] border-[2px] border-forest-400 px-4 text-left text-[18px] font-semibold"
+                      className="mt-3 flex h-[48px] w-full items-center gap-2 rounded-[14px] border-[1.5px] border-forest-400 px-3 text-left text-[14px] font-semibold sm:mt-4 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[18px]"
                     >
                       <img
                         src={deliveryIcon}
                         alt=""
-                        className="h-8 w-8 shrink-0 object-contain"
+                        className="h-6 w-6 shrink-0 object-contain sm:h-8 sm:w-8"
                       />
 
                       <span>Address Delivery</span>
                     </button>
 
-                    <label className="mt-6 block">
-                      <span className="mb-[3px] ml-2 block text-[18px] font-normal leading-none">
+                    <label className="mt-4 block sm:mt-6">
+                      <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                         Address*
                       </span>
 
@@ -433,13 +433,13 @@ export function CheckoutPage() {
                         onChange={(event) =>
                           setAddress(event.target.value)
                         }
-                        className="h-[56px] w-full rounded-[16px] border-[2px] border-forest-400 bg-transparent px-4 text-[16px] outline-none placeholder:text-silver-100"
+                        className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
                       />
                     </label>
 
-                    <div className="mt-4 grid grid-cols-2 gap-8">
+                    <div className="mt-4 grid grid-cols-2 gap-4 sm:gap-8">
                       <label className="block">
-                        <span className="mb-[3px] ml-2 block text-[18px] font-normal leading-none">
+                        <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                           Floor
                         </span>
 
@@ -454,12 +454,12 @@ export function CheckoutPage() {
                               sanitizeNumbers(event.target.value),
                             )
                           }
-                          className="h-[56px] w-full rounded-[16px] border-[2px] border-forest-400 bg-transparent px-4 text-[16px] outline-none placeholder:text-silver-100"
+                          className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
                         />
                       </label>
 
                       <label className="block">
-                        <span className="mb-[3px] ml-2 block text-[18px] font-normal leading-none">
+                        <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                           Apartment
                         </span>
 
@@ -474,7 +474,7 @@ export function CheckoutPage() {
                               sanitizeNumbers(event.target.value),
                             )
                           }
-                          className="h-[56px] w-full rounded-[16px] border-[2px] border-forest-400 bg-transparent px-4 text-[16px] outline-none placeholder:text-silver-100"
+                          className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
                         />
                       </label>
                     </div>
@@ -486,15 +486,15 @@ export function CheckoutPage() {
 
           {/* RIGHT */}
           <aside className="min-w-0">
-            <div className="rounded-[28px] bg-white/55 p-8 shadow-[0_4px_10px_rgba(0,0,0,0.15)] backdrop-blur-[20px]">
-              <h2 className="font-pt-sans text-[22px] font-bold leading-none">
+            <div className="rounded-[20px] bg-[linear-gradient(180deg,rgba(255,255,255,0.72)_0%,rgba(255,236,249,0.88)_100%)] p-4 shadow-[0_4px_10px_rgba(0,0,0,0.12)] backdrop-blur-[20px] sm:rounded-[28px] sm:p-6 min-[1184px]:p-8">
+              <h2 className="font-pt-sans text-[18px] font-bold leading-none sm:text-[22px]">
                 Order Details
               </h2>
 
-              <div className="mt-12">
+              <div className="mt-6 sm:mt-8 min-[1184px]:mt-12">
                 {/* Product 1 */}
-                <div className="flex h-[160px] w-full items-center gap-4 rounded-[8px] bg-rose-50 p-4">
-                  <div className="h-[128px] w-[128px] shrink-0 overflow-hidden rounded-[8px]">
+                <div className="flex h-[88px] w-full items-center gap-3 rounded-[8px] bg-rose-50/90 p-3 sm:h-[128px] sm:gap-4 sm:p-4 min-[1184px]:h-[160px]">
+                  <div className="h-[64px] w-[64px] shrink-0 overflow-hidden rounded-[8px] sm:h-[96px] sm:w-[96px] min-[1184px]:h-[128px] min-[1184px]:w-[128px]">
                     <img
                       src={productImage}
                       alt="Name of bouquet"
@@ -502,17 +502,17 @@ export function CheckoutPage() {
                     />
                   </div>
 
-                  <div className="flex h-[128px] min-w-0 flex-1 flex-col justify-center">
+                  <div className="flex min-w-0 flex-1 flex-col justify-center sm:h-[96px] min-[1184px]:h-[128px]">
                     <div className="flex min-w-0 flex-col justify-center">
-                      <h3 className="font-pt-sans text-[18px] font-bold leading-none">
+                      <h3 className="font-pt-sans text-[12px] font-bold leading-none sm:text-[16px] min-[1184px]:text-[18px]">
                         Name of bouquet
                       </h3>
 
-                      <div className="mt-4 flex w-full items-center justify-between">
-                        <div className="flex h-6 items-center gap-[10px]">
+                      <div className="mt-2 flex w-full items-center justify-between sm:mt-3 min-[1184px]:mt-4">
+                        <div className="flex h-5 items-center gap-2 sm:h-6 sm:gap-[10px]">
                           <button
                             type="button"
-                            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-rose-100/20"
+                            className="flex h-5 w-5 shrink-0 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-rose-100/20"
                           >
                             <img
                               src={minusIcon}
@@ -521,13 +521,13 @@ export function CheckoutPage() {
                             />
                           </button>
 
-                          <div className="flex h-6 w-[61px] items-center justify-center rounded-[8px] bg-rose-100/20 text-[12px]">
+                          <div className="flex h-5 w-[42px] items-center sm:h-6 sm:w-[61px] justify-center rounded-[8px] bg-rose-100/20 text-[12px]">
                             1
                           </div>
 
                           <button
                             type="button"
-                            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-rose-100/20"
+                            className="flex h-5 w-5 shrink-0 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-rose-100/20"
                           >
                             <img
                               src={plusIcon}
@@ -537,7 +537,7 @@ export function CheckoutPage() {
                           </button>
                         </div>
 
-                        <span className="shrink-0 font-pt-sans text-[18px] font-bold leading-none text-rose-300">
+                        <span className="shrink-0 font-pt-sans text-[14px] font-bold leading-none text-rose-300 sm:text-[16px] min-[1184px]:text-[18px]">
                           $20
                         </span>
                       </div>
@@ -546,8 +546,8 @@ export function CheckoutPage() {
                 </div>
 
                 {/* Product 2 */}
-                <div className="mt-5 flex h-[160px] w-full items-center gap-4 rounded-[8px] bg-rose-50 p-4">
-                  <div className="h-[128px] w-[128px] shrink-0 overflow-hidden rounded-[8px]">
+                <div className="mt-3 flex h-[88px] w-full items-center gap-3 rounded-[8px] bg-rose-50/90 p-3 sm:mt-4 sm:h-[128px] sm:gap-4 sm:p-4 min-[1184px]:mt-5 min-[1184px]:h-[160px]">
+                  <div className="h-[64px] w-[64px] shrink-0 overflow-hidden rounded-[8px] sm:h-[96px] sm:w-[96px] min-[1184px]:h-[128px] min-[1184px]:w-[128px]">
                     <img
                       src={productImage}
                       alt="Name of bouquet"
@@ -555,17 +555,17 @@ export function CheckoutPage() {
                     />
                   </div>
 
-                  <div className="flex h-[128px] min-w-0 flex-1 flex-col justify-center">
+                  <div className="flex min-w-0 flex-1 flex-col justify-center sm:h-[96px] min-[1184px]:h-[128px]">
                     <div className="flex min-w-0 flex-col justify-center">
-                      <h3 className="font-pt-sans text-[18px] font-bold leading-none">
+                      <h3 className="font-pt-sans text-[12px] font-bold leading-none sm:text-[16px] min-[1184px]:text-[18px]">
                         Name of bouquet
                       </h3>
 
-                      <div className="mt-4 flex w-full items-center justify-between">
-                        <div className="flex h-6 items-center gap-[10px]">
+                      <div className="mt-2 flex w-full items-center justify-between sm:mt-3 min-[1184px]:mt-4">
+                        <div className="flex h-5 items-center gap-2 sm:h-6 sm:gap-[10px]">
                           <button
                             type="button"
-                            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-rose-100/20"
+                            className="flex h-5 w-5 shrink-0 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-rose-100/20"
                           >
                             <img
                               src={minusIcon}
@@ -574,13 +574,13 @@ export function CheckoutPage() {
                             />
                           </button>
 
-                          <div className="flex h-6 w-[61px] items-center justify-center rounded-[8px] bg-rose-100/20 text-[12px]">
+                          <div className="flex h-5 w-[42px] items-center sm:h-6 sm:w-[61px] justify-center rounded-[8px] bg-rose-100/20 text-[12px]">
                             1
                           </div>
 
                           <button
                             type="button"
-                            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-rose-100/20"
+                            className="flex h-5 w-5 shrink-0 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-rose-100/20"
                           >
                             <img
                               src={plusIcon}
@@ -590,7 +590,7 @@ export function CheckoutPage() {
                           </button>
                         </div>
 
-                        <span className="shrink-0 font-pt-sans text-[18px] font-bold leading-none text-rose-300">
+                        <span className="shrink-0 font-pt-sans text-[14px] font-bold leading-none text-rose-300 sm:text-[16px] min-[1184px]:text-[18px]">
                           $20
                         </span>
                       </div>
@@ -599,12 +599,12 @@ export function CheckoutPage() {
                 </div>
 
                 {/* Promocode */}
-                <div className="mt-8">
-                  <label className="mb-2 block text-[18px] font-normal leading-none">
+                <div className="mt-5 sm:mt-6 min-[1184px]:mt-8">
+                  <label className="mb-2 block text-[14px] sm:text-[18px] font-normal leading-none">
                     Promocode
                   </label>
 
-                  <div className="flex h-[44px] w-full overflow-hidden rounded-[14px] border-[2px] border-forest-400">
+                  <div className="flex h-[40px] w-full overflow-hidden rounded-[12px] border-[1.5px] border-forest-400 sm:h-[44px] sm:rounded-[14px] sm:border-[2px]">
                     <input
                       type="text"
                       maxLength={32}
@@ -614,7 +614,7 @@ export function CheckoutPage() {
 
                     <button
                       type="button"
-                      className="w-[160px] shrink-0 bg-forest-300 text-[18px] font-semibold text-white"
+                      className="w-[96px] shrink-0 bg-forest-300 text-[14px] font-semibold text-white sm:w-[128px] sm:text-[16px] min-[1184px]:w-[160px] min-[1184px]:text-[18px]"
                     >
                       Apply
                     </button>
@@ -622,7 +622,7 @@ export function CheckoutPage() {
                 </div>
 
                 {/* Summary */}
-                <div className="mt-6 space-y-3 text-[16px] font-normal leading-[20px]">
+                <div className="mt-4 space-y-2 text-[13px] font-normal leading-[16px] sm:mt-5 sm:text-[14px] sm:leading-[18px] min-[1184px]:mt-6 min-[1184px]:space-y-3 min-[1184px]:text-[16px] min-[1184px]:leading-[20px]">
                   <div className="flex justify-between text-forest-200">
                     <span>Subtotal:</span>
                     <span>$40</span>
@@ -641,18 +641,18 @@ export function CheckoutPage() {
                   <div className="flex justify-between pt-1">
                     <span>Total:</span>
 
-                    <span className="font-pt-sans text-[18px] font-bold leading-none">
+                    <span className="font-pt-sans text-[12px] font-bold leading-none sm:text-[16px] min-[1184px]:text-[18px]">
                       $44
                     </span>
                   </div>
                 </div>
 
                 {/* Comment */}
-                <div className="mt-8 shrink-0">
+                <div className="mt-5 shrink-0 sm:mt-6 min-[1184px]:mt-8">
                   <button
                     type="button"
                     onClick={() => setCommentOpened((prev) => !prev)}
-                    className="flex items-center gap-4 text-left text-[18px] leading-none"
+                    className="flex items-center gap-3 text-left text-[13px] leading-none sm:text-[15px] min-[1184px]:gap-4 min-[1184px]:text-[18px]"
                   >
                     <span>Leave a Comment</span>
 
@@ -677,7 +677,7 @@ export function CheckoutPage() {
 
                 <button
                   type="button"
-                  className="mt-8 flex h-[48px] w-full items-center justify-center rounded-full bg-rose-300 text-[18px] font-semibold leading-none text-white shadow-[0_3px_5px_rgba(0,0,0,0.12)]"
+                  className="mt-5 flex h-[40px] w-full items-center justify-center rounded-full bg-rose-300 text-[14px] font-semibold leading-none text-white shadow-[0_3px_5px_rgba(0,0,0,0.12)] sm:mt-6 sm:h-[44px] sm:text-[16px] min-[1184px]:mt-8 min-[1184px]:h-[48px] min-[1184px]:text-[18px]"
                 >
                   Checkout
                 </button>
@@ -688,16 +688,17 @@ export function CheckoutPage() {
       </main>
 
       {/* Footer */}
-      <footer className="mx-auto mt-[48px] flex w-full max-w-[1120px] flex-row items-center justify-between gap-4 px-8 pb-[48px] text-[11px] leading-[13px] text-silver-100 md:px-6 min-[1184px]:px-0">
+      <footer className="mx-auto mt-6 flex w-full max-w-[1220px] flex-col items-center justify-between gap-3 px-4 pb-6 text-[8px] leading-[10px] text-silver-100 sm:mt-12 sm:flex-row sm:px-8 sm:pb-12 sm:text-[9px] sm:leading-[11px] min-[1184px]:px-0 min-[1184px]:text-[11px] min-[1184px]:leading-[13px]">
+
+
+        <div className="flex shrink-0 items-center gap-10 sm:gap-4">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookies Settings</a>
+        </div>
         <p className="shrink-0">
           ©2026, IT STEP COLLEGE TEAM
         </p>
-
-        <div className="flex shrink-0 items-center gap-4">
-          <a href="#">Terms of Service</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Cookies Settings</a>
-        </div>
       </footer>
     </div>
   );
