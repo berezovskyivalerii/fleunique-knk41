@@ -8,7 +8,6 @@ import { Badge } from "@/shared/ui/badge";
 import photo from "@/shared/assets/photo_flowers_product.png";
 import share from "@/shared/assets/share_icon_product.png";
 
-// Десктоп (от 1440px)
 const backgroundBlobsDesktop = [
   { width: 651.4, height: 465.5, angle: 29.62, opacity: 0.5, top: -66.6, left: 1400.3,
     background: "radial-gradient(50% 50% at 50% 50%, #04C6D1 0%, rgba(4, 198, 209, 0) 100%)" },
@@ -20,7 +19,6 @@ const backgroundBlobsDesktop = [
     background: "radial-gradient(50% 50% at 50% 50%, #FBB2EA 0%, #F04BC9 100%)" },
 ];
 
-// Телефон + планшет (< 1440px) — координаты одинаковые в Dev Mode для 390px и 744px
 const backgroundBlobsCompact = [
   { width: 495, height: 500, angle: -29.62, opacity: 0.5, top: -145, left: "calc(62.5% + 5px)",
     background: "radial-gradient(50% 50% at 50% 50%, #04C6D1 0%, rgba(4, 198, 209, 0) 100%)" },
