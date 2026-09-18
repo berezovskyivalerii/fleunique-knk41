@@ -7,6 +7,9 @@
     --font-montserrat: "Montserrat", sans-serif;
     --font-pt-sans: "PT Sans", sans-serif;
 
+    --breakpoint-tablet: 744px;
+    --breakpoint-desktop: 1440px;
+
     --text-accent-headline: 480px;
     --text-large-button: 32px;
     --text-medium-button: 18px;

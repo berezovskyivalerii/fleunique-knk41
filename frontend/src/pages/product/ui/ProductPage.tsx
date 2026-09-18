@@ -8,44 +8,28 @@ import { Badge } from "@/shared/ui/badge";
 import photo from "@/shared/assets/photo_flowers_product.png";
 import share from "@/shared/assets/share_icon_product.png";
 
-const backgroundBlobs = [
-  {
-    width: 651.4,
-    height: 465.5,
-    angle: 29.62,
-    opacity: 0.5,
-    top: -66.6,
-    left: 1400.3,
-    background:
-      "radial-gradient(50% 50% at 50% 50%, #04C6D1 0%, rgba(4, 198, 209, 0) 100%)",
-  },
-  {
-    width: 330.5,
-    height: 287.2,
-    angle: 131.18,
-    opacity: 0.5,
-    top: 168.9,
-    left: -22.0,
-    background: "radial-gradient(50% 50% at 50% 50%, #FBB2EA 0%, #F04BC9 100%)",
-  },
-  {
-    width: 531.2,
-    height: 461.6,
-    angle: 131.18,
-    opacity: 0.5,
-    top: 725.0,
-    left: -80,
-    background: "radial-gradient(50% 50% at 50% 50%, #04C6D1 0%, #FCFCFC 100%)",
-  },
-  {
-    width: 651.4,
-    height: 465.5,
-    angle: -97.41,
-    opacity: 0.5,
-    top: 747.1,
-    left: 1215.3,
-    background: "radial-gradient(50% 50% at 50% 50%, #FBB2EA 0%, #F04BC9 100%)",
-  },
+// Десктоп (от 1440px)
+const backgroundBlobsDesktop = [
+  { width: 651.4, height: 465.5, angle: 29.62, opacity: 0.5, top: -66.6, left: 1400.3,
+    background: "radial-gradient(50% 50% at 50% 50%, #04C6D1 0%, rgba(4, 198, 209, 0) 100%)" },
+  { width: 330.5, height: 287.2, angle: 131.18, opacity: 0.5, top: 168.9, left: -22.0,
+    background: "radial-gradient(50% 50% at 50% 50%, #FBB2EA 0%, #F04BC9 100%)" },
+  { width: 531.2, height: 461.6, angle: 131.18, opacity: 0.5, top: 725.0, left: -80,
+    background: "radial-gradient(50% 50% at 50% 50%, #04C6D1 0%, #FCFCFC 100%)" },
+  { width: 651.4, height: 465.5, angle: -97.41, opacity: 0.5, top: 747.1, left: 1215.3,
+    background: "radial-gradient(50% 50% at 50% 50%, #FBB2EA 0%, #F04BC9 100%)" },
+];
+
+// Телефон + планшет (< 1440px) — координаты одинаковые в Dev Mode для 390px и 744px
+const backgroundBlobsCompact = [
+  { width: 495, height: 500, angle: -29.62, opacity: 0.5, top: -145, left: "calc(62.5% + 5px)",
+    background: "radial-gradient(50% 50% at 50% 50%, #04C6D1 0%, rgba(4, 198, 209, 0) 100%)" },
+  { width: 398, height: 392, angle: -131.18, opacity: 0.5, top: 52, left: -247,
+    background: "radial-gradient(50% 50% at 50% 50%, #FBB2EA 0%, #F04BC9 100%)" },
+  { width: 412, height: 406, angle: -131.18, opacity: 0.5, top: 764, left: -162,
+    background: "radial-gradient(50% 50% at 50% 50%, #04C6D1 0%, #FCFCFC 100%)" },
+  { width: 405, height: 394, angle: 97.41, opacity: 0.5, top: 802, left: "calc(50% + 29px)",
+    background: "radial-gradient(50% 50% at 50% 50%, #FBB2EA 0%, #F04BC9 100%)" },
 ];
 
 export function ProductPage() {
@@ -56,53 +40,74 @@ export function ProductPage() {
       setQuantity(1);
     }
   };
+
   return (
     <div className="relative min-h-screen flex flex-col bg-white overflow-hidden pt-24">
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        {backgroundBlobs.map((blob, index) => (
-          <div
-            key={index}
-            style={{
-              position: "absolute",
-              width: `${blob.width}px`,
-              height: `${blob.height}px`,
-              transform: `rotate(${blob.angle}deg)`,
-              opacity: blob.opacity,
-              top: `${blob.top}px`,
-              left: `${blob.left}px`,
-              background: blob.background,
-            }}
-          />
-        ))}
+        <div className="block desktop:hidden absolute inset-0">
+          {backgroundBlobsCompact.map((blob, i) => (
+            <div
+              key={i}
+              style={{
+                position: "absolute",
+                width: `${blob.width}px`,
+                height: `${blob.height}px`,
+                transform: `rotate(${blob.angle}deg)`,
+                opacity: blob.opacity,
+                top: `${blob.top}px`,
+                left: typeof blob.left === "string" ? blob.left : `${blob.left}px`,
+                background: blob.background,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="hidden desktop:block absolute inset-0">
+          {backgroundBlobsDesktop.map((blob, i) => (
+            <div
+              key={i}
+              style={{
+                position: "absolute",
+                width: `${blob.width}px`,
+                height: `${blob.height}px`,
+                transform: `rotate(${blob.angle}deg)`,
+                opacity: blob.opacity,
+                top: `${blob.top}px`,
+                left: `${blob.left}px`,
+                background: blob.background,
+              }}
+            />
+          ))}
+        </div>
 
         <div
           className="absolute inset-0"
-          style={{ backdropFilter: "blur(300px)" }}
+          style={{ backdropFilter: "blur(200px)" }}
         ></div>
       </div>
 
       <div className="relative z-10 flex flex-col flex-grow w-full">
         <Header />
 
-        <main className="flex-grow flex justify-center gap-[32px] px-10 xl:px-[160px] py-16 w-full max-w-[1440px] mx-auto mb-[128px]">
-          <div className="shrink-0">
+        <main className="flex-grow flex flex-col desktop:flex-row items-center desktop:items-stretch justify-center gap-8 desktop:gap-[32px] px-8 pt-6 desktop:px-[160px] desktop:py-16 w-full max-w-[1440px] mx-auto mb-[128px]">
+          <div className="shrink-0 w-full desktop:w-auto max-w-[332px] desktop:max-w-none">
             <img
               src={photo}
               alt="Bouquet"
-              className="w-[500px] xl:w-[544px] object-cover rounded-2xl shadow-sm"
+              className="w-full aspect-square rounded-2xl shadow-sm object-cover desktop:w-[544px] desktop:h-auto desktop:aspect-auto"
             />
           </div>
 
-          <div className="max-w-[544px] flex flex-col justify-center gap-6">
-            <div className="flex flex-col gap-2">
-              <div className="flex justify-between items-center">
+          <div className="w-full max-w-[680px] desktop:max-w-[544px] flex flex-col justify-center gap-6">
+            <div className="flex min-h-[131px] desktop:min-h-0 flex-col gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-1">
                 <h2 className="font-bold text-4xl uppercase text-[#033438] font-pt-sans">
                   NAME OF BOUQUET
                 </h2>
                 <Badge>In Stock</Badge>
               </div>
 
-              <div className="text-2xl font-pt-sans font-bold text-[#B3158E]">
+              <div className="text-[22px] desktop:text-2xl font-pt-sans font-bold text-[#B3158E]">
                 $20
               </div>
 
@@ -125,7 +130,7 @@ export function ProductPage() {
             </div>
 
             <div className="flex flex-col gap-16 justify-between">
-              <div className="flex gap-7">
+              <div className="flex gap-3 sm:gap-10 desktop:gap-7">
                 <Button variant="primary">Add To Cart</Button>
                 <Button variant="outline">Buy Now</Button>
               </div>
