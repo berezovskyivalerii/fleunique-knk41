@@ -1,25 +1,24 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, Text
-from sqlalchemy.orm import relationship
-from sqlalchemy.sql import func
+from datetime import datetime
 
-from app.db.database import Base
+from sqlalchemy import DateTime, ForeignKey, Integer, Text, func
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.models.base import Base
 
 
 class Review(Base):
     __tablename__ = "reviews"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    product_id: Mapped[int] = mapped_column(
+        ForeignKey("products.id", ondelete="CASCADE")
     )
-    product_id = Column(
-        Integer, ForeignKey("products.id", ondelete="CASCADE"), nullable=False
+    rating: Mapped[int] = mapped_column(Integer)
+    comment: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
     )
-    rating = Column(
-        Integer, nullable=False
-    )  # 1 to 5 validation on Pydantic schema level
-    comment = Column(Text, nullable=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    user = relationship("User", back_populates="reviews")
-    product = relationship("Product", back_populates="reviews")
+    user: Mapped["User"] = relationship(back_populates="reviews")
+    product: Mapped["Product"] = relationship(back_populates="reviews")
