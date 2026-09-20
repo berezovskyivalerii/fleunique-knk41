@@ -6,7 +6,11 @@ import logo from "@/shared/assets/logo.svg";
 import profile from "@/shared/assets/header-user.svg";
 import cart from "@/shared/assets/auth-cart.svg";
 
-export function Header() {
+type HeaderProps = {
+  checkout?: boolean;
+};
+
+export function Header({ checkout = false }: HeaderProps) {
   const navigate = useNavigate();
   const [authOpen, setAuthOpen] = useState(false);
 
