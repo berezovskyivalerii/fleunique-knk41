@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy.orm import Session
 
-from app.models.token import RefreshToken
+from app.models.refresh_token import RefreshToken
 
 
 def create_refresh_token(db: Session, user_id: int, token: str, expires_at: datetime):
