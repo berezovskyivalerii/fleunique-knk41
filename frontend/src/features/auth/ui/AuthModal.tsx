@@ -26,7 +26,12 @@ type AuthModalProps = {
 function CloseIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" aria-hidden="true">
-      <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path
+        d="M6 6L18 18M18 6L6 18"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -34,34 +39,86 @@ function CloseIcon() {
 function CheckIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
-      <path d="M5 12.5L9.2 16.5L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M5 12.5L9.2 16.5L19 7"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function UserIcon() {
-  return <img src={authUserIcon} alt="" className="h-8 w-8 shrink-0 object-contain" aria-hidden="true" />;
+  return (
+    <img
+      src={authUserIcon}
+      alt=""
+      className="h-8 w-8 shrink-0 object-contain"
+      aria-hidden="true"
+    />
+  );
 }
 
 function CorporateIcon() {
   return (
-    <svg viewBox="0 0 32 32" className="h-8 w-8 shrink-0" fill="none" aria-hidden="true">
-      <rect x="4.5" y="10" width="23" height="16" rx="3" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M11 10V7.5C11 6.12 12.12 5 13.5 5H18.5C19.88 5 21 6.12 21 7.5V10M4.5 16C10.8 18.5 21.2 18.5 27.5 16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    <svg
+      viewBox="0 0 32 32"
+      className="h-8 w-8 shrink-0"
+      fill="none"
+      aria-hidden="true"
+    >
+      <rect
+        x="4.5"
+        y="10"
+        width="23"
+        height="16"
+        rx="3"
+        stroke="currentColor"
+        strokeWidth="1.6"
+      />
+      <path
+        d="M11 10V7.5C11 6.12 12.12 5 13.5 5H18.5C19.88 5 21 6.12 21 7.5V10M4.5 16C10.8 18.5 21.2 18.5 27.5 16"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
 
 function MailIcon() {
-  return <img src={authEmailIcon} alt="" className="h-8 w-8 shrink-0 object-contain" aria-hidden="true" />;
+  return (
+    <img
+      src={authEmailIcon}
+      alt=""
+      className="h-8 w-8 shrink-0 object-contain"
+      aria-hidden="true"
+    />
+  );
 }
 
 function PhoneIcon() {
-  return <img src={authPhoneIcon} alt="" className="h-8 w-8 shrink-0 object-contain" aria-hidden="true" />;
+  return (
+    <img
+      src={authPhoneIcon}
+      alt=""
+      className="h-8 w-8 shrink-0 object-contain"
+      aria-hidden="true"
+    />
+  );
 }
 
 function LockIcon() {
-  return <img src={authLockIcon} alt="" className="h-8 w-8 shrink-0 object-contain" aria-hidden="true" />;
+  return (
+    <img
+      src={authLockIcon}
+      alt=""
+      className="h-8 w-8 shrink-0 object-contain"
+      aria-hidden="true"
+    />
+  );
 }
 
 function EyeIcon({ hidden }: { hidden: boolean }) {
@@ -78,7 +135,13 @@ function EyeIcon({ hidden }: { hidden: boolean }) {
 function ArrowRightIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
-      <path d="M5 12H19M14 7L19 12L14 17" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M5 12H19M14 7L19 12L14 17"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -86,7 +149,13 @@ function ArrowRightIcon() {
 function ArrowLeftIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
-      <path d="M19 12H5M10 7L5 12L10 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M19 12H5M10 7L5 12L10 17"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -103,20 +172,25 @@ function Progress({ step }: { step: 1 | 2 | 3 | 4 }) {
 
         return (
           <div key={label} className="contents">
-            <div className={`flex shrink-0 items-center gap-[6px] ${active ? "text-forest-100" : ""}`}>
+            <div
+              className={`flex shrink-0 items-center gap-[6px] ${active ? "text-forest-100" : ""}`}
+            >
               <span
-                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-[1.5px] text-[11px] sm:border-2 sm:text-[13px] ${done
-                  ? "border-forest-100 bg-forest-100 text-white"
-                  : active
-                    ? "border-forest-100 text-forest-100"
-                    : "border-silver-100 text-silver-100"
-                  }`}
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-[1.5px] text-[11px] sm:border-2 sm:text-[13px] ${
+                  done
+                    ? "border-forest-100 bg-forest-100 text-white"
+                    : active
+                      ? "border-forest-100 text-forest-100"
+                      : "border-silver-100 text-silver-100"
+                }`}
               >
                 {done ? <CheckIcon /> : number}
               </span>
               <span className="whitespace-nowrap">{label}</span>
             </div>
-            {index < items.length - 1 && <span className="mx-1 h-[2px] w-4 shrink-0 bg-silver-100 sm:mx-3 sm:w-auto sm:min-w-4 sm:flex-1" />}
+            {index < items.length - 1 && (
+              <span className="mx-1 h-[2px] w-4 shrink-0 bg-silver-100 sm:mx-3 sm:w-auto sm:min-w-4 sm:flex-1" />
+            )}
           </div>
         );
       })}
@@ -153,12 +227,15 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-[4px] ml-2 block text-[16px] font-normal leading-none sm:text-[18px]">{label}</span>
+      <span className="mb-[4px] ml-2 block text-[16px] font-normal leading-none sm:text-[18px]">
+        {label}
+      </span>
       <div
-        className={`flex h-[56px] items-center gap-2 rounded-[16px] border-[1.5px] px-4 text-forest-300 transition-[border-color,box-shadow,background-color] duration-200 sm:h-[56px] sm:rounded-[16px] sm:px-4 ${invalid
-          ? "border-rose-300 bg-rose-100/10 shadow-[0_0_0_2px_rgba(179,21,142,0.08)]"
-          : "border-forest-400 focus-within:border-forest-100"
-          }`}
+        className={`flex h-[56px] items-center gap-2 rounded-[16px] border-[1.5px] px-4 text-forest-300 transition-[border-color,box-shadow,background-color] duration-200 sm:h-[56px] sm:rounded-[16px] sm:px-4 ${
+          invalid
+            ? "border-rose-300 bg-rose-100/10 shadow-[0_0_0_2px_rgba(179,21,142,0.08)]"
+            : "border-forest-400 focus-within:border-forest-100"
+        }`}
       >
         {icon}
         <input
@@ -186,7 +263,8 @@ function MobileAuthFooter() {
           <img src={logo} alt="Fleunique" className="h-auto w-[160px]" />
 
           <p className="text-justify text-[16px] font-normal leading-[16px]">
-            Fleunique crafts bold, artistic, playful bouquets for truly unique people. Our vivid floral charm brightens any gloomy day.
+            Fleunique crafts bold, artistic, playful bouquets for truly unique
+            people. Our vivid floral charm brightens any gloomy day.
           </p>
         </div>
 
@@ -198,7 +276,12 @@ function MobileAuthFooter() {
             [instaFooter, "Instagram"],
             [locationFooter, "Location"],
           ].map(([src, alt]) => (
-            <img key={alt} src={src} alt={alt} className="h-8 w-8 object-contain" />
+            <img
+              key={alt}
+              src={src}
+              alt={alt}
+              className="h-8 w-8 object-contain"
+            />
           ))}
         </div>
 
@@ -218,7 +301,11 @@ function MobileAuthFooter() {
   );
 }
 
-export function AuthModal({ open, initialMode = "login", onClose }: AuthModalProps) {
+export function AuthModal({
+  open,
+  initialMode = "login",
+  onClose,
+}: AuthModalProps) {
   const [mode, setMode] = useState<AuthMode>(initialMode);
   const [signupStep, setSignupStep] = useState<SignupStep>(1);
   const [plan, setPlan] = useState<Plan>("personal");
@@ -230,12 +317,102 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const emailIsValid = (value: string) =>
-    /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+$/.test(value.trim());
-  const passwordIsValid = (value: string) => value.length >= 8 && value.length <= 16;
+    /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+$/.test(
+      value.trim(),
+    );
+  const passwordIsValid = (value: string) =>
+    value.length >= 8 && value.length <= 16;
   const confirmPasswordIsValid =
-    confirmPassword.length > 0 && passwordIsValid(confirmPassword) && confirmPassword === password;
+    confirmPassword.length > 0 &&
+    passwordIsValid(confirmPassword) &&
+    confirmPassword === password;
+
+  const handleLoginSubmit = async () => {
+    markTouched("loginEmail");
+    markTouched("loginPassword");
+
+    if (!emailIsValid(email) || !passwordIsValid(password)) return;
+
+    setIsLoading(true);
+    setApiError(null);
+
+    try {
+      // OAuth2PasswordRequestForm requires URLSearchParams
+      const formData = new URLSearchParams();
+      formData.append("username", email);
+      formData.append("password", password);
+
+      const response = await fetch("/api/v1/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Failed to login");
+      }
+
+      const data = await response.json();
+
+      // Store tokens
+      localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("refresh_token", data.refresh_token);
+
+      handleClose();
+    } catch (error: any) {
+      setApiError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegisterSubmit = async () => {
+    markTouched("signupPassword");
+    markTouched("confirmPassword");
+
+    if (!passwordIsValid(password) || !confirmPasswordIsValid) return;
+
+    setIsLoading(true);
+    setApiError(null);
+
+    try {
+      const payload = {
+        full_name: fullName,
+        email: email,
+        password: password,
+        password_confirm: confirmPassword,
+        account_type: plan === "corporate" ? "business" : "personal",
+        phone_number: phone || null,
+      };
+
+      const response = await fetch("/api/v1/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Registration failed");
+      }
+
+      // Success, move to the final screen
+      setSignupStep(4);
+    } catch (error: any) {
+      setApiError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const markTouched = (field: string) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
@@ -253,6 +430,8 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
     setShowPassword(false);
     setShowConfirmPassword(false);
     setTouched({});
+    setApiError(null);
+    setIsLoading(false);
   };
 
   const handleClose = () => {
@@ -314,7 +493,8 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
     setSignupStep((signupStep - 1) as SignupStep);
   };
 
-  const modalHeight = mode === "login" ? "sm:min-h-[443px]" : "sm:min-h-[587px]";
+  const modalHeight =
+    mode === "login" ? "sm:min-h-[443px]" : "sm:min-h-[587px]";
 
   return (
     <div
@@ -341,7 +521,9 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
 
         {mode === "login" ? (
           <div className="mx-auto flex w-full max-w-[672px] flex-1 flex-col sm:justify-center">
-            <h2 className="mb-7 text-center font-pt-sans text-[30px] font-bold uppercase leading-none sm:text-[36px]">Log In</h2>
+            <h2 className="mb-7 text-center font-pt-sans text-[30px] font-bold uppercase leading-none sm:text-[36px]">
+              Log In
+            </h2>
 
             <div className="mx-auto w-full max-w-[294px] space-y-4 sm:max-w-[608px]">
               <Field
@@ -366,37 +548,57 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
                   value={password}
                   onChange={setPassword}
                   onBlur={() => markTouched("loginPassword")}
-                  invalid={Boolean(touched.loginPassword && !passwordIsValid(password))}
+                  invalid={Boolean(
+                    touched.loginPassword && !passwordIsValid(password),
+                  )}
                   maxLength={16}
                   required
                   trailing={
-                    <button type="button" onClick={() => setShowPassword((value) => !value)} aria-label="Toggle password visibility">
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((value) => !value)}
+                      aria-label="Toggle password visibility"
+                    >
                       <EyeIcon hidden={!showPassword} />
                     </button>
                   }
                 />
                 <div className="mt-2 text-right">
-                  <button type="button" className="inline-block text-[12px] text-silver-100 transition-colors hover:text-forest-200">
+                  <button
+                    type="button"
+                    className="inline-block text-[12px] text-silver-100 transition-colors hover:text-forest-200"
+                  >
                     Forgot Password?
                   </button>
                 </div>
               </div>
 
+              {apiError && (
+                <div className="mt-2 text-[14px] text-rose-300 text-center">
+                  {apiError}
+                </div>
+              )}
+
               <button
                 type="button"
-                disabled={!emailIsValid(email) || !passwordIsValid(password)}
-                onClick={() => {
-                  markTouched("loginEmail");
-                  markTouched("loginPassword");
-                }}
+                disabled={
+                  !emailIsValid(email) ||
+                  !passwordIsValid(password) ||
+                  isLoading
+                }
+                onClick={handleLoginSubmit}
                 className="mt-2 flex h-[48px] w-full items-center justify-center rounded-full bg-rose-100 text-[18px] font-semibold shadow-[0_3px_5px_rgba(0,0,0,0.12)] disabled:cursor-not-allowed disabled:opacity-50"
               >
-                Log In
+                {isLoading ? "Logging in..." : "Log In"}
               </button>
 
               <p className="text-center text-[12px] text-silver-100">
                 Don&apos;t have an account?{" "}
-                <button type="button" onClick={switchToSignup} className="text-forest-300 hover:underline">
+                <button
+                  type="button"
+                  onClick={switchToSignup}
+                  className="text-forest-300 hover:underline"
+                >
                   Sign Up
                 </button>
               </p>
@@ -410,11 +612,15 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
 
             {signupStep === 1 && (
               <div className="flex flex-1 flex-col">
-                <h2 className="mt-[40px] text-center font-pt-sans text-[30px] font-bold uppercase leading-none sm:mt-[54px] sm:text-[36px]">Sign Up</h2>
+                <h2 className="mt-[40px] text-center font-pt-sans text-[30px] font-bold uppercase leading-none sm:mt-[54px] sm:text-[36px]">
+                  Sign Up
+                </h2>
 
                 <div className="mx-auto mt-8 w-full max-w-[294px] sm:mt-[54px] sm:max-w-[608px]">
                   <p className="mb-4 text-justify text-[16px] font-normal leading-[16px] text-forest-200 sm:h-[40px] sm:leading-[20px]">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua.
                   </p>
 
                   <div className="space-y-4">
@@ -425,8 +631,12 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
                     >
                       <UserIcon />
                       <span>
-                        <span className="block text-[16px] font-semibold leading-none sm:text-[18px]">Personal Plan</span>
-                        <span className="mt-1 hidden text-[14px] text-silver-200 sm:block">Perfect for personal bouquet orders and gifts.</span>
+                        <span className="block text-[16px] font-semibold leading-none sm:text-[18px]">
+                          Personal Plan
+                        </span>
+                        <span className="mt-1 hidden text-[14px] text-silver-200 sm:block">
+                          Perfect for personal bouquet orders and gifts.
+                        </span>
                       </span>
                     </button>
 
@@ -437,20 +647,34 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
                     >
                       <CorporateIcon />
                       <span>
-                        <span className="block text-[16px] font-semibold leading-none sm:text-[18px]">Corporate Plan</span>
-                        <span className="mt-1 hidden text-[14px] text-silver-200 sm:block">For business orders and wholesale floral services.</span>
+                        <span className="block text-[16px] font-semibold leading-none sm:text-[18px]">
+                          Corporate Plan
+                        </span>
+                        <span className="mt-1 hidden text-[14px] text-silver-200 sm:block">
+                          For business orders and wholesale floral services.
+                        </span>
                       </span>
                     </button>
                   </div>
                 </div>
 
                 <div className="mx-auto mt-auto w-full max-w-[326px] pt-8 sm:max-w-[608px]">
-                  <button type="button" onClick={() => setSignupStep(2)} className="mx-auto flex h-[44px] w-[205px] items-center justify-center gap-3 rounded-full bg-rose-100 text-[16px] font-semibold shadow-[0_3px_5px_rgba(0,0,0,0.12)] sm:h-[48px] sm:w-full sm:text-[18px]">
+                  <button
+                    type="button"
+                    onClick={() => setSignupStep(2)}
+                    className="mx-auto flex h-[44px] w-[205px] items-center justify-center gap-3 rounded-full bg-rose-100 text-[16px] font-semibold shadow-[0_3px_5px_rgba(0,0,0,0.12)] sm:h-[48px] sm:w-full sm:text-[18px]"
+                  >
                     Continue <ArrowRightIcon />
                   </button>
                   <p className="mt-4 text-center text-[12px] text-silver-100">
                     Already have an account?{" "}
-                    <button type="button" onClick={switchToLogin} className="text-forest-300 hover:underline">Log In</button>
+                    <button
+                      type="button"
+                      onClick={switchToLogin}
+                      className="text-forest-300 hover:underline"
+                    >
+                      Log In
+                    </button>
                   </p>
                 </div>
               </div>
@@ -458,7 +682,9 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
 
             {signupStep === 2 && (
               <div className="flex flex-1 flex-col">
-                <h2 className="mt-[40px] text-center font-pt-sans text-[30px] font-bold uppercase leading-none sm:mt-[54px] sm:text-[36px]">Sign Up</h2>
+                <h2 className="mt-[40px] text-center font-pt-sans text-[30px] font-bold uppercase leading-none sm:mt-[54px] sm:text-[36px]">
+                  Sign Up
+                </h2>
                 <div className="mx-auto mt-7 w-full max-w-[326px] space-y-4 sm:mt-10 sm:max-w-[608px]">
                   <Field
                     label="Full Name*"
@@ -478,7 +704,9 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
                     value={email}
                     onChange={(value) => setEmail(value.replace(/\s/g, ""))}
                     onBlur={() => markTouched("signupEmail")}
-                    invalid={Boolean(touched.signupEmail && !emailIsValid(email))}
+                    invalid={Boolean(
+                      touched.signupEmail && !emailIsValid(email),
+                    )}
                     inputMode="email"
                     required
                   />
@@ -501,13 +729,18 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
                     onClick={() => {
                       markTouched("fullName");
                       markTouched("signupEmail");
-                      if (fullName.trim() && emailIsValid(email)) setSignupStep(3);
+                      if (fullName.trim() && emailIsValid(email))
+                        setSignupStep(3);
                     }}
                     className="mx-auto flex h-[44px] w-[205px] items-center justify-center gap-3 rounded-full bg-rose-100 text-[16px] font-semibold shadow-[0_3px_5px_rgba(0,0,0,0.12)] disabled:cursor-not-allowed disabled:opacity-50 sm:h-[48px] sm:w-full sm:text-[18px]"
                   >
                     Continue <ArrowRightIcon />
                   </button>
-                  <button type="button" onClick={goBack} className="mx-auto mt-4 flex items-center gap-2 text-[12px] text-silver-100 hover:text-forest-300">
+                  <button
+                    type="button"
+                    onClick={goBack}
+                    className="mx-auto mt-4 flex items-center gap-2 text-[12px] text-silver-100 hover:text-forest-300"
+                  >
                     <ArrowLeftIcon /> Back
                   </button>
                 </div>
@@ -516,7 +749,9 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
 
             {signupStep === 3 && (
               <div className="flex flex-1 flex-col">
-                <h2 className="mt-[40px] text-center font-pt-sans text-[30px] font-bold uppercase leading-none sm:mt-[54px] sm:text-[36px]">Sign Up</h2>
+                <h2 className="mt-[40px] text-center font-pt-sans text-[30px] font-bold uppercase leading-none sm:mt-[54px] sm:text-[36px]">
+                  Sign Up
+                </h2>
                 <div className="mx-auto mt-7 w-full max-w-[326px] space-y-4 sm:mt-14 sm:max-w-[608px]">
                   <Field
                     label="Password*"
@@ -526,11 +761,17 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
                     value={password}
                     onChange={setPassword}
                     onBlur={() => markTouched("signupPassword")}
-                    invalid={Boolean(touched.signupPassword && !passwordIsValid(password))}
+                    invalid={Boolean(
+                      touched.signupPassword && !passwordIsValid(password),
+                    )}
                     maxLength={16}
                     required
                     trailing={
-                      <button type="button" onClick={() => setShowPassword((value) => !value)} aria-label="Toggle password visibility">
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((value) => !value)}
+                        aria-label="Toggle password visibility"
+                      >
                         <EyeIcon hidden={!showPassword} />
                       </button>
                     }
@@ -543,31 +784,51 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
                     value={confirmPassword}
                     onChange={setConfirmPassword}
                     onBlur={() => markTouched("confirmPassword")}
-                    invalid={Boolean(touched.confirmPassword && !confirmPasswordIsValid)}
+                    invalid={Boolean(
+                      touched.confirmPassword && !confirmPasswordIsValid,
+                    )}
                     maxLength={16}
                     required
                     trailing={
-                      <button type="button" onClick={() => setShowConfirmPassword((value) => !value)} aria-label="Toggle password visibility">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowConfirmPassword((value) => !value)
+                        }
+                        aria-label="Toggle password visibility"
+                      >
                         <EyeIcon hidden={!showConfirmPassword} />
                       </button>
                     }
                   />
                 </div>
 
+                {/* Error Message Display */}
+                {apiError && (
+                  <div className="mt-2 text-[14px] text-rose-300 text-center">
+                    {apiError}
+                  </div>
+                )}
+
                 <div className="mx-auto mt-auto w-full max-w-[326px] pt-8 sm:max-w-[608px]">
                   <button
                     type="button"
-                    disabled={!passwordIsValid(password) || !confirmPasswordIsValid}
-                    onClick={() => {
-                      markTouched("signupPassword");
-                      markTouched("confirmPassword");
-                      if (passwordIsValid(password) && confirmPasswordIsValid) setSignupStep(4);
-                    }}
+                    disabled={
+                      !passwordIsValid(password) ||
+                      !confirmPasswordIsValid ||
+                      isLoading
+                    }
+                    onClick={handleRegisterSubmit}
                     className="mx-auto flex h-[44px] w-[205px] items-center justify-center rounded-full bg-rose-100 text-[16px] font-semibold shadow-[0_3px_5px_rgba(0,0,0,0.12)] disabled:cursor-not-allowed disabled:opacity-50 sm:h-[48px] sm:w-full sm:text-[18px]"
                   >
-                    Complete
+                    {isLoading ? "Processing..." : "Complete"}
                   </button>
-                  <button type="button" onClick={goBack} className="mx-auto mt-4 flex items-center gap-2 text-[12px] text-silver-100 hover:text-forest-300">
+                  <button
+                    type="button"
+                    onClick={goBack}
+                    disabled={isLoading}
+                    className="mx-auto mt-4 flex items-center gap-2 text-[12px] text-silver-100 hover:text-forest-300 disabled:opacity-50"
+                  >
                     <ArrowLeftIcon /> Back
                   </button>
                 </div>
@@ -583,12 +844,13 @@ export function AuthModal({ open, initialMode = "login", onClose }: AuthModalPro
                   </h2>
 
                   <p className="mt-6 text-justify text-[16px] font-normal leading-[16px] text-forest-300 sm:text-[18px] sm:leading-[18px]">
-                    Welcome to the Fleunique family! Your account is ready, unlocking
-                    seamless orders and playful perks. Remember that special promo codes
-                    will appear in your profile after 5 orders or wholesale purchases.
-                    Dare to gift something truly unique, spark vibrant joy with fearless
-                    floral magic, and surprise extraordinary people with bold,
-                    breathtaking creations.
+                    Welcome to the Fleunique family! Your account is ready,
+                    unlocking seamless orders and playful perks. Remember that
+                    special promo codes will appear in your profile after 5
+                    orders or wholesale purchases. Dare to gift something truly
+                    unique, spark vibrant joy with fearless floral magic, and
+                    surprise extraordinary people with bold, breathtaking
+                    creations.
                   </p>
                 </div>
 
