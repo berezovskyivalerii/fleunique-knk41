@@ -392,7 +392,7 @@ export function AuthModal({
         phone_number: phone || null,
       };
 
-      const response = await fetch("/api/v1/auth/register", {
+      const registerResponse = await fetch("/api/v1/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -400,12 +400,37 @@ export function AuthModal({
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || "Registration failed");
+      if (!registerResponse.ok) {
+        let errorMessage = "Registration failed";
+        try {
+          const errorData = await registerResponse.json();
+          errorMessage = errorData.detail || errorMessage;
+        } catch (e) {
+          errorMessage = `HTTP Error ${registerResponse.status}`;
+        }
+        throw new Error(errorMessage);
       }
 
-      // Success, move to the final screen
+      const loginFormData = new URLSearchParams();
+      loginFormData.append("username", email);
+      loginFormData.append("password", password);
+
+      const loginResponse = await fetch("/api/v1/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: loginFormData,
+      });
+
+      if (!loginResponse.ok) {
+        console.error("Auto-login after registration failed");
+      } else {
+        const data = await loginResponse.json();
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("refresh_token", data.refresh_token);
+      }
+
       setSignupStep(4);
     } catch (error: any) {
       setApiError(error.message);
