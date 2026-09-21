@@ -16,7 +16,7 @@ export function ProductCard({
   onAddToCart,
 }: ProductCardProps) {
   return (
-    <div className="relative w-[198px] h-[316px] rounded-[16px] overflow-hidden flex flex-col justify-end">
+    <div className="relative w-[198px] h-[316px] rounded-[16px] overflow-hidden flex flex-col justify-end shadow-[0_2px_8px_2px_color-mix(in_srgb,var(--color-black-50)_20%,transparent)] hover:shadow-[0_2px_16px_2px_var(--color-rose-300)] transition-shadow duration-[120ms] ease-[cubic-bezier(0.36,0,0.66,-0.56)]">
       <img
         src={image}
         alt={name}
