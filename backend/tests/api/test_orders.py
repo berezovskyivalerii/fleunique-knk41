@@ -7,11 +7,12 @@ from app.models.product import Product
 from app.models.promocode import Promocode
 from app.models.user import User
 
-
 API = "/api/v1"
 
 
-def register_and_login(client, email: str, password: str = "password123") -> dict[str, str]:
+def register_and_login(
+    client, email: str, password: str = "password123"
+) -> dict[str, str]:
     register_response = client.post(
         f"{API}/auth/register",
         json={
@@ -51,7 +52,7 @@ def order_payload(product_id: int, **overrides):
 
 
 @pytest.fixture(scope="module")
-def products(db_session):
+def products(db):
     first = Product(
         name="Order Test Roses",
         description="Test bouquet",
@@ -70,11 +71,11 @@ def products(db_session):
         price=Decimal("15.00"),
         is_active=False,
     )
-    db_session.add_all([first, second, inactive])
-    db_session.commit()
-    db_session.refresh(first)
-    db_session.refresh(second)
-    db_session.refresh(inactive)
+    db.add_all([first, second, inactive])
+    db.commit()
+    db.refresh(first)
+    db.refresh(second)
+    db.refresh(inactive)
     return first, second, inactive
 
 
@@ -178,7 +179,7 @@ def test_create_order_with_inactive_product_returns_400(client, products):
     assert "Inactive products cannot be ordered" in response.json()["detail"]
 
 
-def test_percentage_promocode_is_applied(client, db_session, products):
+def test_percentage_promocode_is_applied(client, db, products):
     product, _, _ = products
     promo = Promocode(
         code="SAVE10",
@@ -186,8 +187,8 @@ def test_percentage_promocode_is_applied(client, db_session, products):
         discount_fixed=None,
         is_active=True,
     )
-    db_session.add(promo)
-    db_session.commit()
+    db.add(promo)
+    db.commit()
 
     headers = register_and_login(client, "order-promo@example.com")
     response = client.post(
@@ -261,15 +262,15 @@ def test_regular_user_cannot_access_admin_orders(client):
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
-def test_admin_can_get_all_orders_and_update_status(client, db_session, products):
+def test_admin_can_get_all_orders_and_update_status(client, db, products):
     product, _, _ = products
     user_email = "order-admin@example.com"
     headers = register_and_login(client, user_email)
 
-    admin = db_session.query(User).filter(User.email == user_email).first()
+    admin = db.query(User).filter(User.email == user_email).first()
     assert admin is not None
     admin.is_admin = True
-    db_session.commit()
+    db.commit()
 
     create_response = client.post(
         f"{API}/orders/", headers=headers, json=order_payload(product.id)
