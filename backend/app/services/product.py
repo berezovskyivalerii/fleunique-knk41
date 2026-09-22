@@ -18,17 +18,26 @@ def create_product_service(db: Session, product_in: ProductCreate):
         return product_crud.create_product(db, product_in)
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Database integrity error occurred.")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Database integrity error occurred.",
+        )
 
 
-def get_all_products(db: Session, skip: int = 0, limit: int = 100, category_id: int | None = None):
-    return product_crud.get_all_products(db, skip=skip, limit=limit, category_id=category_id)
+def get_all_products(
+    db: Session, skip: int = 0, limit: int = 100, category_id: int | None = None
+):
+    return product_crud.get_all_products(
+        db, skip=skip, limit=limit, category_id=category_id
+    )
 
 
 def get_product_by_id_service(db: Session, product_id: int):
     db_product = product_crud.get_product_by_id(db, product_id)
     if not db_product:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
+        )
     return db_product
 
 
@@ -38,7 +47,10 @@ def update_product_service(db: Session, product_id: int, product_in: ProductUpda
         return product_crud.update_product(db, db_product, product_in)
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Database integrity error occurred.")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Database integrity error occurred.",
+        )
 
 
 def delete_product_service(db: Session, product_id: int) -> None:
@@ -47,7 +59,10 @@ def delete_product_service(db: Session, product_id: int) -> None:
         product_crud.delete_product(db, db_product)
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Cannot delete product because it's still referenced elsewhere.")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Cannot delete product because it's still referenced elsewhere.",
+        )
 
 
 # --- Product images ---------------------------------------------------------
@@ -68,7 +83,6 @@ def _resolve_extension(filename: str | None, content_type: str | None) -> str:
 def upload_product_image_service(
     db: Session, product_id: int, file: UploadFile, is_main: bool = False
 ):
-    # 404, если товара с таким id не существует.
     get_product_by_id_service(db, product_id)
 
     if file.content_type not in ALLOWED_IMAGE_CONTENT_TYPES:
@@ -88,6 +102,10 @@ def upload_product_image_service(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Uploaded file is empty.",
         )
+
+    existing_images = product_crud.get_images_for_product(db, product_id)
+    if not existing_images:
+        is_main = True
 
     extension = _resolve_extension(file.filename, file.content_type)
     unique_filename = f"{uuid.uuid4().hex}.{extension}"
@@ -117,12 +135,20 @@ def upload_product_image_service(
 def _get_product_image_or_404(db: Session, product_id: int, image_id: int):
     db_image = product_crud.get_product_image_by_id(db, image_id)
     if not db_image or db_image.product_id != product_id:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product image not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Product image not found"
+        )
     return db_image
 
 
 def delete_product_image_service(db: Session, product_id: int, image_id: int) -> None:
     db_image = _get_product_image_or_404(db, product_id, image_id)
+
+    file_path_str = db_image.image_url.lstrip("/")
+    physical_file_path = Path(file_path_str)
+
+    physical_file_path.unlink(missing_ok=True)
+
     product_crud.delete_product_image(db, db_image)
 
 
