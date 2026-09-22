@@ -3,10 +3,16 @@ import { fetchWithAuth } from "@/shared/api/fetchClient";
 import { OrderCard } from "@/entities/order/ui/OrderCard";
 import fallbackPhoto from "@/shared/assets/photo_flowers_product.png";
 
+interface BackendProductImage {
+  id: number;
+  image_url: string;
+  is_main: boolean;
+}
+
 interface BackendProduct {
   name: string;
   description: string;
-  image_url?: string;
+  images?: BackendProductImage[];
 }
 
 interface BackendOrderItem {
@@ -54,12 +60,21 @@ export const PurchasesList = () => {
           const formattedDate = `${day}-${month}-${year}`;
 
           const firstItem = order.items?.[0];
-          const title = firstItem?.product?.name || "Custom Bouquet";
-          const description =
-            firstItem?.product?.description ||
-            "A beautiful selection of fresh flowers.";
-          const imageUrl = firstItem?.product?.image_url || fallbackPhoto;
+          const product = firstItem?.product;
 
+          const title = product?.name || "Custom Bouquet";
+          const description =
+            product?.description || "A beautiful selection of fresh flowers.";
+
+          const mainImage =
+            product?.images?.find((img: any) => img.is_main)?.image_url ||
+            product?.images?.[0]?.image_url;
+
+          const imageUrl = mainImage
+            ? `http://localhost:8000${mainImage}`
+            : fallbackPhoto;
+
+          // ... return mapped object ...
           const shortDate = `${day}${month}${String(year).slice(-2)}`;
           const displayOrderId = `#FLEUN-${shortDate}-${order.id}`;
 
