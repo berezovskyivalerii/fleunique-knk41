@@ -13,13 +13,9 @@ class UserBase(BaseModel):
     phone_number: Optional[str] = None
 
 
-class UserCreate(BaseModel):
-    full_name: str
-    email: EmailStr
+class UserCreate(UserBase):
     password: str
     password_confirm: str
-    account_type: AccountType = AccountType.PERSONAL
-    phone_number: str | None = None
 
     @model_validator(mode="after")
     def check_passwords_match(self):

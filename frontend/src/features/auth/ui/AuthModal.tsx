@@ -562,6 +562,7 @@ export function AuthModal({
                 invalid={Boolean(touched.loginEmail && !emailIsValid(email))}
                 inputMode="email"
                 required
+                maxLength={254}
               />
 
               <div>
