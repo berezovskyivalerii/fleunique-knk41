@@ -5,9 +5,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class PaymentMethodCreate(BaseModel):
     card_name: str
-    last_four_digits: str = Field(min_length=4, max_length=4)
-    expiry_date: str = Field(min_length=5, max_length=5)
-    provider_token: str | None = None
+    last_four_digits: str = Field(pattern=r"^\d{4}$")
+    expiry_date: str = Field(pattern=r"^(0[1-9]|1[0-2])\/\d{2}$")
 
 
 class PaymentMethodResponse(BaseModel):
