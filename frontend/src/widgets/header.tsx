@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AuthModal } from "@/features/auth";
+import { CartModal } from "@/features/cart";
 import logo from "@/shared/assets/logo.svg";
 import profile from "@/shared/assets/header-user.svg";
 import cart from "@/shared/assets/auth-cart.svg";
@@ -13,6 +14,7 @@ type HeaderProps = {
 export function Header({ checkout = false }: HeaderProps) {
   const navigate = useNavigate();
   const [authOpen, setAuthOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
 
   const handleProfileClick = () => {
     const token = localStorage.getItem("access_token");
@@ -51,6 +53,7 @@ export function Header({ checkout = false }: HeaderProps) {
           </button>
           <button
             type="button"
+            onClick={() => setCartOpen(true)}
             className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center sm:transition-opacity sm:hover:opacity-80"
           >
             <img
@@ -66,6 +69,11 @@ export function Header({ checkout = false }: HeaderProps) {
         open={authOpen}
         initialMode="login"
         onClose={() => setAuthOpen(false)}
+      />
+      
+      <CartModal 
+        isOpen={cartOpen} 
+        onClose={() => setCartOpen(false)} 
       />
     </>
   );

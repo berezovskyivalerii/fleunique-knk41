@@ -2,7 +2,7 @@ import * as React from "react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "outline";
-  size?: "default" | "large";
+  size?: "default" | "large" | "medium";
   children: React.ReactNode;
 }
 
@@ -14,10 +14,10 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    "flex items-center justify-center !font-montserrat font-semibold transition-colors cursor-pointer";
+    "flex items-center justify-center !font-montserrat font-semibold transition-colors cursor-pointer shadow-[0_2px_2px_0_rgba(61,59,59,0.20)]";
 
   const variants = {
-    primary: "bg-rose-300 text-white hover:bg-forest-300/80",
+    primary: "bg-rose-300 text-rose-50 hover:bg-forest-300/80",
     outline:
       "bg-transparent border-2 border-rose-300 text-rose-300 hover:bg-rose-100/50",
   };
@@ -25,7 +25,8 @@ export function Button({
   const sizes = {
     default:
       "flex-1 max-w-[256px] h-[45px] rounded-full text-[18px] !font-semibold leading-none text-center capitalize",
-    large: "w-full h-21.5 rounded-2xl !text-large-button !font-semibold",
+    large: "w-full h-[86px] rounded-2xl !text-large-button !font-semibold",
+    medium: "w-full h-[45px] py-4 px-0 rounded-full text-medium-button leading-none text-center",
   };
 
   return (

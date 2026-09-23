@@ -15,6 +15,9 @@
     --font-pt-sans: "PT Sans", sans-serif;
     --font-fleunique: "Fleunique404", sans-serif;
 
+    --breakpoint-md: 744px;
+    --breakpoint-xl: 1440px;
+
     --text-accent-headline: 480px;
     --text-large-button: 32px;
     --text-medium-button: 18px;
