@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api import auth, category, health, order, product, users
+from app.api import auth, category, health, order, product, users, promocode
 
 api_router = APIRouter()
 
@@ -10,3 +10,4 @@ api_router.include_router(category.router, tags=["categories"])
 api_router.include_router(order.router, tags=["orders"])
 api_router.include_router(users.router, tags=["users"])
 api_router.include_router(product.router, tags=["products"])
+api_router.include_router(promocode.router, tags=["promocodes"])
