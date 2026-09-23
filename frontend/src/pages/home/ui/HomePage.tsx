@@ -101,39 +101,60 @@ export function HomePage() {
       <Header />
       <main>
         {/*HERO IMAGE SECTION */}
-        <section className="relative w-full h-[1024px] flex flex-col overflow-hidden">
+        <section className="relative w-full h-[562px] md:h-[520px] lg:h-[1024px] overflow-hidden flex flex-col justify-between">
           <img
             src={bgImage}
             alt=""
             aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover pointer-events-none -z-10"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none -z-20"
           />
 
-          <div className="relative flex-grow w-full max-w-[1440px] mx-auto px-5 md:px-10 lg:px-[160px] pt-20 md:pt-26 lg:pt-[190px] flex flex-col">
-            <h1 className="relative ml-auto max-w-[880px] text-right font-pt-sans font-bold text-headline-1 uppercase text-gray-900 leading-tight z-20">
-              Flowers that are as unique as you
-            </h1>
+          <div className="relative w-full h-full mx-auto max-w-[390px] px-4 py-[0_24px] md:max-w-[744px] md:px-8 md:py-[0_32px] lg:max-w-[1440px] lg:px-[160px] lg:py-[0_176px] flex flex-col justify-between">
 
-            <div className="relative flex flex-col lg:flex-row justify-end items-center lg:items-end flex-grow w-full mt-10 lg:mt-0">
-              <div className="lg:absolute bottom-0 -left-20 w-full max-w-[300px] md:max-w-[420px] lg:max-w-[580px] xl:max-w-[650px] flex items-end z-0">
-                <img
-                  src={woman}
-                  alt="Florist with a bouquet"
-                  className="w-full h-auto max-h-[754px] object-contain object-bottom"
-                />
+            <div className="pt-[96px] md:pt-[136px] lg:pt-[192px] z-20">
+              <h1 className="w-[358px] mx-auto text-center font-pt-sans font-bold text-headline-2 uppercase text-forest-400 leading-tight md:w-[506px] md:ml-auto md:mr-0 md:text-right lg:w-[865px] lg:text-headline-1">
+                Flowers that are as unique as you
+              </h1>
+            </div>
+
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[358px] h-[432px] opacity-30 pointer-events-none z-0 flex items-end justify-center md:left-8 md:translate-x-0 md:w-auto md:h-[354px] md:opacity-100 md:pointer-events-auto md:z-10 md:justify-start lg:left-[160px] lg:h-[754px]">
+              <img
+                src={woman}
+                alt="Florist with a bouquet"
+                className="h-[432px] w-auto object-contain object-bottom md:h-[354px] lg:h-[754px]"
+              />
+            </div>
+
+            <div className="relative z-20 w-[358px] mx-auto flex flex-col items-center md:w-[332px] md:ml-auto md:mr-0 md:items-start lg:w-[352px]">
+              <p className="w-[358px] text-headline-5 text-forest-300 font-montserrat font-normal leading-tight text-justify mb-2 md:w-[332px] md:text-headline-5 md:mb-2 lg:w-[352px] lg:text-label lg:mb-8">
+                Step into our vivid world where bold artistry meets playful
+                imagination. Dare to gift something truly unique and discover
+                extraordinary bouquets designed to brighten any gloomy day and turn
+                simple moments into an unforgettable joy.
+              </p>
+
+              {/* Mobile button (Medium: w=358 fill, h=45, p=16 0, r=50%) */}
+              <div className="w-full block md:hidden">
+                <Button size="medium" className="text-medium-button">
+                  EXPLORE
+                </Button>
               </div>
 
-              <div className="relative z-10 w-full max-w-[400px] lg:max-w-[352px] flex flex-col gap-8 mb-10 lg:mb-[160px] items-center lg:items-start lg:ml-auto">
-                <p className="font-montserrat font-normal lg:text-[18px] leading-tight text-center lg:text-justify text-gray-700">
-                  Step into our vivid world where bold artistry meets playful
-                  imagination. Dare to gift something truly unique and discover
-                  extraordinary bouquets designed to brighten any gloomy day and
-                  turn simple moments into an unforgettable joy.
-                </p>
+              {/* md button (Large: w=245, h=86, p=32, r=16px) */}
+              <div className="hidden md:block lg:hidden ml-auto">
+                <Button size="large" className="w-[245px] py-8 px-[44px]">
+                  EXPLORE
+                </Button>
+              </div>
 
-                <Button size="large">EXPLORE</Button>
+              {/* lg button (Large: w=352, h=86, p=32 120, r=16px) */}
+              <div className="hidden lg:block">
+                <Button size="large" className="w-[352px] py-8 px-[97.5px]">
+                  EXPLORE
+                </Button>
               </div>
             </div>
+
           </div>
         </section>
 
@@ -160,12 +181,12 @@ export function HomePage() {
           />
 
           {/* BEST PICKS SECTION */}
-          <section className="w-full max-w-[1440px] mx-auto px-5 md:px-10 lg:px-[160px] py-16 md:py-24">
-            <h2 className="text-center font-pt-sans font-bold text-headline-2 text-forest-300 uppercase mb-10 md:mb-10">
+          <section className="w-[390px] py-[32px] mx-auto px-[16px] md:w-[744px] md:px-[32px] md:py-[48px] lg:px-[160px] lg:w-[1440px] lg:py-[96px]  ">
+            <h2 className="text-center font-pt-sans font-bold text-headline-2 text-forest-300 uppercase mb-[24px] lg:mb-[32px]">
               Best Picks
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8">
+            <div className="grid place-items-center grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-[16px] lg:gap-[32px] [&>*:nth-last-child(2)]:md:col-start-2 [&>*:nth-last-child(2)]:lg:col-start-auto">
               {MOCK_PRODUCTS.map((product) => (
                 <ProductCard
                   key={product.id}
@@ -180,13 +201,13 @@ export function HomePage() {
           </section>
 
           {/* ABOUT US SECTION */}
-          <section className="w-full max-w-[1440px] mx-auto px-5 md:px-10 lg:px-[160px] pb-24 flex justify-center">
-            <div className="relative flex flex-col lg:block w-full max-w-[800px] lg:h-[480px]">
-              <div className="lg:absolute lg:top-0 lg:left-0 w-full lg:w-[336px] z-20 mb-8 lg:mb-0">
-                <h2 className="font-pt-sans font-bold text-headline-2 text-forest-300 uppercase mb-3">
+          <section className="w-full max-w-[1440px] mx-auto px-5 md:px-10 lg:px-[160px] flex justify-center pb-[32px] md:pb-[48px] lg:pb-[96px]">
+            <div className="relative block w-[366px] md:w-[506px] lg:w-[728px] h-[444px] lg:h-[482px] md:h-[360px]">
+              <div className="lg:absolute lg:top-0 lg:left-0 w-[171px] md:w-[245px] lg:w-[336px] z-20 mb-8 lg:mb-0">
+                <h2 className="font-pt-sans font-bold text-headline-3 text-forest-300 uppercase mb-[16px] md:mb-[12px] lg:text-headline-2 lg:mb-[16px]">
                   About Us
                 </h2>
-                <p className="font-montserrat font-normal text-sm md:text-base text-forest-300 leading-tight text-justify">
+                <p className="font-montserrat font-normal text-small lg:text-base text-forest-300 leading-tight text-justify">
                   Welcome to Fleunique, an artistic floral boutique born from
                   one simple truth: extraordinary people deserve extraordinary
                   flowers. We know generic bouquets fail to express real
@@ -200,68 +221,85 @@ export function HomePage() {
               <img
                 src={flowers}
                 alt="Floral arrangement"
-                className="w-full lg:w-[490px] h-[133px] object-cover rounded-[20px] lg:absolute lg:top-[310px] lg:left-0 z-0 mb-8 lg:mb-0"
+                className="w-[358px] h-[92px] md:w-[332px] md:h-[92px] lg:w-[490px] lg:h-[133px] object-cover rounded-[16px] absolute top-[350px] md:top-[244px] lg:top-[310px] left-0 z-0 mb-0"
               />
 
               <img
                 src={womanCafe}
                 alt="Florist at work"
-                className="w-full md:w-[327px] h-[327px] object-cover rounded-[20px] lg:absolute lg:top-6 lg:left-[370px] z-10 mb-8 lg:mb-0 self-center"
+                className="w-[179px] h-[179px] md:w-[224px] md:h-[224px] lg:w-[327px] lg:h-[327px] object-cover rounded-[16px] absolute top-[49px] left-[179px] md:top-[45px] md:left-[253px] lg:top-6 lg:left-[370px] z-10 mb-0 self-center"
               />
 
-              <div className="w-full md:w-[286px] h-[246px] bg-rose-300 rounded-2xl py-6 px-4 shadow-xl flex flex-col lg:absolute lg:top-[230px] lg:left-[440px] z-30 self-center">
-                <h3 className="font-pt-sans font-bold text-rose-50 text-headline-3">
+              <div className="w-[188px] h-[189px] md:w-[200px] md:h-[173px] lg:w-[286px] lg:h-[246px] bg-rose-300 rounded-2xl py-[16px] px-[8px] lg:py-[24px] lg:px-[16px] flex flex-col absolute top-[192px] left-[179px] md:top-[188px] md:left-[306px] lg:top-[230px] lg:left-[440px] z-30 self-center">
+                <h3 className="font-pt-sans font-bold text-rose-50 text-headline-4 lg:text-headline-3">
                   Contact Us
                 </h3>
 
-                <p className="font-montserrat text-rose-50 text-headline-5 leading-tight mb-auto">
+                <p className="font-montserrat text-rose-50 text-small lg:text-base leading-tight mb-auto">
                   Ready to create something unique? Contact us today, and let
                   our florists craft a bold, playful floral artwork just for
                   you.
                 </p>
 
-                <button className="w-full h-11 bg-rose-50 text-forest-300 font-montserrat! font-semibold! text-headline-4 rounded-full transition-colors hover:bg-forest-300 hover:text-rose-50">
+                <Button size="medium" className="w-full py-[8px] lg:py-[16px] !bg-rose-50 !text-forest-300 text-small-button lg:text-medium-button font-semibold! transition-colors hover:bg-forest-300 hover:text-rose-50 h-[24px] lg:h-[45px]">
                   Our Contacts
-                </button>
+                </Button>
               </div>
             </div>
           </section>
         </div>
 
         {/* OUR UNIQUE CLIENTS SECTION */}
-        <section className="w-full h-204.5 bg-forest-300 flex flex-col justify-center relative overflow-hidden">
-          <div className="w-full max-w-[1440px] mx-auto relative h-full flex flex-col justify-center">
-            <h2 className="ml-40 font-pt-sans font-bold text-headline-2 mb-12 text-rose-50 uppercase z-10">
-              Our Unique Clients
-            </h2>
+        <section className="w-full py-[32px] md:py-[48px] lg:py-[96px] bg-forest-300 flex flex-col justify-center relative overflow-hidden">
+          <h2 className="w-full text-center md:text-left md:ml-[32px] lg:ml-40 font-pt-sans font-bold text-headline-3 lg:text-headline-2 mb-[24px] md:mb-0 lg:mb-[60px] text-rose-50 uppercase z-10">
+            Our Unique Clients
+          </h2>
 
-            <div className="w-full flex items-center justify-between gap-4 lg:gap-0 overflow-x-auto pb-4 lg:pb-0">
+          <div className="w-full mx-auto px-0 md:max-w-none flex items-stretch md:items-center justify-center md:justify-start gap-auto md:gap-[16px] lg:gap-[32px] overflow-x-auto pb-0">
+
+            {/* COL 1 */}
+            <div className="flex flex-col gap-[12px] flex-1 md:contents mr-[16px] md:mr-0">
+              {/* CARD 1*/}
               <img
                 src={client1}
                 alt="Client 1"
-                className="w-[266px] h-[390px] object-cover rounded-[16px] max-[1441px]:rounded-l-none shrink-0"
+                className="w-full md:w-[115px] h-auto aspect-[266/390] object-cover rounded-[0_16px_16px_0] md:flex-1 md:grow md:order-1"
               />
-              <img
-                src={client2}
-                alt="Client 2"
-                className="w-[260px] h-[260px] object-cover rounded-[16px] shrink-0"
-              />
-              <img
-                src={client3}
-                alt="Client 3"
-                className="w-[260px] h-[520px] object-cover rounded-[16px] shrink-0"
-              />
+
+              {/* CARD 4*/}
               <img
                 src={client4}
                 alt="Client 4"
-                className="w-[260px] h-[260px] object-cover rounded-[16px] shrink-0"
+                className="w-[calc(100%-4px)] ml-[4px] md:ml-0 md:w-[112px] h-auto aspect-square object-cover rounded-[16px] md:flex-1 md:grow md:order-4"
               />
+            </div>
+
+            {/* COL 2*/}
+            <div className="flex flex-col gap-[12px] flex-1 md:contents mt-[29px] md:mt-0 mr-[12px] md:mr-0">
+              {/* CARD 2 */}
+              <img
+                src={client2}
+                alt="Client 2"
+                className="w-[calc(100%-4px)] md:w-[112px] h-auto aspect-square object-cover rounded-[16px] md:flex-1 md:grow md:order-2"
+              />
+
+              {/* CARD 5 */}
               <img
                 src={client5}
                 alt="Client 5"
-                className="w-[266px] h-[390px] object-cover rounded-[16px] max-[1441px]:rounded-r-none shrink-0"
+                className="w-[calc(100%+4px)] md:w-[115px] h-auto aspect-[115/170] md:aspect-[266/390] object-cover rounded-[16px] md:rounded-[16px_0_0_16px] md:flex-1 md:grow md:order-5"
               />
             </div>
+
+            {/*COL 3 CARD 3*/}
+            <div className="flex flex-col flex-1 md:contents">
+              <img
+                src={client3}
+                alt="Client 3"
+                className="h-auto md:w-[130px] aspect-[130/330] md:aspect-[1/2] object-cover rounded-[16px_0_0_16px] md:rounded-[16px] md:flex-1 md:grow md:order-3"
+              />
+            </div>
+
           </div>
         </section>
 
@@ -292,8 +330,8 @@ export function HomePage() {
             className="absolute bottom-[-2%] right-[0%] w-[400px] pointer-events-none -z-10 object-contain"
           />
           {/* WHY US? SECTION */}
-          <section className="relative w-full max-w-[1440px] mx-auto mt-28 mb-22 flex items-center justify-center overflow-hidden">
-            <div className="flex flex-col items-center justify-center text-center text-rose-100 font-rubik-bubbles! text-[120px] md:text-[240px] lg:text-[480px] leading-none lg:leading-[450px] select-none z-0">
+          <section className="relative w-full max-w-[1440px] mx-auto my-[32px] md:my-[48px] lg:my-[96px] flex items-center justify-center h-[421px] md:h-[394px] lg:h-[900px]">
+            <div className="flex flex-col items-center justify-center text-center text-rose-100 font-rubik-bubbles! w-[375px] md:w-[702px] lg:w-[1123px] text-[160px] md:text-[300px] lg:text-[480px] leading-[184px] lg:leading-[450px] select-none z-0">
               WHY US?
             </div>
 
@@ -305,7 +343,7 @@ export function HomePage() {
                 border: "1px solid rgba(255, 255, 255, 0.2)",
                 boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
               }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] lg:w-[992px] h-auto lg:h-[396px] rounded-[32px] p-6 lg:p-[32px] flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-8 lg:gap-[128px] z-10"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[358px] md:w-[680px] lg:w-[992px] h-auto rounded-[32px] p-[32px] flex flex-col md:flex-row items-center justify-center md:justify-between gap-[16px] lg:gap-[128px] z-10"
             >
               {WHY_US_CARDS.map((card) => (
                 <FeatureCard
@@ -319,20 +357,20 @@ export function HomePage() {
           </section>
 
           {/* FAQ SECTION */}
-          <section className="relative w-full max-w-[1440px] mx-auto h-auto lg:h-[1024px] flex flex-col lg:flex-row items-start mb-28 gap-10 lg:gap-10">
-            <div className="w-full lg:w-1/2 h-100 lg:h-full">
+          <section className="relative w-full mx-auto lg:mr-auto lg:ml-0 h-auto flex flex-col lg:flex-row items-start mb-[32px] md:mb-[48px] lg:mb-[96px] gap-[24px] lg:gap-[32px]">
+            <div className="w-full lg:w-1/2 h-[282px] md:h-[378px] lg:h-full lg:max-h-[1024px]">
               <img
                 src={faqwoman}
                 alt="Florist preparing flowers"
-                className="w-full h-full object-cover rounded-[16px] max-[1441px]:rounded-l-none"
+                className="w-full h-full lg:max-h-[1024px] object-cover lg:rounded-[0_16px_16px_0]"
               />
             </div>
 
-            <div className="w-full lg:w-[544px] flex flex-col justify-center pt-14">
-              <h2 className="text-forest-300 font-pt-sans font-bold text-headline-2 uppercase mb-4">
+            <div className=" lg:w-[544px] lg:mr-[160px] flex flex-col justify-center lg:mt-[64px] mx-[16px] md:mx-[32px]">
+              <h2 className="text-forest-300 font-pt-sans font-bold text-headline-3 lg:text-headline-2 uppercase mb-4">
                 Frequently Asked Questions
               </h2>
-              <p className="font-montserrat text-headline-5 text-justify leading-tight text-forest-300 mb-2">
+              <p className="font-montserrat text-small lg:text-base text-justify leading-tight text-forest-300 mb-[24px] lg:mb-[32px]">
                 Curious about our bespoke floral art, delivery, or custom
                 creations? We have gathered answers to everything you need to
                 know about choosing bold, vibrant bouquets designed for someone
@@ -381,7 +419,7 @@ export function HomePage() {
                         </span>
                       </div>
                       {isOpen && (
-                        <div className="mt-0 pr-8 w-full font-montserrat text-headline-5 leading-relaxed text-forest-200">
+                        <div className="mt-0 pr-8 w-full font-montserrat text-small lg:text-base leading-relaxed text-forest-200">
                           {item.answer}
                         </div>
                       )}
@@ -390,11 +428,11 @@ export function HomePage() {
                 })}
               </div>
 
-              <div className="mt-12 flex flex-col w-full">
-                <span className="font-montserrat! text-[14px] text-forest-200 mb-4 tracking-wide">
+              <div className="mt-[24px] flex flex-col w-full lg:mt-[32px]">
+                <span className="font-montserrat! text-small lg:text- text-forest-200 mb-[8px] lg:mb-[16px] tracking-wide text-center lg:text-left">
                   Do you still have questions? Ask our agents directly!
                 </span>
-                <button className="w-full h-[45px] bg-rose-300 hover:bg-forest-300/80 transition-colors text-rose-50 rounded-full font-montserrat! font-semibold! text-headline-4 tracking-wide">
+                <button className="w-full lg:min-w-[544px] h-[45px] bg-rose-300 hover:bg-forest-300/80 transition-colors text-rose-50 rounded-full font-montserrat! font-semibold! text-headline-4 tracking-wide">
                   Contact Our Support
                 </button>
               </div>
@@ -402,15 +440,15 @@ export function HomePage() {
           </section>
 
           {/* CONTACT US SECTION */}
-          <section className="relative w-full max-w-[1440px] mx-auto lg:px-[140px] pb-48 z-10">
-            <h2 className="text-forest-300 font-pt-sans font-bold text-headline-2 uppercase mb-6">
+          <section className="relative w-full max-w-[1440px] mx-auto md:px-[32px] lg:px-[160px] mb-[56px] md:mb-[96px] lg:mb-[192px] z-10">
+            <h2 className="text-forest-300 font-pt-sans font-bold text-headline-3 uppercase mb-6 lg:mb-[32px] lg:text-headline-2 text-center md:text-left">
               Contact Us
             </h2>
 
-            <div className="flex flex-col lg:flex-row pl-44 justify-between items-center lg:items-center gap-12 w-full">
-              <div className="flex flex-col gap-4 lg:gap-5 w-full lg:w-auto lg:pl-10">
+            <div className="flex flex-col md:flex-row md:pl-[87px] lg:pl-[192px] justify-center md:justify-between items-center md:items-top gap-[24px] md:gap-[16px] w-full">
+              <div className="flex flex-col gap-[8px] lg:gap-[24px] w-auto md:w-full lg:w-auto">
                 {/* Instagram */}
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-[16px]">
                   <img src={instagram} />
                   <span className="font-montserrat text-forest-300 text-headline-4">
                     fleunique.boutique
@@ -418,7 +456,7 @@ export function HomePage() {
                 </div>
 
                 {/* Facebook */}
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-[16px]">
                   <img src={facebook} />
                   <span className="font-montserrat text-forest-300 text-headline-4">
                     Fleunique Flowers
@@ -426,7 +464,7 @@ export function HomePage() {
                 </div>
 
                 {/* Phone */}
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-[16px]">
                   <img src={phone} />
                   <span className="font-montserrat text-forest-300 text-headline-4">
                     +380 67 123 45 67
@@ -434,7 +472,7 @@ export function HomePage() {
                 </div>
 
                 {/* Email */}
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-[16px]">
                   <img src={email} />
                   <span className="font-montserrat text-forest-300 text-headline-4">
                     support@fleunique.com
@@ -442,7 +480,7 @@ export function HomePage() {
                 </div>
 
                 {/* Location */}
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-[16px]">
                   <img src={location} />
                   <span className="font-montserrat text-forest-300 text-headline-4">
                     3 Sadova St, Odesa
@@ -454,7 +492,7 @@ export function HomePage() {
                 <img
                   src={contactUs}
                   alt="Hands exchanging a bouquet of flowers"
-                  className="w-full lg:w-[544px] h-[352px] object-cover rounded-[16px]"
+                  className="w-full lg:w-[544px] h-[211px] md:h-[352px] object-cover md:rounded-[16px]"
                 />
               </div>
             </div>

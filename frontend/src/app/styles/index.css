@@ -15,15 +15,21 @@
     --font-pt-sans: "PT Sans", sans-serif;
     --font-fleunique: "Fleunique404", sans-serif;
 
+    --breakpoint-*: initial;
+    --breakpoint-md: 744px;
+    --breakpoint-lg: 1440px;
+
     --text-accent-headline: 480px;
     --text-large-button: 32px;
     --text-medium-button: 18px;
+    --text-small-button: 12px;
     --text-label: 18px;
     --text-headline-1: 64px;
     --text-headline-2: 36px;
     --text-headline-3: 22px;
     --text-headline-4: 18px;
     --text-headline-5: 16px;
+    --text-small: 13px;
 
     --color-forest-100: #04c6d1;
     --color-forest-200: #057b83;
