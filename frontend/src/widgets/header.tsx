@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AuthModal } from "@/features/auth";
+import { CartModal } from "@/features/cart";
 import logo from "@/shared/assets/logo.svg";
 import profile from "@/shared/assets/header-user.svg";
 import cart from "@/shared/assets/auth-cart.svg";
@@ -13,6 +14,17 @@ type HeaderProps = {
 export function Header({ checkout = false }: HeaderProps) {
   const navigate = useNavigate();
   const [authOpen, setAuthOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const handleProfileClick = () => {
+    const token = localStorage.getItem("access_token");
+
+    if (token) {
+      navigate("/profile");
+    } else {
+      setAuthOpen(true);
+    }
+  };
 
   return (
     <>
@@ -29,19 +41,40 @@ export function Header({ checkout = false }: HeaderProps) {
         <div className="flex items-center gap-6 sm:gap-[28px]">
           <button
             type="button"
-            onClick={() => setAuthOpen(true)}
+            onClick={handleProfileClick}
             className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center sm:transition-opacity sm:hover:opacity-80"
-            aria-label="Open authentication"
+            aria-label="Profile"
           >
-            <img src={profile} alt="profile" className="h-8 w-8 shrink-0 object-contain" />
+            <img
+              src={profile}
+              alt="profile"
+              className="h-8 w-8 shrink-0 object-contain"
+            />
           </button>
-          <button type="button" className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center sm:transition-opacity sm:hover:opacity-80">
-            <img src={cart} alt="cart" className="h-8 w-8 shrink-0 object-contain" />
+          <button
+            type="button"
+            onClick={() => setCartOpen(true)}
+            className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center sm:transition-opacity sm:hover:opacity-80"
+          >
+            <img
+              src={cart}
+              alt="cart"
+              className="h-8 w-8 shrink-0 object-contain"
+            />
           </button>
         </div>
       </header>
 
-      <AuthModal open={authOpen} initialMode="login" onClose={() => setAuthOpen(false)} />
+      <AuthModal
+        open={authOpen}
+        initialMode="login"
+        onClose={() => setAuthOpen(false)}
+      />
+      
+      <CartModal 
+        isOpen={cartOpen} 
+        onClose={() => setCartOpen(false)} 
+      />
     </>
   );
 }
