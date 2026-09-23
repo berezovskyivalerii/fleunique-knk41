@@ -1,5 +1,5 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { fetchWithAuth } from "@/shared/api/fetchClient";
 // --- Icons ---
 const SettingsIcon = () => (
   <svg
@@ -325,30 +325,27 @@ const Field = ({
 };
 
 export const SettingsForm = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
   const [editingGeneral, setEditingGeneral] = useState(false);
   const [editingPayments, setEditingPayments] = useState(false);
   const [editingAddresses, setEditingAddresses] = useState(false);
 
-  const [fullName, setFullName] = useState("John Doe");
-  const [phone, setPhone] = useState("+380 123 456 789");
-  const [email, setEmail] = useState("example@mail.com");
-  const [password, setPassword] = useState("1234567890");
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("********");
   const [showPassword, setShowPassword] = useState(false);
 
   const [initialData, setInitialData] = useState({
-    fullName: "John Doe",
-    phone: "+380 123 456 789",
-    email: "example@mail.com",
-    password: "1234567890",
+    fullName: "",
+    phone: "",
+    email: "",
+    password: "********",
   });
 
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
-  const markTouched = (field: string) => {
-    setTouched((prev) => ({ ...prev, [field]: true }));
-  };
-
-  // --- Payment Methods State ---
   type PaymentCard = {
     id: string;
     number: string;
@@ -356,23 +353,74 @@ export const SettingsForm = () => {
     cvv: string;
     name: string;
   };
+  const [cards, setCards] = useState<PaymentCard[]>([]);
 
-  const [cards, setCards] = useState<PaymentCard[]>([
-    {
-      id: "1",
-      number: "1234123412341234",
-      expiry: "12/28",
-      cvv: "123",
-      name: "Card Name",
-    },
-    {
-      id: "2",
-      number: "5678567856785678",
-      expiry: "09/27",
-      cvv: "456",
-      name: "Card Name",
-    },
-  ]);
+  type Address = { id: string; text: string };
+  const [addresses, setAddresses] = useState<Address[]>([]);
+
+  // Fetch all user data on component mount
+  useEffect(() => {
+    const loadProfileData = async () => {
+      try {
+        const [userRes, addressesRes, paymentsRes] = await Promise.all([
+          fetchWithAuth("/api/v1/users/me"),
+          fetchWithAuth("/api/v1/users/me/addresses"),
+          fetchWithAuth("/api/v1/users/me/payment-methods"),
+        ]);
+
+        if (userRes.ok) {
+          const userData = await userRes.json();
+          setFullName(userData.full_name || "");
+          setPhone(userData.phone_number || "");
+          setEmail(userData.email || "");
+
+          setInitialData({
+            fullName: userData.full_name || "",
+            phone: userData.phone_number || "",
+            email: userData.email || "",
+            password: "********",
+          });
+        }
+
+        if (addressesRes.ok) {
+          const addrData = await addressesRes.json();
+          setAddresses(
+            addrData.map((a: any) => {
+              // Construct full address string for the UI
+              let fullAddress = a.address_line;
+              if (a.floor) fullAddress += `, ${a.floor} Floor`;
+              if (a.apartment) fullAddress += `, Flat ${a.apartment}`;
+              return { id: String(a.id), text: fullAddress };
+            }),
+          );
+        }
+
+        if (paymentsRes.ok) {
+          const payData = await paymentsRes.json();
+          setCards(
+            payData.map((p: any) => ({
+              id: String(p.id),
+              // Pad with dummy characters so getMaskedCard logic works correctly
+              number: "000000000000" + p.last_four_digits,
+              expiry: p.expiry_date,
+              cvv: "***",
+              name: p.card_name,
+            })),
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProfileData();
+  }, []);
+
+  const markTouched = (field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+  };
 
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [cardForm, setCardForm] = useState({ number: "", expiry: "", cvv: "" });
@@ -405,8 +453,17 @@ export const SettingsForm = () => {
   const isCardFormValid =
     !cardErrors.number && !cardErrors.expiry && !cardErrors.cvv;
 
-  const handleDeleteCard = (id: string) => {
-    setCards((prev) => prev.filter((c) => c.id !== id));
+  const handleDeleteCard = async (id: string) => {
+    try {
+      if (id !== "new") {
+        await fetchWithAuth(`/api/v1/users/me/payment-methods/${id}`, {
+          method: "DELETE",
+        });
+      }
+      setCards((prev) => prev.filter((c) => c.id !== id));
+    } catch (error) {
+      console.error("Failed to delete card:", error);
+    }
   };
 
   const handleEditCard = (card: PaymentCard) => {
@@ -425,40 +482,76 @@ export const SettingsForm = () => {
     setActiveCardId("new");
   };
 
-  const handleSaveInlineCard = () => {
+  const handleSaveInlineCard = async () => {
     setCardTouched({ number: true, expiry: true, cvv: true });
     if (!isCardFormValid) return;
 
     const rawNumber = cardForm.number.replace(/\s/g, "");
-    if (activeCardId === "new") {
-      setCards([
-        ...cards,
-        {
-          id: Date.now().toString(),
-          number: rawNumber,
-          expiry: cardForm.expiry,
-          cvv: cardForm.cvv,
-          name: "Card Name",
-        },
-      ]);
-    } else {
-      setCards(
-        cards.map((c) =>
-          c.id === activeCardId
-            ? {
-                ...c,
-                number: rawNumber,
-                expiry: cardForm.expiry,
-                cvv: cardForm.cvv,
-              }
-            : c,
-        ),
-      );
+
+    const payload = {
+      card_name: "Bank Card",
+      last_four_digits: rawNumber.slice(-4),
+      expiry_date: cardForm.expiry,
+    };
+
+    try {
+      if (activeCardId === "new") {
+        const res = await fetchWithAuth("/api/v1/users/me/payment-methods", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.ok) {
+          const newCard = await res.json();
+          setCards([
+            ...cards,
+            {
+              id: String(newCard.id),
+              number: "000000000000" + newCard.last_four_digits,
+              expiry: newCard.expiry_date,
+              cvv: "***",
+              name: newCard.card_name,
+            },
+          ]);
+        }
+      } else {
+        await fetchWithAuth(
+          `/api/v1/users/me/payment-methods/${activeCardId}`,
+          {
+            method: "DELETE",
+          },
+        );
+
+        const res = await fetchWithAuth("/api/v1/users/me/payment-methods", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.ok) {
+          const newCard = await res.json();
+          setCards(
+            cards.map((c) =>
+              c.id === activeCardId
+                ? {
+                    ...c,
+                    id: String(newCard.id),
+                    number: "000000000000" + newCard.last_four_digits,
+                    expiry: newCard.expiry_date,
+                    cvv: "***",
+                  }
+                : c,
+            ),
+          );
+        }
+      }
+      setActiveCardId(null);
+    } catch (error) {
+      console.error("Failed to save card:", error);
     }
-    setActiveCardId(null);
   };
 
-  // Validation rules
   const validateFullName = (val: string) => {
     if (!val.trim()) return "Full Name is required";
     if (val.trim().length < 2) return "Must be at least 2 characters";
@@ -467,8 +560,10 @@ export const SettingsForm = () => {
 
   const validatePhone = (val: string) => {
     const cleanDigits = val.replace(/\D/g, "");
-    if (!val.trim()) return "Phone number is required";
-    if (cleanDigits.length < 10 || cleanDigits.length > 15)
+    if (
+      cleanDigits.length > 0 &&
+      (cleanDigits.length < 10 || cleanDigits.length > 15)
+    )
       return "Invalid phone number";
     return "";
   };
@@ -511,7 +606,7 @@ export const SettingsForm = () => {
     setEditingGeneral(false);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setTouched({
       fullName: true,
       phone: true,
@@ -521,19 +616,27 @@ export const SettingsForm = () => {
 
     if (!isFormValid) return;
 
-    setEditingGeneral(false);
-    setTouched({});
+    try {
+      const response = await fetchWithAuth("/api/v1/users/me", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          full_name: fullName,
+          phone_number: phone || null,
+        }),
+      });
+
+      if (response.ok) {
+        setInitialData({ ...initialData, fullName, phone });
+        setEditingGeneral(false);
+        setTouched({});
+      } else {
+        console.error("Failed to update profile general settings");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
-
-  type Address = { id: string; text: string };
-
-  const [addresses, setAddresses] = useState<Address[]>([
-    {
-      id: "1",
-      text: "13 Sadova St., Flat 12, 3rd Floor, Odesa, Odesa Oblast, Ukraine",
-    },
-    { id: "2", text: "23 Derybasivska St., Odesa, Odesa Oblast, Ukraine" },
-  ]);
 
   const [activeAddressId, setActiveAddressId] = useState<string | null>(null);
 
@@ -547,22 +650,75 @@ export const SettingsForm = () => {
     );
   };
 
-  const handleDeleteAddress = (id: string) => {
-    setAddresses((prev) => prev.filter((addr) => addr.id !== id));
-    if (activeAddressId === id) setActiveAddressId(null);
+  const handleDeleteAddress = async (id: string) => {
+    try {
+      if (!id.startsWith("new_")) {
+        await fetchWithAuth(`/api/v1/users/me/addresses/${id}`, {
+          method: "DELETE",
+        });
+      }
+
+      setAddresses((prev) => prev.filter((addr) => addr.id !== id));
+      if (activeAddressId === id) setActiveAddressId(null);
+    } catch (error) {
+      console.error("Failed to delete address:", error);
+    }
   };
 
   const handleAddAddress = () => {
-    const newId = Date.now().toString();
+    const newId = `new_${Date.now()}`;
     setAddresses([...addresses, { id: newId, text: "" }]);
     setActiveAddressId(newId);
   };
 
-  const handleSaveAddresses = () => {
-    setAddresses((prev) => prev.filter((addr) => addr.text.trim() !== ""));
-    setActiveAddressId(null);
-    setEditingAddresses(false);
+  const handleSaveAddresses = async () => {
+    const validAddresses = addresses.filter((addr) => addr.text.trim() !== "");
+
+    try {
+      const updatedAddresses = await Promise.all(
+        validAddresses.map(async (addr) => {
+          if (addr.id.startsWith("new_")) {
+            const res = await fetchWithAuth("/api/v1/users/me/addresses", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ address_line: addr.text }),
+            });
+            if (res.ok) {
+              const saved = await res.json();
+              return { id: String(saved.id), text: saved.address_line };
+            }
+          } else {
+            const res = await fetchWithAuth(
+              `/api/v1/users/me/addresses/${addr.id}`,
+              {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ address_line: addr.text }),
+              },
+            );
+            if (res.ok) {
+              return addr;
+            }
+          }
+          return addr;
+        }),
+      );
+
+      setAddresses(updatedAddresses);
+      setActiveAddressId(null);
+      setEditingAddresses(false);
+    } catch (error) {
+      console.error("Failed to save addresses:", error);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="w-full flex justify-center items-center h-64 text-forest-300">
+        Loading profile data...
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex flex-col font-montserrat">
