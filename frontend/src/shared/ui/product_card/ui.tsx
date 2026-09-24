@@ -1,5 +1,3 @@
-import * as React from "react";
-
 interface ProductCardProps {
   name: string;
   type: string;
