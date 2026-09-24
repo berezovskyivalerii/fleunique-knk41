@@ -9,7 +9,7 @@ from app.services.auth import verify_password
 
 @pytest.fixture(autouse=True)
 def _admin_settings(monkeypatch):
-    """Делаем данные админа предсказуемыми, а не завязанными на .env"""
+    """Робимо дані адміна передбачуваними, а не зав'язаними на .env"""
     monkeypatch.setattr(settings, "ADMIN_EMAIL", "admin@test.local")
     monkeypatch.setattr(settings, "ADMIN_FULL_NAME", "Test Admin")
     monkeypatch.setattr(settings, "ADMIN_PHONE_NUMBER", "+380000000000")
@@ -18,7 +18,7 @@ def _admin_settings(monkeypatch):
 
 @pytest.fixture(autouse=True)
 def _cleanup_admin(db_session):
-    """Чистим за собой, чтобы тесты не зависели друг от друга"""
+    """Чистимо за собою, щоб тести не залежали один від одного"""
     yield
     db_session.query(User).filter(User.email == "admin@test.local").delete()
     db_session.commit()
@@ -40,7 +40,7 @@ def test_seed_admin_hashes_password_correctly(db_session):
 
     admin = crud_user.get_user_by_email(db_session, email=settings.ADMIN_EMAIL)
 
-    # пароль не хранится в открытом виде...
+    # пароль не зберігається у відкритому вигляді
     assert admin.hashed_password != settings.ADMIN_PASSWORD
     # ...но при этом реально соответствует исходному паролю
     assert verify_password(settings.ADMIN_PASSWORD, admin.hashed_password) is True
@@ -48,7 +48,7 @@ def test_seed_admin_hashes_password_correctly(db_session):
 
 def test_seed_admin_is_idempotent(db_session):
     seed_admin(db_session)
-    seed_admin(db_session)  # второй запуск не должен создать дубликат
+    seed_admin(db_session)
 
     admins = (
         db_session.query(User)
