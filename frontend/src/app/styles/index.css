@@ -19,6 +19,10 @@
     --text-headline-3: 22px;
     --text-headline-4: 18px;
     --text-headline-5: 16px;
+
+    --color-forest-400: #04191D;
+    --color-rose-300: #B3158E;
+    --color-success: #079941;
 }
 
 :root {

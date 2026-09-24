@@ -18,8 +18,8 @@ export function Button({
 
   const variants = {
     primary: "bg-rose-300 text-white hover:bg-forest-300/80",
-    outline:
-      "bg-transparent border-2 border-rose-300 text-rose-300 hover:bg-rose-100/50",
+outline:
+  "bg-transparent border-2 border-rose-300 text-rose-300 hover:bg-rose-100/50",
   };
 
   const sizes = {

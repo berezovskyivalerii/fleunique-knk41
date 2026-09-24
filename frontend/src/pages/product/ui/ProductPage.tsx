@@ -100,18 +100,17 @@ export function ProductPage() {
             <div className="flex min-h-[131px] desktop:min-h-0 flex-col gap-2">
               <div className="flex flex-wrap items-center justify-between gap-1">
                 <h2 className="font-bold text-4xl uppercase text-[#033438] font-pt-sans">
-                  NAME OF BOUQUET
+                  ATHENA
                 </h2>
                 <Badge>In Stock</Badge>
               </div>
 
               <div className="text-[22px] desktop:text-2xl font-pt-sans font-bold text-[#B3158E]">
-                $20
+                $28
               </div>
 
               <p className="text-[#033438] font-montserrat text-[16px] leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Hydrangea, Calla Lily, Chrysanthemum, Rose, Lisianthus, Snapdragon, Dahlia
               </p>
             </div>
 
