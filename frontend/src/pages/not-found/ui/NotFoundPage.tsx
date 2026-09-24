@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { flowerAssets, flowerZero, logo } from '@/shared/assets'
 import { MediumOutlinedButton } from '@/shared/ui/MediumOutlinedButton'
 import arrowLeft from '@/shared/assets/basil_arrow-left-outline.svg'
@@ -33,10 +33,21 @@ const backgroundGradient = [
 ].join(', ')
 
 export const NotFoundPage = () => {
+  const navigate = useNavigate()
+
+  const handleGoBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1)
+      return
+    }
+
+    navigate('/')
+  }
+
   return (
     <div 
       style={{ background: backgroundGradient }}
-      className="fixed inset-0 flex flex-col items-center justify-between overflow-hidden select-none"
+      className="not-found-page fixed inset-0 flex flex-col items-center justify-between overflow-hidden select-none"
     >
       {/* Header */}
       <header className="not-found-header absolute left-[6.667%] top-[3.906%] z-20">
