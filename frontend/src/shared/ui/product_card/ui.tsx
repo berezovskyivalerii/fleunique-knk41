@@ -16,7 +16,7 @@ export function ProductCard({
   onAddToCart,
 }: ProductCardProps) {
   return (
-    <div className="relative w-[198px] h-[316px] rounded-[16px] overflow-hidden flex flex-col justify-end">
+    <div className="relative w-[158px] h-[253px] lg:w-[198px] lg:h-[316px] rounded-[16px] overflow-hidden flex flex-col justify-end shadow-[0_2px_8px_2px_color-mix(in_srgb,var(--color-black-50)_20%,transparent)] hover:shadow-[0_2px_16px_2px_var(--color-rose-300)] transition-shadow duration-[120ms] ease-[cubic-bezier(0.36,0,0.66,-0.56)]">
       <img
         src={image}
         alt={name}
@@ -34,7 +34,7 @@ export function ProductCard({
 
       <div className="absolute g-gradient-to-t from-[#4a4a4a]/95 via-[#4a4a4a]/50 to-transparent pointer-events-none -z-10" />
 
-      <div className="relative z-10 p-4 pb-5 flex flex-col">
+      <div className="relative z-10 p-[8px] pb-[16px] lg:p-[16px] flex flex-col">
         <div className="flex justify-between items-center mb-1">
           <span className="font-pt-sans font-bold text-silver-50 text-headline-5 truncate drop-shadow-md pr-5">
             {name}

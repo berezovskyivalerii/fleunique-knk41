@@ -26,7 +26,7 @@ export function Button({
     default:
       "flex-1 max-w-[256px] h-[45px] rounded-full text-[18px] !font-semibold leading-none text-center capitalize",
     large: "w-full h-[86px] rounded-2xl !text-large-button !font-semibold",
-    medium: "w-full h-[45px] py-4 px-0 rounded-full text-medium-button leading-none text-center",
+    medium: "w-full py-4 px-0 rounded-full leading-none text-center",
   };
 
   return (
