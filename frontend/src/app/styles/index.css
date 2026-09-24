@@ -57,3 +57,23 @@ textarea,
 select {
     font: inherit;
 }
+
+
+/* Auth overlay can scroll on short screens without showing a white scrollbar gutter. */
+.auth-modal-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.auth-modal-scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+/* Force the auth backdrop to cover the full visual viewport, including the scrollbar compensation area. */
+.auth-modal-scroll {
+    right: auto;
+    min-width: 100vw;
+    background-clip: border-box;
+}
