@@ -2,18 +2,13 @@
 
 @import "tailwindcss";
 
-@font-face {
-    font-family: "Fleunique404";
-    src: url("../../shared/assets/RubikBubbles-Regular.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
-
 @theme {
-    --font-rubik-bubbles: "Fleunique404", sans-serif;
+    --font-rubik-bubbles: "Rubik Bubbles", sans-serif;
     --font-montserrat: "Montserrat", sans-serif;
     --font-pt-sans: "PT Sans", sans-serif;
-    --font-fleunique: "Fleunique404", sans-serif;
+
+    --breakpoint-tablet: 744px;
+    --breakpoint-desktop: 1440px;
 
     --breakpoint-md: 744px;
     --breakpoint-xl: 1440px;
@@ -27,29 +22,6 @@
     --text-headline-3: 22px;
     --text-headline-4: 18px;
     --text-headline-5: 16px;
-
-    --color-forest-100: #04c6d1;
-    --color-forest-200: #057b83;
-    --color-forest-300: #033438;
-    --color-forest-400: #04191d;
-
-    --color-rose-50: #fffafe;
-    --color-rose-100: #fbb2ea;
-    --color-rose-200: #f04bc9;
-    --color-rose-300: #b3158e;
-
-    --color-silver-50: #fcfcfc;
-    --color-silver-100: #bfbfbf;
-    --color-silver-200: #828282;
-
-    --color-black-50: #3d3b3b;
-    --color-black-100: #030202;
-
-    --color-error: #d51240;
-    --color-warning-50: #f8d07b;
-    --color-warning-100: #b8610e;
-    --color-success: #079941;
-    --color-info: #0264c3;
 }
 
 :root {
