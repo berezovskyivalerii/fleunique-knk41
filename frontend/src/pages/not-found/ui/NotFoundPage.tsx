@@ -1,6 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { flowerAssets, flowerZero, logo } from '@/shared/assets'
 import { MediumOutlinedButton } from '@/shared/ui/MediumOutlinedButton'
+import arrowLeft from '@/shared/assets/basil_arrow-left-outline.svg'
+import '../styles/index.css'
 
 type FooterFlower = {
   id: keyof typeof flowerAssets
@@ -60,13 +62,13 @@ export const NotFoundPage = () => {
           <span
             className="not-found-digit flex h-full w-[31.7%] items-center justify-center font-fleunique! text-[clamp(220px,33.333vw,480px)] font-normal leading-none text-forest-200 translate-y-[4px] max-[640px]:text-[clamp(96px,33.333vw,220px)]"
             aria-hidden="true"
-          >     
+          >
             4
           </span>
 
           <img
             src={flowerZero}
-            alt="" 
+            alt=""
             aria-hidden="true"
             className="not-found-center-flower aspect-[392/354] h-auto max-h-full w-[35.2%] object-contain"
           />
@@ -92,8 +94,13 @@ export const NotFoundPage = () => {
           Home
         </MediumOutlinedButton>
 
-        <button type="button" className="not-found-go-back" onClick={handleGoBack}>
-          ← Go Back
+        <button
+          type="button"
+          className="not-found-go-back"
+          onClick={() => window.history.back()}
+        >
+          <img src={arrowLeft} alt="" aria-hidden="true" />
+          <span>Go Back</span>
         </button>
       </main>
 
