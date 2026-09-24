@@ -1,10 +1,11 @@
 from datetime import datetime
 from decimal import Decimal
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from app.models.order import DeliveryType, OrderStatus
+from app.schemas.product import ProductResponse
 
 
 class OrderItemCreate(BaseModel):
@@ -51,12 +52,14 @@ class OrderCreate(BaseModel):
 
 
 class OrderItemResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
     id: int
-    product_id: int | None
+    product_id: int
     quantity: int
     price_per_item: Decimal
+
+    product: Optional[ProductResponse] = None
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OrderResponse(BaseModel):
@@ -90,3 +93,7 @@ class OrderResponse(BaseModel):
 
 class OrderStatusUpdate(BaseModel):
     status: OrderStatus
+
+
+OrderItemResponse.model_rebuild()
+OrderResponse.model_rebuild()

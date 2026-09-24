@@ -53,20 +53,16 @@ export function CheckoutPage() {
   const sanitizeEmail = (value: string) =>
     value.replace(/[^a-zA-Z0-9@._+-]/g, "");
 
-  const sanitizePhone = (value: string) =>
-    value.replace(/[^0-9+\-()\s]/g, "");
+  const sanitizePhone = (value: string) => value.replace(/[^0-9+\-()\s]/g, "");
 
-  const sanitizeNumbers = (value: string) =>
-    value.replace(/\D/g, "");
+  const sanitizeNumbers = (value: string) => value.replace(/\D/g, "");
 
-  const sanitizeDate = (value: string) =>
-    value.replace(/[^0-9-]/g, "");
+  const sanitizeDate = (value: string) => value.replace(/[^0-9-]/g, "");
 
-  const sanitizeTime = (value: string) =>
-    value.replace(/[^0-9:\s—-]/g, "");
+  const sanitizeTime = (value: string) => value.replace(/[^0-9:\s—-]/g, "");
 
   return (
-    <div className="flex min-h-screen flex-col bg-[radial-gradient(circle_at_82%_68%,rgba(251,178,234,0.32),transparent_34%),linear-gradient(180deg,#fffafe_0%,#fffafe_62%,#fff5fc_100%)] font-montserrat text-forest-300">
+    <div className="flex min-h-screen pt-24 flex-col bg-[radial-gradient(circle_at_82%_68%,rgba(251,178,234,0.32),transparent_34%),linear-gradient(180deg,#fffafe_0%,#fffafe_62%,#fff5fc_100%)] font-montserrat text-forest-300">
       <Header checkout />
 
       <main className="mx-auto w-full max-w-[1120px] flex-1 px-4 pt-6 sm:px-8 sm:pt-10 min-[1184px]:px-0 min-[1184px]:pt-12">
@@ -79,11 +75,7 @@ export function CheckoutPage() {
           <div className="mx-auto flex h-8 w-fit shrink-0 items-center justify-center text-[11px] font-normal leading-none text-silver-200 sm:mx-0 sm:w-[478px] sm:text-[13px]">
             <div className="flex shrink-0 items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-forest-100">
-                <img
-                  src={checkWhiteIcon}
-                  alt=""
-                  className="h-4 w-4"
-                />
+                <img src={checkWhiteIcon} alt="" className="h-4 w-4" />
               </div>
 
               <span className="hidden sm:inline">Your Cart</span>
@@ -130,8 +122,9 @@ export function CheckoutPage() {
                   <img
                     src={chevronIcon}
                     alt=""
-                    className={`block h-3 w-3 shrink-0 transition-transform duration-200 ${openedSections.contact ? "" : "-rotate-180"
-                      }`}
+                    className={`block h-3 w-3 shrink-0 transition-transform duration-200 ${
+                      openedSections.contact ? "" : "-rotate-180"
+                    }`}
                   />
                 </button>
 
@@ -156,9 +149,7 @@ export function CheckoutPage() {
                           autoComplete="name"
                           placeholder="John Doe"
                           onChange={(event) =>
-                            setContactName(
-                              sanitizeName(event.target.value),
-                            )
+                            setContactName(sanitizeName(event.target.value))
                           }
                           className="h-full w-full bg-transparent text-[14px] outline-none placeholder:text-silver-100 sm:text-[16px]"
                         />
@@ -186,9 +177,7 @@ export function CheckoutPage() {
                           inputMode="email"
                           placeholder="example@.com"
                           onChange={(event) =>
-                            setEmail(
-                              sanitizeEmail(event.target.value),
-                            )
+                            setEmail(sanitizeEmail(event.target.value))
                           }
                           className="h-full w-full bg-transparent text-[14px] outline-none placeholder:text-silver-100 sm:text-[16px]"
                         />
@@ -212,8 +201,9 @@ export function CheckoutPage() {
                   <img
                     src={chevronIcon}
                     alt=""
-                    className={`block h-3 w-3 shrink-0 transition-transform duration-200 ${openedSections.receiver ? "" : "-rotate-180"
-                      }`}
+                    className={`block h-3 w-3 shrink-0 transition-transform duration-200 ${
+                      openedSections.receiver ? "" : "-rotate-180"
+                    }`}
                   />
                 </button>
 
@@ -239,9 +229,7 @@ export function CheckoutPage() {
                           autoComplete="name"
                           placeholder="Jane Doe"
                           onChange={(event) =>
-                            setReceiverName(
-                              sanitizeName(event.target.value),
-                            )
+                            setReceiverName(sanitizeName(event.target.value))
                           }
                           className="h-full w-full bg-transparent text-[14px] outline-none placeholder:text-silver-100 sm:text-[16px]"
                         />
@@ -269,9 +257,7 @@ export function CheckoutPage() {
                           inputMode="tel"
                           placeholder="+380 123 456 789"
                           onChange={(event) =>
-                            setPhone(
-                              sanitizePhone(event.target.value),
-                            )
+                            setPhone(sanitizePhone(event.target.value))
                           }
                           className="h-full w-full bg-transparent text-[14px] outline-none placeholder:text-silver-100 sm:text-[16px]"
                         />
@@ -290,11 +276,7 @@ export function CheckoutPage() {
 
                       <span className="flex h-5 w-5 items-center justify-center rounded-[5px] border-[2px] border-forest-400">
                         {isReceiver && (
-                          <img
-                            src={checkIcon}
-                            alt=""
-                            className="h-3 w-3"
-                          />
+                          <img src={checkIcon} alt="" className="h-3 w-3" />
                         )}
                       </span>
 
@@ -318,8 +300,9 @@ export function CheckoutPage() {
                   <img
                     src={chevronIcon}
                     alt=""
-                    className={`block h-3 w-3 shrink-0 transition-transform duration-200 ${openedSections.delivery ? "" : "-rotate-180"
-                      }`}
+                    className={`block h-3 w-3 shrink-0 transition-transform duration-200 ${
+                      openedSections.delivery ? "" : "-rotate-180"
+                    }`}
                   />
                 </button>
 
@@ -337,11 +320,7 @@ export function CheckoutPage() {
 
                       <span className="flex h-5 w-5 items-center justify-center rounded-[5px] border-[2px] border-forest-400">
                         {scheduleDelivery && (
-                          <img
-                            src={checkIcon}
-                            alt=""
-                            className="h-3 w-3"
-                          />
+                          <img src={checkIcon} alt="" className="h-3 w-3" />
                         )}
                       </span>
 
@@ -363,9 +342,7 @@ export function CheckoutPage() {
                             maxLength={10}
                             placeholder="08-09-2026"
                             onChange={(event) =>
-                              setDate(
-                                sanitizeDate(event.target.value),
-                              )
+                              setDate(sanitizeDate(event.target.value))
                             }
                             className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
                           />
@@ -382,9 +359,7 @@ export function CheckoutPage() {
                             maxLength={13}
                             placeholder="9:00 — 18:00"
                             onChange={(event) =>
-                              setTime(
-                                sanitizeTime(event.target.value),
-                              )
+                              setTime(sanitizeTime(event.target.value))
                             }
                             className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
                           />
@@ -430,9 +405,7 @@ export function CheckoutPage() {
                         maxLength={160}
                         autoComplete="street-address"
                         placeholder="house, Street, City, Odesa oblast, Ukraine"
-                        onChange={(event) =>
-                          setAddress(event.target.value)
-                        }
+                        onChange={(event) => setAddress(event.target.value)}
                         className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
                       />
                     </label>
@@ -450,9 +423,7 @@ export function CheckoutPage() {
                           inputMode="numeric"
                           placeholder="floor number"
                           onChange={(event) =>
-                            setFloor(
-                              sanitizeNumbers(event.target.value),
-                            )
+                            setFloor(sanitizeNumbers(event.target.value))
                           }
                           className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
                         />
@@ -470,9 +441,7 @@ export function CheckoutPage() {
                           inputMode="numeric"
                           placeholder="apt number"
                           onChange={(event) =>
-                            setApartment(
-                              sanitizeNumbers(event.target.value),
-                            )
+                            setApartment(sanitizeNumbers(event.target.value))
                           }
                           className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
                         />
@@ -659,8 +628,9 @@ export function CheckoutPage() {
                     <img
                       src={chevronIcon}
                       alt=""
-                      className={`block h-3 w-3 shrink-0 transition-transform duration-200 ${commentOpened ? "" : "-rotate-180"
-                        }`}
+                      className={`block h-3 w-3 shrink-0 transition-transform duration-200 ${
+                        commentOpened ? "" : "-rotate-180"
+                      }`}
                     />
                   </button>
 
@@ -689,16 +659,12 @@ export function CheckoutPage() {
 
       {/* Footer */}
       <footer className="mx-auto mt-6 flex w-full max-w-[1220px] flex-col items-center justify-between gap-3 px-4 pb-6 text-[8px] leading-[10px] text-silver-100 sm:mt-12 sm:flex-row sm:px-8 sm:pb-12 sm:text-[9px] sm:leading-[11px] min-[1184px]:px-0 min-[1184px]:text-[11px] min-[1184px]:leading-[13px]">
-
-
         <div className="flex shrink-0 items-center gap-10 sm:gap-4">
           <a href="#">Privacy Policy</a>
           <a href="#">Terms of Service</a>
           <a href="#">Cookies Settings</a>
         </div>
-        <p className="shrink-0">
-          ©2026, IT STEP COLLEGE TEAM
-        </p>
+        <p className="shrink-0">©2026, IT STEP COLLEGE TEAM</p>
       </footer>
     </div>
   );

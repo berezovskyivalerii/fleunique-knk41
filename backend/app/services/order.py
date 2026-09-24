@@ -1,12 +1,13 @@
 from datetime import datetime, timezone
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
 
 from fastapi import HTTPException, status
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app.crud import order as order_crud
-from app.models.order import DeliveryType, Order, OrderStatus
+from app.models.order import DeliveryType, Order, OrderItem, OrderStatus
+from app.models.product import Product
 from app.models.promocode import Promocode
 from app.models.user import User
 from app.schemas.order import OrderCreate
@@ -64,7 +65,9 @@ def _calculate_discount(promocode: Promocode | None, subtotal: Decimal) -> Decim
     return _money(min(discount, subtotal))
 
 
-def create_order_service(db: Session, current_user: User, order_in: OrderCreate) -> Order:
+def create_order_service(
+    db: Session, current_user: User, order_in: OrderCreate
+) -> Order:
     quantities_by_product: dict[int, int] = {}
     for item in order_in.items:
         new_quantity = quantities_by_product.get(item.product_id, 0) + item.quantity
@@ -118,7 +121,6 @@ def create_order_service(db: Session, current_user: User, order_in: OrderCreate)
     discount_amount = _calculate_discount(promocode, subtotal)
     total_price = _money(subtotal + delivery_cost - discount_amount)
 
-    # Pickup orders must not persist stale address values sent by the client.
     if order_in.delivery_type == DeliveryType.PICKUP:
         delivery_address = None
         delivery_floor = None
@@ -157,10 +159,17 @@ def create_order_service(db: Session, current_user: User, order_in: OrderCreate)
 
 def get_user_orders_service(
     db: Session, current_user: User, skip: int = 0, limit: int = 100
-) -> list[Order]:
-    return order_crud.get_user_orders(
-        db, user_id=current_user.id, skip=skip, limit=limit
+):
+    query = (
+        db.query(Order)
+        .filter(Order.user_id == current_user.id)
+        .options(
+            joinedload(Order.items)
+            .joinedload(OrderItem.product)
+            .joinedload(Product.images)
+        )
     )
+    return query.order_by(Order.created_at.desc()).offset(skip).limit(limit).all()
 
 
 def get_order_service(db: Session, current_user: User, order_id: int) -> Order:
@@ -180,9 +189,7 @@ def get_order_service(db: Session, current_user: User, order_id: int) -> Order:
     return order
 
 
-def get_all_orders_service(
-    db: Session, skip: int = 0, limit: int = 100
-) -> list[Order]:
+def get_all_orders_service(db: Session, skip: int = 0, limit: int = 100) -> list[Order]:
     return order_crud.get_all_orders(db, skip=skip, limit=limit)
 
 

@@ -8,7 +8,7 @@ export const LogoutButton = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
 
-    navigate("/login", { replace: true });
+    navigate("/", { replace: true });
   };
 
   return (
