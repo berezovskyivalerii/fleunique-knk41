@@ -26,12 +26,12 @@ export const ProfileLayout = () => {
       <div>
         <Header />
 
-        <div className="max-w-[1440px] mt-28 mx-auto px-10 xl:px-[160px] flex flex-col md:flex-row gap-8 py-10 relative z-10 items-start">
-          <aside className="w-full md:w-[250px] shrink-0">
+        <div className="max-w-[1440px] mt-20 sm:mt-[88px] xl:mt-28 mx-auto w-full px-4 sm:px-8 xl:px-[160px] flex flex-col xl:flex-row gap-6 xl:gap-8 py-4 sm:py-6 xl:py-10 relative z-10 items-center xl:items-start">
+          <aside className="hidden xl:block w-[250px] shrink-0">
             <ProfileSidebar />
           </aside>
 
-          <main className="w-[832px] flex rounded-[32px] bg-transparent justify-center p-6 pb-8 bg-white/20 backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)]">
+          <main className="w-full max-w-[832px] flex flex-col items-center rounded-[32px] bg-transparent justify-center p-4 sm:p-6 pb-8 bg-white/20 backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)]">
             <Outlet />
           </main>
         </div>
