@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import { flowerAssets, flowerZero, logo } from '@/shared/assets'
 import { MediumOutlinedButton } from '@/shared/ui/MediumOutlinedButton'
+import arrowLeft from '@/shared/assets/basil_arrow-left-outline.svg'
+import '../styles/index.css'
 
 type FooterFlower = {
   id: keyof typeof flowerAssets
@@ -37,7 +39,7 @@ export const NotFoundPage = () => {
       className="fixed inset-0 flex flex-col items-center justify-between overflow-hidden select-none"
     >
       {/* Header */}
-      <header className="absolute left-[6.667%] top-[3.906%] z-20">
+      <header className="not-found-header absolute left-[6.667%] top-[3.906%] z-20">
         <Link to="/">
           <img src={logo} alt="Fleunique" className="h-12 w-[clamp(110px,9.792vw,141px)]" />
         </Link>
@@ -47,21 +49,21 @@ export const NotFoundPage = () => {
       <main className="not-found-main absolute left-1/2 top-[clamp(96px,19vh,184px)] z-20 flex w-[min(1114px,calc(100%-32px))] -translate-x-1/2 flex-col items-center">
         <div className="not-found-hero flex h-[clamp(160px,24.583vw,354px)] w-full items-center justify-between overflow-visible max-[640px]:h-[clamp(160px,34vh,354px)]">
           <span
-            className="flex h-full w-[31.7%] items-center justify-center font-fleunique! text-[clamp(220px,33.333vw,480px)] font-normal leading-none text-forest-200 translate-y-[4px] max-[640px]:text-[clamp(96px,33.333vw,220px)]"
+            className="not-found-digit flex h-full w-[31.7%] items-center justify-center font-fleunique! text-[clamp(220px,33.333vw,480px)] font-normal leading-none text-forest-200 translate-y-[4px] max-[640px]:text-[clamp(96px,33.333vw,220px)]"
             aria-hidden="true"
-          >     
+          >
             4
           </span>
 
           <img
             src={flowerZero}
-            alt="" 
+            alt=""
             aria-hidden="true"
-            className="aspect-[392/354] h-auto max-h-full w-[35.2%] object-contain"
+            className="not-found-center-flower aspect-[392/354] h-auto max-h-full w-[35.2%] object-contain"
           />
 
           <span
-            className="flex h-full w-[31.7%] items-center justify-center font-fleunique! text-[clamp(220px,33.333vw,480px)] font-normal leading-none text-forest-200 translate-y-[4px] max-[640px]:text-[clamp(96px,33.333vw,220px)]"
+            className="not-found-digit flex h-full w-[31.7%] items-center justify-center font-fleunique! text-[clamp(220px,33.333vw,480px)] font-normal leading-none text-forest-200 translate-y-[4px] max-[640px]:text-[clamp(96px,33.333vw,220px)]"
             aria-hidden="true"
           >
             4
@@ -70,20 +72,29 @@ export const NotFoundPage = () => {
           <span className="sr-only">404</span>
         </div>
 
-        <p className="m-0 mt-[51.5px] min-h-[22px] w-[min(544px,calc(100%-32px))] text-center font-montserrat! text-lg font-normal leading-[22px] text-forest-300 max-[640px]:text-sm max-[640px]:leading-5">
+        <p className="not-found-message m-0 mt-[51.5px] min-h-[22px] w-[min(544px,calc(100%-32px))] text-center font-montserrat! text-lg font-normal leading-[22px] text-forest-300 max-[640px]:text-sm max-[640px]:leading-5">
           Hey! Looks like the page you&apos;re looking for isn&apos;t here...
         </p>
 
         <MediumOutlinedButton
           to="/"
-          className="mt-4 h-[45px] w-[min(352px,100%)] py-0"
+          className="not-found-home-button mt-4 h-[45px] w-[min(352px,100%)] py-0"
         >
-          Go Back
+          Home
         </MediumOutlinedButton>
+
+        <button
+          type="button"
+          className="not-found-go-back"
+          onClick={() => window.history.back()}
+        >
+          <img src={arrowLeft} alt="" aria-hidden="true" />
+          <span>Go Back</span>
+        </button>
       </main>
 
       {/* Footer flowers */}
-      <footer className="pointer-events-none absolute inset-0 z-10 h-full w-full overflow-visible">
+      <footer className="not-found-footer pointer-events-none absolute inset-0 z-10 h-full w-full overflow-visible">
         {FLOWERS.map((flower) => (
           <img
             key={flower.id}
@@ -98,7 +109,7 @@ export const NotFoundPage = () => {
               transform: `scale(${flower.scale})`,
               transformOrigin: 'center bottom'
             }}
-            className="absolute object-contain"
+            className="not-found-footer-flower absolute object-contain"
           />
         ))}
       </footer>
