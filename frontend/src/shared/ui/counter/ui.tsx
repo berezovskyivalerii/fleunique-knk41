@@ -1,5 +1,4 @@
-import minus from "@/shared/assets/minus_icon.png";
-import plus from "@/shared/assets/plus_icon.png";
+import { type ChangeEvent } from "react";
 
 interface CounterProps {
   value: number | string;
@@ -17,7 +16,7 @@ export function Counter({ value, onChange, onBlur }: CounterProps) {
     onChange((Number(value) || 0) + 1);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     if (val === "") {
       onChange("");
