@@ -1,9 +1,9 @@
 interface ProductCardProps {
   name: string;
   type: string;
-  price: string;
+  price: number;
   image: string;
-  onAddToCart?: () => void;
+  onAddToCart: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export function ProductCard({
@@ -47,7 +47,7 @@ export function ProductCard({
         </span>
 
         <button
-          onClick={onAddToCart}
+          onClick={(e) => onAddToCart(e)}
           className="w-full h-9.25 bg-rose-50 text-forest-300 font-montserrat! font-semibold! text-headline-4 rounded-full transition-colors hover:bg-forest-300/80 hover:text-rose-50"
         >
           Add To Cart

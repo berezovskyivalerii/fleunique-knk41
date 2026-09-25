@@ -1,12 +1,12 @@
-import { useState } from "react";
 import { Header } from "@/widgets/header";
 import { Footer } from "@/widgets/footer";
 import { Counter } from "@/shared/ui/counter";
 import { Button } from "@/shared/ui/button";
 import { Badge } from "@/shared/ui/badge";
-
-import photo from "@/shared/assets/photo_flowers_product.png";
+import { useParams, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import share from "@/shared/assets/share_icon_product.png";
+import { useCart } from "@/context/CartContext";
 
 const backgroundBlobs = [
   {
@@ -48,14 +48,68 @@ const backgroundBlobs = [
   },
 ];
 
+interface ProductDetail {
+  id: number;
+  name: string;
+  is_active: boolean;
+  price: string;
+  description: string;
+  images: { image_url: string; is_main: boolean }[];
+}
+
 export function ProductPage() {
+  const { id } = useParams<{ id: string }>();
+  const [product, setProduct] = useState<ProductDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [quantity, setQuantity] = useState<number | string>(1);
+
+  const { addToCart, updateQuantity } = useCart();
+
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const res = await fetch(`/api/v1/products/${id}`);
+        if (!res.ok) throw new Error("Product not found");
+
+        const data = await res.json();
+        setProduct(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchProductDetails();
+    }
+  }, [id]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (!product) return <Navigate to="/404" replace />;
 
   const handleBlur = () => {
     if (quantity === "" || Number(quantity) < 1) {
       setQuantity(1);
     }
   };
+
+  const handleAddToCart = () => {
+    const qty = Number(quantity) || 1;
+    const parsedPrice = parseFloat(product.price.replace("$", ""));
+
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: parsedPrice,
+      image: `http://localhost:8000${product.images[0]?.image_url}`,
+    });
+
+    if (qty > 1) {
+      updateQuantity(product.id, qty - 1);
+    }
+  };
+
   return (
     <div className="relative min-h-screen flex flex-col bg-white overflow-hidden pt-24">
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -87,28 +141,32 @@ export function ProductPage() {
         <main className="flex-grow flex justify-center gap-[32px] px-10 xl:px-[160px] py-16 w-full max-w-[1440px] mx-auto mb-[128px]">
           <div className="shrink-0">
             <img
-              src={photo}
+              src={`http://localhost:8000${product.images[0]?.image_url}`}
               alt="Bouquet"
-              className="w-[500px] xl:w-[544px] object-cover rounded-2xl shadow-sm"
+              className="w-[500px] xl:w-[544px] xl:h-[544px] object-cover rounded-2xl shadow-sm"
             />
           </div>
 
-          <div className="max-w-[544px] flex flex-col justify-center gap-6">
+          <div className="w-[544px] flex flex-col justify-center gap-6">
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center">
                 <h2 className="font-bold text-4xl uppercase text-[#033438] font-pt-sans">
-                  NAME OF BOUQUET
+                  {product.name}
                 </h2>
-                <Badge>In Stock</Badge>
+                <Badge
+                  variant={product.is_active ? "in_stock" : "out_of_stock"}
+                >
+                  {product.is_active ? "In Stock" : "Out Of Stock"}
+                </Badge>
               </div>
 
+              {/* Форматируем цену с $ */}
               <div className="text-2xl font-pt-sans font-bold text-[#B3158E]">
-                $20
+                ${Number(product.price).toFixed(2)}
               </div>
 
               <p className="text-[#033438] font-montserrat text-[16px] leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                {product.description}
               </p>
             </div>
 
@@ -126,8 +184,26 @@ export function ProductPage() {
 
             <div className="flex flex-col gap-16 justify-between">
               <div className="flex gap-7">
-                <Button variant="primary">Add To Cart</Button>
-                <Button variant="outline">Buy Now</Button>
+                <Button
+                  variant="primary"
+                  onClick={handleAddToCart}
+                  disabled={!product.is_active}
+                  className={
+                    !product.is_active ? "opacity-50 cursor-not-allowed" : ""
+                  }
+                >
+                  Add To Cart
+                </Button>
+
+                <Button
+                  variant="outline"
+                  disabled={!product.is_active}
+                  className={
+                    !product.is_active ? "opacity-50 cursor-not-allowed" : ""
+                  }
+                >
+                  Buy Now
+                </Button>
               </div>
 
               <div className="flex justify-between items-center">

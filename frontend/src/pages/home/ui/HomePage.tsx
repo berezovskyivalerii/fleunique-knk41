@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Footer } from "@/widgets/footer";
 import { Header } from "@/widgets/header";
 import { Button } from "@/shared/ui/button";
@@ -242,14 +243,23 @@ export function HomePage() {
             ) : (
               <div className="grid place-items-center grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-[16px] lg:gap-[32px] [&>*:nth-last-child(2)]:md:col-start-2 [&>*:nth-last-child(2)]:lg:col-start-auto">
                 {products.map((product) => (
-                  <ProductCard
+                  <Link
                     key={product.id}
-                    name={product.name}
-                    type={product.description}
-                    price={product.price}
-                    image={product.image}
-                    onAddToCart={() => handleAddToCart(product)}
-                  />
+                    to={`/product/${product.id}`}
+                    className="block w-full"
+                  >
+                    <ProductCard
+                      name={product.name}
+                      type={product.description}
+                      price={product.price}
+                      image={product.image}
+                      onAddToCart={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleAddToCart(product);
+                      }}
+                    />
+                  </Link>
                 ))}
               </div>
             )}
