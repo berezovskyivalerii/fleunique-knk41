@@ -30,6 +30,7 @@ import email from "@/shared/assets/email_icon.svg";
 import phone from "@/shared/assets/phone_icon.svg";
 import instagram from "@/shared/assets/insta_icon.svg";
 import facebook from "@/shared/assets/facebook_icon.svg";
+import { useCart } from "@/context/CartContext";
 
 interface ProductImage {
   id: number;
@@ -40,7 +41,7 @@ interface ProductImage {
 interface Product {
   id: number;
   name: string;
-  price: string;
+  price: number;
   description: string;
   image: ProductImage;
 }
@@ -93,7 +94,7 @@ const FAQ_DATA = [
 
 export function HomePage() {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(2);
-
+  const { addToCart } = useCart();
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -136,7 +137,12 @@ export function HomePage() {
   }, []);
 
   const handleAddToCart = (product: Product) => {
-    // Add to cart logic
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: parseFloat(product.price.replace("$", "")),
+      image: product.image,
+    });
   };
 
   const toggleFaq = (index: number) => {
