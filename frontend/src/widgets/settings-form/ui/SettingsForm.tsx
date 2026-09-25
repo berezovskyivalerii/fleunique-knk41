@@ -738,12 +738,12 @@ export const SettingsForm = () => {
           )}
         </div>
 
-        <div className="pl-6 flex flex-col gap-3 mb-8">
+        <div className="pl-2 sm:pl-4 flex flex-col gap-3 mb-8">
           <div className="inline-block border-2 border-info text-info rounded-[8px] px-8 py-1.5 text-[13px] font-medium w-max">
             Personal Account
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-8 gap-y-4">
             <Field
               label="Full Name"
               icon={<UserIcon />}
@@ -802,7 +802,7 @@ export const SettingsForm = () => {
 
           {/* Action Buttons for General Settings */}
           {editingGeneral && (
-            <div className="flex gap-4 mt-2 max-w-[496px]">
+            <div className="flex flex-col sm:flex-row gap-4 mt-2 w-full sm:max-w-[496px]">
               <button
                 onClick={handleSave}
                 disabled={!isFormValid && Object.keys(touched).length > 0}
@@ -837,7 +837,7 @@ export const SettingsForm = () => {
           )}
         </div>
 
-        <div className="pl-6">
+        <div className="pl-2 sm:pl-4">
           <div className="flex items-center text-success text-[12px] font-medium mb-1">
             <SafeguardIcon /> All data is safeguarded
           </div>
@@ -866,7 +866,7 @@ export const SettingsForm = () => {
                         cardTouched.number && cardErrors.number,
                       )}
                     />
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
                       <Field
                         label="Expiry Date"
                         placeholder="MM/YY"
@@ -905,7 +905,7 @@ export const SettingsForm = () => {
                         isInvalid={Boolean(cardTouched.cvv && cardErrors.cvv)}
                       />
                     </div>
-                    <div className="flex gap-4 max-w-[496px]">
+                    <div className="flex flex-col sm:flex-row gap-4 w-full sm:max-w-[496px]">
                       <button
                         onClick={handleSaveInlineCard}
                         className="flex-1 text-headline-4 bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors"
@@ -954,7 +954,7 @@ export const SettingsForm = () => {
                   error={cardErrors.number}
                   isInvalid={Boolean(cardTouched.number && cardErrors.number)}
                 />
-                <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <Field
                     label="Expiry Date"
                     placeholder="MM/YY"
@@ -986,7 +986,7 @@ export const SettingsForm = () => {
                     isInvalid={Boolean(cardTouched.cvv && cardErrors.cvv)}
                   />
                 </div>
-                <div className="flex gap-4 max-w-[496px]">
+                <div className="flex flex-col sm:flex-row gap-4 w-full sm:max-w-[496px]">
                   <button
                     onClick={handleSaveInlineCard}
                     className="flex-1 text-headline-4 bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors"
@@ -1040,7 +1040,7 @@ export const SettingsForm = () => {
           )}
         </div>
 
-        <div className="pl-6">
+        <div className="pl-2 sm:pl-4">
           <div className="flex flex-col gap-4">
             {addresses.map((address) => {
               const isActive =
