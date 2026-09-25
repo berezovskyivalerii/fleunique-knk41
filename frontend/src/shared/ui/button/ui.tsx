@@ -23,10 +23,10 @@ outline:
   };
 
   const sizes = {
-    default:
-      "flex-1 max-w-[256px] h-[45px] rounded-full text-[18px] !font-semibold leading-none text-center capitalize",
-    large: "w-full h-21.5 rounded-2xl !text-large-button !font-semibold",
-  };
+  default:
+    "flex-1 max-w-[320px] h-[45px] md:max-w-[256px] rounded-full text-[18px] !font-semibold leading-none text-center capitalize",
+  large: "w-full h-21.5 rounded-2xl !text-large-button !font-semibold",
+};
 
   return (
     <button

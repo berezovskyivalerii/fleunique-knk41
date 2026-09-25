@@ -34,7 +34,7 @@ export function Counter({ value, onChange, onBlur }: CounterProps) {
       <button
         type="button"
         onClick={handleDecrease}
-        className="group w-[24px] h-[24px] flex justify-center items-center rounded-full bg-rose-100/20 leading-none hover:bg-forest-300 transition-colors cursor-pointer"
+        className="group w-[24px] h-[24px] flex justify-center items-center rounded-full bg-rose-100 leading-none hover:bg-forest-300 transition-colors cursor-pointer"
       >
         <svg
           width="12"
@@ -60,13 +60,13 @@ export function Counter({ value, onChange, onBlur }: CounterProps) {
         value={value}
         onChange={handleChange}
         onBlur={onBlur}
-        className="flex justify-center items-center h-[24px] max-w-[61px] rounded-[8px] bg-rose-100/20 text-forest-300 font-montserrat font-medium text-center outline-none text-[13px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        className="flex justify-center items-center h-[24px] max-w-[61px] rounded-[8px] bg-rose-100 text-forest-300 font-montserrat font-medium text-center outline-none text-[13px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
       />
 
       <button
         type="button"
         onClick={handleIncrease}
-        className="group w-[24px] h-[24px] flex justify-center items-center rounded-full bg-rose-100/20 leading-none hover:bg-forest-300 transition-colors cursor-pointer"
+        className="group w-[24px] h-[24px] flex justify-center items-center rounded-full bg-rose-100 leading-none hover:bg-forest-300 transition-colors cursor-pointer"
       >
         <svg
           width="12"

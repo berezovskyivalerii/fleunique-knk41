@@ -97,7 +97,7 @@ export function ProductPage() {
           </div>
 
           <div className="w-full max-w-[680px] desktop:max-w-[544px] flex flex-col justify-center gap-6">
-            <div className="flex min-h-[131px] desktop:min-h-0 flex-col gap-2">
+            <div className="flex desktop:min-h-0 flex-col gap-2">
               <div className="flex flex-wrap items-center justify-between gap-1">
                 <h2 className="font-bold text-4xl uppercase text-[#033438] font-pt-sans">
                   ATHENA
@@ -114,7 +114,7 @@ export function ProductPage() {
               </p>
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 mt-0">
               <div className="text-[#033438] font-montserrat text-lg">
                 Quantity:
               </div>
@@ -127,7 +127,7 @@ export function ProductPage() {
             </div>
 
             <div className="flex flex-col gap-16 justify-between">
-              <div className="flex gap-3 sm:gap-10 desktop:gap-7">
+              <div className="flex gap-3 sm:gap-10 desktop:gap-7 gap">
                 <Button variant="primary">Add To Cart</Button>
                 <Button variant="outline">Buy Now</Button>
               </div>
