@@ -42,7 +42,7 @@ export function ProductCard({
           </span>
         </div>
 
-        <span className="font-montserrat text-silver-50 text-[11px] mb-4 drop-shadow-md">
+        <span className="block whitespace-nowrap truncate font-montserrat text-silver-50 text-[11px] mb-4 drop-shadow-md">
           {type}
         </span>
 

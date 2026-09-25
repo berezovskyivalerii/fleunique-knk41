@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Footer } from "@/widgets/footer";
 import { Header } from "@/widgets/header";
 import { Button } from "@/shared/ui/button";
@@ -31,13 +31,19 @@ import phone from "@/shared/assets/phone_icon.svg";
 import instagram from "@/shared/assets/insta_icon.svg";
 import facebook from "@/shared/assets/facebook_icon.svg";
 
-const MOCK_PRODUCTS = Array.from({ length: 10 }, (_, i) => ({
-  id: i,
-  name: "Name Of Bouquet",
-  type: "Flower Type",
-  price: "$20",
-  image: { productImg },
-}));
+interface ProductImage {
+  id: number;
+  image_url: string;
+  is_main: boolean;
+}
+
+interface Product {
+  id: number;
+  name: string;
+  price: string;
+  description: string;
+  image: ProductImage;
+}
 
 const WHY_US_CARDS = [
   {
@@ -88,12 +94,53 @@ const FAQ_DATA = [
 export function HomePage() {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(2);
 
-  const toggleFaq = (index: number) => {
-    setOpenFaqIndex(openFaqIndex === index ? null : index);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("/api/v1/products?limit=10");
+
+        if (!res.ok) {
+          throw new Error("Failed to load best picks");
+        }
+
+        const data = await res.json();
+
+        const transformedProducts = data.map((product: any) => {
+          const mainImage =
+            product.images?.find((img: any) => img.is_main)?.image_url ||
+            product.images?.[0]?.image_url;
+
+          const imageUrl = `http://localhost:8000${mainImage}`;
+
+          return {
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            price: `$${product.price}`,
+            image: imageUrl,
+          };
+        });
+
+        setProducts(transformedProducts);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleAddToCart = (product: Product) => {
+    // Add to cart logic
   };
 
-  const handleAddToCart = (product: (typeof MOCK_PRODUCTS)[0]) => {
-    console.log(`Added ${product.name} to cart`);
+  const toggleFaq = (index: number) => {
+    setOpenFaqIndex(openFaqIndex === index ? null : index);
   };
 
   return (
@@ -110,7 +157,6 @@ export function HomePage() {
           />
 
           <div className="relative w-full h-full mx-auto max-w-[390px] px-4 py-[0_24px] md:max-w-[744px] md:px-8 md:py-[0_32px] lg:max-w-[1440px] lg:px-[160px] lg:py-[0_176px] flex flex-col justify-between">
-
             <div className="pt-[96px] md:pt-[136px] lg:pt-[192px] z-20">
               <h1 className="w-[358px] mx-auto text-center font-pt-sans font-bold text-headline-2 uppercase text-forest-400 leading-tight md:w-[506px] md:ml-auto md:mr-0 md:text-right lg:w-[865px] lg:text-headline-1">
                 Flowers that are as unique as you
@@ -129,8 +175,8 @@ export function HomePage() {
               <p className="w-[358px] text-headline-5 text-forest-300 font-montserrat font-normal leading-tight text-justify mb-2 md:w-[332px] md:text-headline-5 md:mb-2 lg:w-[352px] lg:text-label lg:mb-8">
                 Step into our vivid world where bold artistry meets playful
                 imagination. Dare to gift something truly unique and discover
-                extraordinary bouquets designed to brighten any gloomy day and turn
-                simple moments into an unforgettable joy.
+                extraordinary bouquets designed to brighten any gloomy day and
+                turn simple moments into an unforgettable joy.
               </p>
 
               {/* Mobile button (Medium: w=358 fill, h=45, p=16 0, r=50%) */}
@@ -154,7 +200,6 @@ export function HomePage() {
                 </Button>
               </div>
             </div>
-
           </div>
         </section>
 
@@ -181,23 +226,27 @@ export function HomePage() {
           />
 
           {/* BEST PICKS SECTION */}
-          <section className="w-[390px] py-[32px] mx-auto px-[16px] md:w-[744px] md:px-[32px] md:py-[48px] lg:px-[160px] lg:w-[1440px] lg:py-[96px]  ">
+          <section className="w-[390px] py-[32px] mx-auto px-[16px] md:w-[744px] md:px-[32px] md:py-[48px] lg:px-[160px] lg:w-[1440px] lg:py-[96px]">
             <h2 className="text-center font-pt-sans font-bold text-headline-2 text-forest-300 uppercase mb-[24px] lg:mb-[32px]">
               Best Picks
             </h2>
 
-            <div className="grid place-items-center grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-[16px] lg:gap-[32px] [&>*:nth-last-child(2)]:md:col-start-2 [&>*:nth-last-child(2)]:lg:col-start-auto">
-              {MOCK_PRODUCTS.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  name={product.name}
-                  type={product.type}
-                  price={product.price}
-                  image={productImg}
-                  onAddToCart={() => handleAddToCart(product)}
-                />
-              ))}
-            </div>
+            {isLoading ? (
+              <div className="text-center text-forest-300">Loading...</div>
+            ) : (
+              <div className="grid place-items-center grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-[16px] lg:gap-[32px] [&>*:nth-last-child(2)]:md:col-start-2 [&>*:nth-last-child(2)]:lg:col-start-auto">
+                {products.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    name={product.name}
+                    type={product.description}
+                    price={product.price}
+                    image={product.image}
+                    onAddToCart={() => handleAddToCart(product)}
+                  />
+                ))}
+              </div>
+            )}
           </section>
 
           {/* ABOUT US SECTION */}
@@ -241,7 +290,10 @@ export function HomePage() {
                   you.
                 </p>
 
-                <Button size="medium" className="w-full py-[8px] lg:py-[16px] !bg-rose-50 !text-forest-300 text-small-button lg:text-medium-button font-semibold! transition-colors hover:bg-forest-300 hover:text-rose-50 h-[24px] lg:h-[45px]">
+                <Button
+                  size="medium"
+                  className="w-full py-[8px] lg:py-[16px] !bg-rose-50 !text-forest-300 text-small-button lg:text-medium-button font-semibold! transition-colors hover:bg-forest-300 hover:text-rose-50 h-[24px] lg:h-[45px]"
+                >
                   Our Contacts
                 </Button>
               </div>
@@ -256,7 +308,6 @@ export function HomePage() {
           </h2>
 
           <div className="w-full mx-auto px-0 md:max-w-none flex items-stretch md:items-center justify-center md:justify-start gap-auto md:gap-[16px] lg:gap-[32px] overflow-x-auto pb-0">
-
             {/* COL 1 */}
             <div className="flex flex-col gap-[12px] flex-1 md:contents mr-[16px] md:mr-0">
               {/* CARD 1*/}
@@ -299,7 +350,6 @@ export function HomePage() {
                 className="h-auto md:w-[130px] aspect-[130/330] md:aspect-[1/2] object-cover rounded-[16px_0_0_16px] md:rounded-[16px] md:flex-1 md:grow md:order-3"
               />
             </div>
-
           </div>
         </section>
 
