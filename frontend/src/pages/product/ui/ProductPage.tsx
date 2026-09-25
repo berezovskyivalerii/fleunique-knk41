@@ -99,23 +99,23 @@ export function ProductPage() {
           <div className="w-full max-w-[680px] desktop:max-w-[544px] flex flex-col justify-center gap-6">
             <div className="flex desktop:min-h-0 flex-col gap-2">
               <div className="flex flex-wrap items-center justify-between gap-1">
-                <h2 className="font-bold text-4xl uppercase text-[#033438] font-pt-sans">
+                <h2 className="font-bold text-4xl uppercase text-forest-300 font-pt-sans">
                   ATHENA
                 </h2>
                 <Badge>In Stock</Badge>
               </div>
 
-              <div className="text-[22px] desktop:text-2xl font-pt-sans font-bold text-[#B3158E]">
+              <div className="text-[22px] desktop:text-2xl font-pt-sans font-bold text-rose-300">
                 $28
               </div>
 
-              <p className="text-[#033438] font-montserrat text-[16px] leading-relaxed">
+              <p className="text-forest-300 font-montserrat text-[16px] leading-relaxed">
                 Hydrangea, Calla Lily, Chrysanthemum, Rose, Lisianthus, Snapdragon, Dahlia
               </p>
             </div>
 
             <div className="flex flex-col gap-3 mt-0">
-              <div className="text-[#033438] font-montserrat text-lg">
+              <div className="text-forest-300 font-montserrat text-lg">
                 Quantity:
               </div>
 
@@ -133,7 +133,7 @@ export function ProductPage() {
               </div>
 
               <div className="flex justify-between items-center">
-                <p className="text-[11px] text-[#828282] font-montserrat">
+                <p className="text-[11px] text-siver-200 font-montserrat">
                   Delivery And Payment
                 </p>
                 <img
