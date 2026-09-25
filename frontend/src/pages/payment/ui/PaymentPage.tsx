@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-
+import card from "@/shared/assets/card-icon.svg";
+import back from "@/shared/assets/arrow-left.svg";
 import logo from "@/shared/assets/logo.svg";
 
 const formatCardNumber = (value: string) =>
@@ -20,13 +21,32 @@ const formatExpiry = (value: string) => {
 };
 
 const cardIcon = (
-  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-8 w-8 text-[#033438]">
-    <path
-      d="M2.5 6.25c0-1.036.84-1.875 1.875-1.875h11.25c1.036 0 1.875.839 1.875 1.875v7.5c0 1.036-.839 1.875-1.875 1.875H4.375A1.875 1.875 0 0 1 2.5 13.75v-7.5Zm2.5-.625h10v1.875H5V5.625Zm0 4.375h3.125v1.25H5v-1.25Zm5.625 0h4.375v1.25h-4.375v-1.25Z"
-      fill="currentColor"
-    />
-  </svg>
+  <img src={card}></img>
 );
+
+function PaymentCheckbox({ checked }: { checked: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[8px] border-[1.5px] border-forest-300 bg-rose-50"
+    >
+      {checked && (
+        <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-forest-300">
+          <path d="m5 12.5 4.2 4.2L19 7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+        </svg>
+      )}
+    </span>
+  );
+}
+
+function PaymentBackground() {
+  return (
+    <>
+      <div className="pointer-events-none absolute left-[150.67px] top-[172.77px] z-0 h-[1143px] w-[1148px] -translate-x-1/2 rotate-[-136.29deg] bg-[radial-gradient(circle,_#f0a9df_22%,_#04c6d1_72%,_transparent_100%)] opacity-50 blur-[108px] max-[1439px]:left-[-0.79px] max-[1439px]:top-[448px] max-[743px]:left-[calc(12.5%+8.35px)] max-[743px]:top-[414px]" />
+      <div className="pointer-events-none absolute left-[calc(41.67%+14px)] top-[-289px] z-0 h-[1132px] w-[1165px] rotate-[83.81deg] bg-[radial-gradient(circle,_#fbb2ea_0%,_#fffafe_68%,_transparent_100%)] opacity-50 blur-[100px] max-[1439px]:left-[calc(12.5%+45px)] max-[1439px]:top-[-308px] max-[743px]:left-[calc(25%+38.5px)] max-[743px]:top-[-109px]" />
+    </>
+  );
+}
 
 export function PaymentPage() {
   const navigate = useNavigate();
@@ -93,50 +113,55 @@ export function PaymentPage() {
 
   if (paymentState === "loading" || paymentState === "loadingFinish") {
     return (
-      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_15%_25%,rgba(251,178,234,0.40),transparent_20%),radial-gradient(circle_at_80%_70%,rgba(86,196,255,0.18),transparent_22%),linear-gradient(90deg,#fffafe_0%,#fdf7fb_42%,#edf7fb_100%)]">
-        <img
-          src={logo}
-          alt="Fleunique"
-          className={`absolute left-1/2 top-1/2 h-[48px] w-[141px] -translate-x-1/2 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${loadingMotionStarted ? "-translate-y-[82px] opacity-100" : "-translate-y-[150px] opacity-0"}`}
-        />
-        <div className="relative mt-20 h-20 w-20" aria-label={paymentState === "loadingFinish" ? "Payment successful" : "Processing payment"} role="status">
-            <span className="absolute inset-0 rounded-full border-[8px] border-[#f3a7e4]" />
-          {paymentState === "loading" ? (
-            <span className="absolute inset-0 animate-spin rounded-full border-[8px] border-transparent border-l-[#b3158e]" />
-          ) : (
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="absolute left-2.5 top-2.5 h-[60px] w-[60px] text-[#b3158e]">
-              <path d="m5 12.5 4.2 4.2L19 7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" />
-            </svg>
-          )}
+      <div className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-[linear-gradient(90deg,_#fffafe_0%,_#fdf7fb_42%,_#edf7fb_100%)] px-4 py-6 font-montserrat text-forest-300 md:px-8">
+        <PaymentBackground />
+        <div className="relative z-10 flex flex-col items-center gap-12">
+          <img
+            src={logo}
+            alt="Fleunique"
+            className={`h-[48px] w-[141px] transition-opacity duration-700 ${loadingMotionStarted ? "opacity-100" : "opacity-0"}`}
+          />
+          <div className="relative h-20 w-20" aria-label={paymentState === "loadingFinish" ? "Payment successful" : "Processing payment"} role="status">
+            <span className="absolute inset-0 rounded-full border-[8px] border-rose-100" />
+            {paymentState === "loading" ? (
+              <span className="absolute inset-0 animate-spin rounded-full border-[8px] border-transparent border-l-rose-300" />
+            ) : (
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="absolute left-2.5 top-2.5 h-[60px] w-[60px] text-rose-300">
+                <path d="m5 12.5 4.2 4.2L19 7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" />
+              </svg>
+            )}
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_15%_25%,rgba(251,178,234,0.40),transparent_20%),radial-gradient(circle_at_80%_70%,rgba(86,196,255,0.18),transparent_22%),linear-gradient(90deg,#fffafe_0%,#fdf7fb_42%,#edf7fb_100%)] px-4 py-6 font-montserrat text-[#033438]">
-      <div className="w-full max-w-[608px]">
-        <div className={`mb-12 flex justify-center transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${completeMotionStarted ? "translate-y-0 opacity-100" : "translate-y-[58px] opacity-0"}`}>
+    <div className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-[linear-gradient(90deg,_#fffafe_0%,_#fdf7fb_42%,_#edf7fb_100%)] px-4 py-6 font-montserrat text-forest-300 md:px-8 min-[1440px]:px-0">
+      <PaymentBackground />
+      <div className="relative z-10 w-full max-w-[608px]">
+        <div className={`mb-12 flex justify-center transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${paymentState === "form" || completeMotionStarted ? "translate-y-0 opacity-100" : "translate-y-[58px] opacity-0"}`}>
           <img src={logo} alt="Fleunique" className="h-[48px] w-[141px] object-contain" />
         </div>
-
         {paymentState === "complete" ? (
-          <div className="mx-auto w-full max-w-[500px] animate-[fade-in_300ms_ease-out]">
-            <div className="rounded-[32px] bg-white/[0.01] px-8 py-8 text-[#033438] shadow-[0_4px_4px_rgba(61,59,59,0.2)]">
-              <h1 className="text-center font-pt-sans text-[30px] font-bold uppercase leading-none sm:text-[36px]">Your order is complete!</h1>
+          <div className="mx-auto w-full animate-[fade-in_300ms_ease-out]">
+            <div className="rounded-[32px] bg-white/[0.01] px-8 py-8 text-forest-300 shadow-[0_4px_4px_rgba(61,59,59,0.2)]">
+              <h1 className="text-center font-pt-sans text-headline-3 md:text-headline-2 font-bold uppercase leading-none">Your order is complete!</h1>
 
-              <div className="mt-6 space-y-6 text-[16px] sm:text-[18px]">
-                <p>
-                  Order ID: <strong className="ml-2 font-pt-sans text-[20px] sm:text-[22px]">#FLEUN-100926-67</strong>
+              <div className="mt-6 space-y-6">
+                <p className=" text-label">
+                  Order ID: <span className="ml-2 font-pt-sans text-headline-3 font-bold">#FLEUN-100926-67</span>
                 </p>
                 <div>
-                  <p>You Ordered:</p>
-                  <p className="ml-8 mt-8 font-pt-sans font-bold">Name of bouquet x1</p>
-                  <p className="ml-8 mt-2 font-pt-sans font-bold">Name of bouquet x1</p>
+                  <p className=" text-label">You Ordered:</p>
+                  <div className="ml-8 mt-4 font-pt-sans font-bold text-headline-4 space-y-2">
+                    <p>Name of bouquet x1</p>
+                    <p>Name of bouquet x1</p>
+                  </div>
                 </div>
                 <div>
-                  <p>For:</p>
-                  <p className="ml-8 mt-8 font-pt-sans font-bold">Receiver&apos;s Full Name</p>
+                  <p className=" text-label">For:</p>
+                  <p className="ml-8 mt-4 font-pt-sans font-bold text-headline-4">Receiver&apos;s Full Name</p>
                 </div>
               </div>
             </div>
@@ -144,95 +169,96 @@ export function PaymentPage() {
             <button
               type="button"
               onClick={handleBackToHome}
-              className={`mt-10 flex h-[61px] w-full items-center justify-center rounded-[27px] border-0 text-[18px] font-semibold text-white shadow-[0_2px_2px_rgba(61,59,59,0.2)] transition-colors duration-300 ease-out active:translate-y-[1px] ${isLeaving ? "bg-[#033438] opacity-80" : "bg-[#b3158e] hover:bg-[#033438]"}`}
+              className={`text-medium-button font-semibold! payment-button mt-10 flex h-[61px] w-full items-center justify-center rounded-[27px] border-0 text-[18px] font-semibold text-white shadow-[0_2px_2px_rgba(61,59,59,0.2)] transition-colors duration-300 ease-out active:translate-y-[1px] ${isLeaving ? "bg-forest-300 opacity-80" : "bg-rose-300"}`}
             >
               Back To Home
             </button>
           </div>
         ) : (
-        <form className="mx-auto w-full max-w-[500px]" onSubmit={handleSubmit}>
-          <div className="rounded-[32px] bg-[rgba(255,250,254,0.01)] p-8 shadow-[0_4px_4px_rgba(61,59,59,0.2)]">
-            <div className="space-y-6">
-            <label className="block text-left">
-              <span className="mb-[3px] block text-[18px] font-normal leading-normal text-[#033438]">
-                Card Number
-              </span>
+          <form className="mx-auto w-full" onSubmit={handleSubmit}>
+            <div className="rounded-[32px] bg-[rgba(255,250,254,0.01)] p-8 shadow-[0_4px_4px_rgba(61,59,59,0.2)]">
+              <div className="space-y-6">
+                <label className="block text-left">
+                  <span className="mb-[3px] ml-[8px] text-label text-forest-300">
+                    Card Number
+                  </span>
 
-              <div className="flex h-[56px] items-center gap-2 rounded-[16px] border-[1.5px] border-[#04191d] bg-[#fffafe] px-4 py-3 transition-colors hover:border-[#033438]">
-                <span className="flex h-8 w-8 items-center justify-center text-[#033438]">{cardIcon}</span>
-                <input
-                  type="text"
-                  value={cardNumber}
-                  onChange={(event) => setCardNumber(formatCardNumber(event.target.value))}
-                  className="h-full w-full bg-transparent text-[16px] text-[#033438] outline-none placeholder:text-[#828282]"
-                  placeholder="0000 0000 0000 0000"
-                  inputMode="numeric"
-                />
+                  <div className="flex h-[56px] items-center gap-2 rounded-[16px] border-[1.5px] border-forest-400 bg-rose-50 px-4 py-3 transition-colors hover:border-[#033438]">
+                    <span className="flex h-8 w-8 items-center justify-center text-forest-300 ">{cardIcon}</span>
+                    <input
+                      type="text"
+                      value={cardNumber}
+                      onChange={(event) => setCardNumber(formatCardNumber(event.target.value))}
+                      className="h-full w-full bg-transparent text-[16px] text-forest-300 outline-none placeholder:text-silver-200"
+                      placeholder="0000 0000 0000 0000"
+                      inputMode="numeric"
+                    />
+                  </div>
+                </label>
+
+                <div className="grid grid-cols-2 gap-8">
+                  <label className="block text-left">
+                    <span className="mb-[3px] text-label text-forest-300">
+                      Expiry Date
+                    </span>
+
+                    <input
+                      type="text"
+                      value={expiry}
+                      onChange={(event) => setExpiry(formatExpiry(event.target.value))}
+                      className="h-[56px] w-full rounded-[16px] border-[1.5px] border-forest-400 bg-rose-50 px-6 py-3 text-[16px] text-forest-300 outline-none placeholder:text-silver-200"
+                      placeholder="MM/YY"
+                      inputMode="numeric"
+                    />
+                  </label>
+
+                  <label className="block text-left">
+                    <span className="mb-[3px] text-label text-forest-300">
+                      CVV
+                    </span>
+
+                    <input
+                      type="text"
+                      value={cvv}
+                      onChange={(event) => setCvv(event.target.value.replace(/\D/g, "").slice(0, 3))}
+                      className="h-[56px] w-full rounded-[16px] border-[1.5px] border-forest-400 bg-rose-50 px-6 py-3 text-[16px] text-forest-300 outline-none placeholder:text-silver-200"
+                      placeholder="●●●"
+                      maxLength={3}
+                      inputMode="numeric"
+                    />
+                  </label>
+                </div>
+
+                <label className="flex cursor-pointer items-center gap-2 text-label text-forest-300">
+                  <input
+                    type="checkbox"
+                    checked={savePayment}
+                    onChange={(event) => setSavePayment(event.target.checked)}
+                    className="sr-only"
+                  />
+                  <PaymentCheckbox checked={savePayment} />
+                  <span>Save this payment method</span>
+                </label>
               </div>
-            </label>
-
-            <div className="grid grid-cols-2 gap-4 sm:gap-8">
-              <label className="block text-left">
-                <span className="mb-[3px] block text-[18px] font-normal leading-normal text-[#033438]">
-                  Expiry Date
-                </span>
-
-                <input
-                  type="text"
-                  value={expiry}
-                  onChange={(event) => setExpiry(formatExpiry(event.target.value))}
-                  className="h-[56px] w-full rounded-[16px] border-[1.5px] border-[#04191d] bg-[#fffafe] px-6 py-3 text-[16px] text-[#033438] outline-none placeholder:text-[#828282]"
-                  placeholder="MM/YY"
-                  inputMode="numeric"
-                />
-              </label>
-
-              <label className="block text-left">
-                <span className="mb-[3px] block text-[18px] font-normal leading-normal text-[#033438]">
-                  CVV
-                </span>
-
-                <input
-                  type="password"
-                  value={cvv}
-                  onChange={(event) => setCvv(event.target.value.replace(/\D/g, "").slice(0, 4))}
-                  className="h-[56px] w-full rounded-[16px] border-[1.5px] border-[#04191d] bg-[#fffafe] px-6 py-3 text-[16px] tracking-[0.18em] text-[#033438] outline-none placeholder:text-[#828282]"
-                  placeholder="•••"
-                  maxLength={4}
-                  inputMode="numeric"
-                />
-              </label>
             </div>
 
-            <label className="flex items-center gap-2 text-[18px] font-normal text-[#033438]">
-              <input
-                type="checkbox"
-                checked={savePayment}
-                onChange={(event) => setSavePayment(event.target.checked)}
-                className="h-6 w-6 accent-[#b3158e]"
-              />
-              <span>Save this payment method</span>
-            </label>
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            className={`mt-8 flex h-[61px] w-full items-center justify-center rounded-[27px] border-0 text-[18px] font-semibold shadow-[0_2px_2px_rgba(61,59,59,0.2)] transition-colors duration-300 ease-out active:translate-y-[1px] ${paymentState === "pressed" ? "bg-[#42686b] text-white hover:bg-[#033438]" : "bg-[#fffafe] text-[#033438] hover:bg-[#033438] hover:text-[#fffafe]"}`}
-          >
-            Pay Now
-          </button>
-
-          <div className="mt-3 text-center">
             <button
-              type="button"
-              className="mx-auto flex items-center justify-center gap-2 text-[13px] font-normal text-[#828282] transition hover:text-[#033438]"
+              type="submit"
+              className={`text-medium-button font-semibold! mt-12 flex h-[61px] w-full items-center justify-center rounded-[27px] border-0 text-[18px] font-semibold shadow-[0_2px_2px_rgba(61,59,59,0.2)] transition-colors duration-300 ease-out active:translate-y-[1px] ${paymentState === "pressed" ? "bg-forest-300 text-rose-50" : "bg-rose-50 text-forest-300 hover:bg-forest-300/80 hover:text-rose-50"}`}
             >
-              <span aria-hidden="true">&larr;</span>
-              Back
+              Pay Now
             </button>
-          </div>
-        </form>
+
+            <div className="mt-12 text-center">
+              <button
+                type="button"
+                className="mx-auto flex items-center justify-center gap-2 text-small font-normal text-silver-200 transition hover:text-forest-300"
+              >
+                <img src={back}></img>
+                Back
+              </button>
+            </div>
+          </form>
         )}
       </div>
     </div>
