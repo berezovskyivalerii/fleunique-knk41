@@ -164,7 +164,7 @@ function Progress({ step }: { step: 1 | 2 | 3 | 4 }) {
   const items = ["Plan", "Your Info", "Password"] as const;
 
   return (
-    <div className="mx-auto flex h-8 w-full max-w-[326px] items-center text-[14px] font-normal leading-none text-silver-200 sm:max-w-[400px] sm:text-[13px]">
+    <div className="mx-auto flex h-8 w-full max-w-[326px] items-center text-[14px] font-normal leading-none text-silver-200 md:max-w-[400px] md:text-[13px]">
       {items.map((label, index) => {
         const number = (index + 1) as 1 | 2 | 3;
         const done = number < step;
@@ -176,7 +176,7 @@ function Progress({ step }: { step: 1 | 2 | 3 | 4 }) {
               className={`flex shrink-0 items-center gap-[6px] ${active ? "text-forest-100" : ""}`}
             >
               <span
-                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-[1.5px] text-[11px] sm:border-2 sm:text-[13px] ${
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-[1.5px] text-[11px] md:border-2 md:text-[13px] ${
                   done
                     ? "border-forest-100 bg-forest-100 text-white"
                     : active
@@ -189,7 +189,7 @@ function Progress({ step }: { step: 1 | 2 | 3 | 4 }) {
               <span className="whitespace-nowrap">{label}</span>
             </div>
             {index < items.length - 1 && (
-              <span className="mx-1 h-[2px] w-4 shrink-0 bg-silver-100 sm:mx-3 sm:w-auto sm:min-w-4 sm:flex-1" />
+              <span className="mx-1 h-[2px] w-4 shrink-0 bg-silver-100 md:mx-3 md:w-auto md:min-w-4 md:flex-1" />
             )}
           </div>
         );
@@ -227,11 +227,11 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-[4px] ml-2 block text-[16px] font-normal leading-none sm:text-[18px]">
+      <span className="mb-[4px] ml-2 block text-[16px] font-normal leading-none md:text-[18px]">
         {label}
       </span>
       <div
-        className={`flex h-[56px] items-center gap-2 rounded-[16px] border-[1.5px] px-4 text-forest-300 transition-[border-color,box-shadow,background-color] duration-200 sm:h-[56px] sm:rounded-[16px] sm:px-4 ${
+        className={`flex h-[56px] items-center gap-2 rounded-[16px] border-[1.5px] px-4 text-forest-300 transition-[border-color,box-shadow,background-color] duration-200 md:h-[56px] md:rounded-[16px] md:px-4 ${
           invalid
             ? "border-rose-300 bg-rose-100/10 shadow-[0_0_0_2px_rgba(179,21,142,0.08)]"
             : "border-forest-400 focus-within:border-forest-100"
@@ -257,7 +257,7 @@ function Field({
 
 function MobileAuthFooter() {
   return (
-    <footer className="-mx-8 mt-16 w-[calc(100%+4rem)] bg-forest-400 px-4 pb-9 pt-4 text-rose-50 sm:hidden">
+    <footer className="-mx-8 mt-16 w-[calc(100%+4rem)] bg-forest-400 px-4 pb-9 pt-4 text-rose-50 md:hidden">
       <div className="mx-auto w-full max-w-[358px]">
         <div className="flex flex-col gap-2">
           <img src={logo} alt="Fleunique" className="h-auto w-[160px]" />
@@ -519,11 +519,11 @@ export function AuthModal({
   };
 
   const modalHeight =
-    mode === "login" ? "sm:min-h-[443px]" : "sm:min-h-[587px]";
+    mode === "login" ? "md:min-h-[443px]" : "md:min-h-[587px]";
 
   return (
     <div
-      className="auth-modal-scroll fixed left-0 top-0 z-40 flex h-dvh w-screen max-w-none items-start justify-center overflow-y-auto bg-rose-50 p-0 sm:z-[100] sm:items-center sm:bg-black/65 sm:p-5"
+      className="auth-modal-scroll fixed left-0 top-0 z-40 flex h-dvh w-screen max-w-none items-start justify-center overflow-y-auto bg-rose-50 p-0 md:z-[100] md:items-center md:bg-black/65 md:p-5"
       role="dialog"
       aria-modal="true"
       aria-label={mode === "login" ? "Log in" : "Sign up"}
@@ -532,25 +532,25 @@ export function AuthModal({
       }}
     >
       <div
-        className={`relative flex min-h-dvh w-full flex-col bg-rose-50 px-8 pb-0 pt-[120px] font-montserrat text-forest-300 sm:min-h-0 sm:w-[736px] sm:rounded-[32px] sm:p-8 ${modalHeight}`}
+        className={`relative flex min-h-dvh w-full flex-col bg-rose-50 px-8 pb-0 pt-[120px] font-montserrat text-forest-300 md:min-h-0 md:w-[736px] md:rounded-[32px] md:p-8 ${modalHeight}`}
         onMouseDown={(event) => event.stopPropagation()}
       >
         <button
           type="button"
           onClick={handleClose}
           aria-label="Close"
-          className="absolute right-6 top-6 z-10 hidden text-forest-300 transition-opacity hover:opacity-60 sm:right-8 sm:top-8 sm:block"
+          className="absolute right-6 top-6 z-10 hidden text-forest-300 transition-opacity hover:opacity-60 md:right-8 md:top-8 md:block"
         >
           <CloseIcon />
         </button>
 
         {mode === "login" ? (
-          <div className="mx-auto flex w-full max-w-[672px] flex-1 flex-col sm:justify-center">
-            <h2 className="mb-7 text-center font-pt-sans text-[30px] font-bold uppercase leading-none sm:text-[36px]">
+          <div className="mx-auto flex w-full max-w-[672px] flex-1 flex-col md:justify-center">
+            <h2 className="mb-7 text-center font-pt-sans text-[30px] font-bold uppercase leading-none md:text-[36px]">
               Log In
             </h2>
 
-            <div className="mx-auto w-full max-w-[294px] space-y-4 sm:max-w-[608px]">
+            <div className="mx-auto w-full max-w-[294px] space-y-4 md:max-w-[608px]">
               <Field
                 label="E-mail*"
                 type="email"
@@ -632,18 +632,18 @@ export function AuthModal({
           </div>
         ) : (
           <div className="flex flex-1 flex-col">
-            <div className="px-0 sm:pr-8">
+            <div className="px-0 md:pr-8">
               <Progress step={signupStep} />
             </div>
 
             {signupStep === 1 && (
               <div className="flex flex-1 flex-col">
-                <h2 className="mt-[40px] text-center font-pt-sans text-[30px] font-bold uppercase leading-none sm:mt-[54px] sm:text-[36px]">
+                <h2 className="mt-[40px] text-center font-pt-sans text-[30px] font-bold uppercase leading-none md:mt-[54px] md:text-[36px]">
                   Sign Up
                 </h2>
 
-                <div className="mx-auto mt-8 w-full max-w-[294px] sm:mt-[54px] sm:max-w-[608px]">
-                  <p className="mb-4 text-justify text-[16px] font-normal leading-[16px] text-forest-200 sm:h-[40px] sm:leading-[20px]">
+                <div className="mx-auto mt-8 w-full max-w-[294px] md:mt-[54px] md:max-w-[608px]">
+                  <p className="mb-4 text-justify text-[16px] font-normal leading-[16px] text-forest-200 md:h-[40px] md:leading-[20px]">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
                     do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua.
@@ -657,10 +657,10 @@ export function AuthModal({
                     >
                       <UserIcon />
                       <span>
-                        <span className="block text-[16px] font-semibold leading-none sm:text-[18px]">
+                        <span className="block text-[16px] font-semibold leading-none md:text-[18px]">
                           Personal Plan
                         </span>
-                        <span className="mt-1 hidden text-[14px] text-silver-200 sm:block">
+                        <span className="mt-1 hidden text-[14px] text-silver-200 md:block">
                           Perfect for personal bouquet orders and gifts.
                         </span>
                       </span>
@@ -673,10 +673,10 @@ export function AuthModal({
                     >
                       <CorporateIcon />
                       <span>
-                        <span className="block text-[16px] font-semibold leading-none sm:text-[18px]">
+                        <span className="block text-[16px] font-semibold leading-none md:text-[18px]">
                           Corporate Plan
                         </span>
-                        <span className="mt-1 hidden text-[14px] text-silver-200 sm:block">
+                        <span className="mt-1 hidden text-[14px] text-silver-200 md:block">
                           For business orders and wholesale floral services.
                         </span>
                       </span>
@@ -684,11 +684,11 @@ export function AuthModal({
                   </div>
                 </div>
 
-                <div className="mx-auto mt-auto w-full max-w-[326px] pt-8 sm:max-w-[608px]">
+                <div className="mx-auto mt-auto w-full max-w-[326px] pt-8 md:max-w-[608px]">
                   <button
                     type="button"
                     onClick={() => setSignupStep(2)}
-                    className="mx-auto flex h-[44px] w-[205px] items-center justify-center gap-3 rounded-full bg-rose-100 text-[16px] font-semibold shadow-[0_3px_5px_rgba(0,0,0,0.12)] sm:h-[48px] sm:w-full sm:text-[18px]"
+                    className="mx-auto flex h-[44px] w-[205px] items-center justify-center gap-3 rounded-full bg-rose-100 text-[16px] font-semibold shadow-[0_3px_5px_rgba(0,0,0,0.12)] md:h-[48px] md:w-full md:text-[18px]"
                   >
                     Continue <ArrowRightIcon />
                   </button>
@@ -708,10 +708,10 @@ export function AuthModal({
 
             {signupStep === 2 && (
               <div className="flex flex-1 flex-col">
-                <h2 className="mt-[40px] text-center font-pt-sans text-[30px] font-bold uppercase leading-none sm:mt-[54px] sm:text-[36px]">
+                <h2 className="mt-[40px] text-center font-pt-sans text-[30px] font-bold uppercase leading-none md:mt-[54px] md:text-[36px]">
                   Sign Up
                 </h2>
-                <div className="mx-auto mt-7 w-full max-w-[326px] space-y-4 sm:mt-10 sm:max-w-[608px]">
+                <div className="mx-auto mt-7 w-full max-w-[326px] space-y-4 md:mt-10 md:max-w-[608px]">
                   <Field
                     label="Full Name*"
                     placeholder="John Doe"
@@ -748,7 +748,7 @@ export function AuthModal({
                   />
                 </div>
 
-                <div className="mx-auto mt-auto w-full max-w-[326px] pt-8 sm:max-w-[608px]">
+                <div className="mx-auto mt-auto w-full max-w-[326px] pt-8 md:max-w-[608px]">
                   <button
                     type="button"
                     disabled={!fullName.trim() || !emailIsValid(email)}
@@ -758,7 +758,7 @@ export function AuthModal({
                       if (fullName.trim() && emailIsValid(email))
                         setSignupStep(3);
                     }}
-                    className="mx-auto flex h-[44px] w-[205px] items-center justify-center gap-3 rounded-full bg-rose-100 text-[16px] font-semibold shadow-[0_3px_5px_rgba(0,0,0,0.12)] disabled:cursor-not-allowed disabled:opacity-50 sm:h-[48px] sm:w-full sm:text-[18px]"
+                    className="mx-auto flex h-[44px] w-[205px] items-center justify-center gap-3 rounded-full bg-rose-100 text-[16px] font-semibold shadow-[0_3px_5px_rgba(0,0,0,0.12)] disabled:cursor-not-allowed disabled:opacity-50 md:h-[48px] md:w-full md:text-[18px]"
                   >
                     Continue <ArrowRightIcon />
                   </button>
@@ -775,10 +775,10 @@ export function AuthModal({
 
             {signupStep === 3 && (
               <div className="flex flex-1 flex-col">
-                <h2 className="mt-[40px] text-center font-pt-sans text-[30px] font-bold uppercase leading-none sm:mt-[54px] sm:text-[36px]">
+                <h2 className="mt-[40px] text-center font-pt-sans text-[30px] font-bold uppercase leading-none md:mt-[54px] md:text-[36px]">
                   Sign Up
                 </h2>
-                <div className="mx-auto mt-7 w-full max-w-[326px] space-y-4 sm:mt-14 sm:max-w-[608px]">
+                <div className="mx-auto mt-7 w-full max-w-[326px] space-y-4 md:mt-14 md:max-w-[608px]">
                   <Field
                     label="Password*"
                     type={showPassword ? "text" : "password"}
@@ -836,7 +836,7 @@ export function AuthModal({
                   </div>
                 )}
 
-                <div className="mx-auto mt-auto w-full max-w-[326px] pt-8 sm:max-w-[608px]">
+                <div className="mx-auto mt-auto w-full max-w-[326px] pt-8 md:max-w-[608px]">
                   <button
                     type="button"
                     disabled={
@@ -845,7 +845,7 @@ export function AuthModal({
                       isLoading
                     }
                     onClick={handleRegisterSubmit}
-                    className="mx-auto flex h-[44px] w-[205px] items-center justify-center rounded-full bg-rose-100 text-[16px] font-semibold shadow-[0_3px_5px_rgba(0,0,0,0.12)] disabled:cursor-not-allowed disabled:opacity-50 sm:h-[48px] sm:w-full sm:text-[18px]"
+                    className="mx-auto flex h-[44px] w-[205px] items-center justify-center rounded-full bg-rose-100 text-[16px] font-semibold shadow-[0_3px_5px_rgba(0,0,0,0.12)] disabled:cursor-not-allowed disabled:opacity-50 md:h-[48px] md:w-full md:text-[18px]"
                   >
                     {isLoading ? "Processing..." : "Complete"}
                   </button>
@@ -863,13 +863,13 @@ export function AuthModal({
 
             {signupStep === 4 && (
               <div className="flex flex-1 flex-col">
-                <div className="mx-auto w-full max-w-[324px] pt-[88px] sm:max-w-[608px] sm:pt-[96px]">
-                  <h2 className="mx-auto w-[267px] text-center font-pt-sans text-[36px] font-bold uppercase leading-[36px] sm:w-auto">
+                <div className="mx-auto w-full max-w-[324px] pt-[88px] md:max-w-[608px] md:pt-[96px]">
+                  <h2 className="mx-auto w-[267px] text-center font-pt-sans text-[36px] font-bold uppercase leading-[36px] md:w-auto">
                     <span className="block">Thanks</span>
                     <span className="block">for signing up!</span>
                   </h2>
 
-                  <p className="mt-6 text-justify text-[16px] font-normal leading-[16px] text-forest-300 sm:text-[18px] sm:leading-[18px]">
+                  <p className="mt-6 text-justify text-[16px] font-normal leading-[16px] text-forest-300 md:text-[18px] md:leading-[18px]">
                     Welcome to the Fleunique family! Your account is ready,
                     unlocking seamless orders and playful perks. Remember that
                     special promo codes will appear in your profile after 5
