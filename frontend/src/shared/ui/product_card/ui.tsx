@@ -1,7 +1,7 @@
 interface ProductCardProps {
   name: string;
   type: string;
-  price: number;
+  price: number | string;
   image: string;
   onAddToCart: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -13,6 +13,11 @@ export function ProductCard({
   image,
   onAddToCart,
 }: ProductCardProps) {
+  const numericPrice =
+    typeof price === "number"
+      ? Math.round(price)
+      : Math.round(parseFloat(price.replace(/[^0-9.-]+/g, "")) || 0);
+
   return (
     <div className="relative w-[158px] h-[253px] lg:w-[198px] lg:h-[316px] rounded-[16px] overflow-hidden flex flex-col justify-end shadow-[0_2px_8px_2px_color-mix(in_srgb,var(--color-black-50)_20%,transparent)] hover:shadow-[0_2px_16px_2px_var(--color-rose-300)] transition-shadow duration-[120ms] ease-[cubic-bezier(0.36,0,0.66,-0.56)]">
       <img
@@ -38,7 +43,7 @@ export function ProductCard({
             {name}
           </span>
           <span className="bg-rose-100 text-black-50 text-[12px] font-montserrat font-medium px-3.5 py-1 rounded-full shrink-0">
-            {price}
+            ${numericPrice}
           </span>
         </div>
 

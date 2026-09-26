@@ -75,7 +75,7 @@ export function ProductPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-white overflow-hidden pt-24">
+    <div className="relative min-h-screen flex flex-col bg-white overflow-hidden">
       <div className="relative z-10 flex flex-col flex-grow w-full">
         {/* ФОНОВЫЕ КАРТИНКИ */}
         <img
@@ -101,22 +101,21 @@ export function ProductPage() {
         <Header />
 
         {/* ОСНОВНОЙ КОНТЕНТ (Изменено направление для планшета: flex-col, для десктопа: lg:flex-row) */}
-        <main className="flex-grow flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 md:gap-[32px] px-4 md:px-[12px] min-[1440px]:px-[160px] py-8 md:py-16 w-full max-w-[1120px] mx-auto mb-[64px] md:mb-[128px]">
+        <main className="flex-grow flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-[32px] px-4 md:px-0 min-[1440px]:px-[160px] pb-14 pt-26 lg:pt-40 w-full md:max-w-[680px] lg:max-w-[1440px] mx-auto md:mb-[64px] lg:mb-[128px]">
           {/* БЛОК КАРТИНКИ (строго 332x332 на планшете, 544x544 на десктопе, не сжимается) */}
-          <div className="shrink-0 w-full md:w-[332px] lg:w-[544px] flex justify-center">
+          <div className="shrink-0 w-[332px] lg:w-[544px] flex justify-center">
             <img
               src={`http://localhost:8000${product.images[0]?.image_url}`}
               alt="Bouquet"
-              className="w-full h-auto md:w-[332px] md:h-[332px] lg:w-[544px] lg:h-[544px] object-cover rounded-2xl shadow-sm"
+              className="w-full w-[332px] h-[332px] lg:w-[544px] lg:h-[544px] object-cover rounded-2xl shadow-sm"
             />
           </div>
 
           {/* БЛОК ИНФОРМАЦИИ И КНОПОК */}
-          {/* Добавлен shrink-0: блок больше не будет сжиматься меньше 544px на десктопе */}
           <div className="shrink-0 w-full lg:w-[544px] flex flex-col justify-center gap-6 lg:gap-8">
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center">
-                <h2 className="font-bold text-4xl uppercase text-[#033438] font-pt-sans">
+                <h2 className="font-bold text-headline-3 md:text-headline-2 uppercase text-forest-300 font-pt-sans">
                   {product.name}
                 </h2>
                 <Badge
@@ -126,17 +125,17 @@ export function ProductPage() {
                 </Badge>
               </div>
 
-              <div className="text-2xl font-pt-sans font-bold text-[#B3158E]">
+              <div className="text-headline-3 font-pt-sans font-bold text-rose-300">
                 ${Number(product.price).toFixed(2)}
               </div>
 
-              <p className="text-[#033438] font-montserrat text-[16px] leading-relaxed">
+              <p className="text-forest-300 font-montserrat text-headline-5 leading-relaxed">
                 {product.description}
               </p>
             </div>
 
             <div className="flex flex-col gap-3">
-              <div className="text-[#033438] font-montserrat text-lg">
+              <div className="text-forest-300 font-montserrat text-headline-4">
                 Quantity:
               </div>
 
@@ -149,7 +148,7 @@ export function ProductPage() {
 
             {/* БЛОК ДЕЙСТВИЙ */}
             <div className="flex flex-col gap-6 md:gap-16 justify-between mt-4 md:mt-0 lg:mt-auto">
-              <div className="flex w-full gap-4 md:gap-7">
+              <div className="flex w-full gap-6 md:gap-8">
                 <Button
                   variant="primary"
                   onClick={handleAddToCart}
@@ -169,13 +168,13 @@ export function ProductPage() {
               </div>
 
               <div className="flex justify-between items-center">
-                <p className="text-[11px] text-[#828282] font-montserrat">
+                <p className="text-[11px] text-silver-200 font-montserrat">
                   Delivery And Payment
                 </p>
                 <img
                   src={share}
                   alt="Share"
-                  className="w-5 h-5 cursor-pointer hover:opacity-70"
+                  className="w-6 h-6 cursor-pointer hover:opacity-70"
                 />
               </div>
             </div>
