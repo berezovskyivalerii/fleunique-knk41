@@ -1,4 +1,8 @@
 import { Header } from "@/widgets/header";
+import grpinky1 from "@/shared/assets/gr_pinky1_product.png";
+import grblue1 from "@/shared/assets/gr_blue1_product.png";
+import grblue2 from "@/shared/assets/gr_blue2_product.png";
+import grpinky2 from "@/shared/assets/gr_pinky2_product.png";
 import { Footer } from "@/widgets/footer";
 import { Counter } from "@/shared/ui/counter";
 import { Button } from "@/shared/ui/button";
@@ -7,46 +11,6 @@ import { useParams, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import share from "@/shared/assets/share_icon_product.png";
 import { useCart } from "@/context/CartContext";
-
-const backgroundBlobs = [
-  {
-    width: 651.4,
-    height: 465.5,
-    angle: 29.62,
-    opacity: 0.5,
-    top: -66.6,
-    left: 1400.3,
-    background:
-      "radial-gradient(50% 50% at 50% 50%, #04C6D1 0%, rgba(4, 198, 209, 0) 100%)",
-  },
-  {
-    width: 330.5,
-    height: 287.2,
-    angle: 131.18,
-    opacity: 0.5,
-    top: 168.9,
-    left: -22.0,
-    background: "radial-gradient(50% 50% at 50% 50%, #FBB2EA 0%, #F04BC9 100%)",
-  },
-  {
-    width: 531.2,
-    height: 461.6,
-    angle: 131.18,
-    opacity: 0.5,
-    top: 725.0,
-    left: -80,
-    background: "radial-gradient(50% 50% at 50% 50%, #04C6D1 0%, #FCFCFC 100%)",
-  },
-  {
-    width: 651.4,
-    height: 465.5,
-    angle: -97.41,
-    opacity: 0.5,
-    top: 747.1,
-    left: 1215.3,
-    background: "radial-gradient(50% 50% at 50% 50%, #FBB2EA 0%, #F04BC9 100%)",
-  },
-];
 
 interface ProductDetail {
   id: number;
@@ -112,42 +76,44 @@ export function ProductPage() {
 
   return (
     <div className="relative min-h-screen flex flex-col bg-white overflow-hidden pt-24">
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        {backgroundBlobs.map((blob, index) => (
-          <div
-            key={index}
-            style={{
-              position: "absolute",
-              width: `${blob.width}px`,
-              height: `${blob.height}px`,
-              transform: `rotate(${blob.angle}deg)`,
-              opacity: blob.opacity,
-              top: `${blob.top}px`,
-              left: `${blob.left}px`,
-              background: blob.background,
-            }}
-          />
-        ))}
-
-        <div
-          className="absolute inset-0"
-          style={{ backdropFilter: "blur(200px)" }}
-        ></div>
-      </div>
-
       <div className="relative z-10 flex flex-col flex-grow w-full">
+        {/* ФОНОВЫЕ КАРТИНКИ */}
+        <img
+          src={grpinky1}
+          alt=""
+          className="absolute top-0 left-[0%] w-[400px] pointer-events-none -z-20 object-contain"
+        />
+        <img
+          src={grblue1}
+          alt=""
+          className="absolute top-[-10%] right-[0%] w-[500px] pointer-events-none -z-20 object-contain"
+        />
+        <img
+          src={grpinky2}
+          alt=""
+          className="absolute bottom-[0%] right-[0%] w-[900px] pointer-events-none -z-20 object-contain"
+        />
+        <img
+          src={grblue2}
+          alt=""
+          className="absolute bottom-[-19%] left-[0%] w-[600px] md:w-[900px] pointer-events-none -z-10 object-contain"
+        />
         <Header />
 
-        <main className="flex-grow flex justify-center gap-[32px] px-10 xl:px-[160px] py-16 w-full max-w-[1440px] mx-auto mb-[128px]">
-          <div className="shrink-0">
+        {/* ОСНОВНОЙ КОНТЕНТ (Изменено направление для планшета: flex-col, для десктопа: lg:flex-row) */}
+        <main className="flex-grow flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8 md:gap-[32px] px-4 md:px-[12px] min-[1440px]:px-[160px] py-8 md:py-16 w-full max-w-[1120px] mx-auto mb-[64px] md:mb-[128px]">
+          {/* БЛОК КАРТИНКИ (строго 332x332 на планшете, 544x544 на десктопе, не сжимается) */}
+          <div className="shrink-0 w-full md:w-[332px] lg:w-[544px] flex justify-center">
             <img
               src={`http://localhost:8000${product.images[0]?.image_url}`}
               alt="Bouquet"
-              className="w-[500px] xl:w-[544px] xl:h-[544px] object-cover rounded-2xl shadow-sm"
+              className="w-full h-auto md:w-[332px] md:h-[332px] lg:w-[544px] lg:h-[544px] object-cover rounded-2xl shadow-sm"
             />
           </div>
 
-          <div className="w-[544px] flex flex-col justify-center gap-6">
+          {/* БЛОК ИНФОРМАЦИИ И КНОПОК */}
+          {/* Добавлен shrink-0: блок больше не будет сжиматься меньше 544px на десктопе */}
+          <div className="shrink-0 w-full lg:w-[544px] flex flex-col justify-center gap-6 lg:gap-8">
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center">
                 <h2 className="font-bold text-4xl uppercase text-[#033438] font-pt-sans">
@@ -160,7 +126,6 @@ export function ProductPage() {
                 </Badge>
               </div>
 
-              {/* Форматируем цену с $ */}
               <div className="text-2xl font-pt-sans font-bold text-[#B3158E]">
                 ${Number(product.price).toFixed(2)}
               </div>
@@ -182,15 +147,14 @@ export function ProductPage() {
               />
             </div>
 
-            <div className="flex flex-col gap-16 justify-between">
-              <div className="flex gap-7">
+            {/* БЛОК ДЕЙСТВИЙ */}
+            <div className="flex flex-col gap-6 md:gap-16 justify-between mt-4 md:mt-0 lg:mt-auto">
+              <div className="flex w-full gap-4 md:gap-7">
                 <Button
                   variant="primary"
                   onClick={handleAddToCart}
                   disabled={!product.is_active}
-                  className={
-                    !product.is_active ? "opacity-50 cursor-not-allowed" : ""
-                  }
+                  className={`flex-1 w-full ${!product.is_active ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   Add To Cart
                 </Button>
@@ -198,9 +162,7 @@ export function ProductPage() {
                 <Button
                   variant="outline"
                   disabled={!product.is_active}
-                  className={
-                    !product.is_active ? "opacity-50 cursor-not-allowed" : ""
-                  }
+                  className={`flex-1 w-full ${!product.is_active ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   Buy Now
                 </Button>
