@@ -102,7 +102,6 @@ export function ProductPage() {
 
         {/* ОСНОВНОЙ КОНТЕНТ (Изменено направление для планшета: flex-col, для десктопа: lg:flex-row) */}
         <main className="flex-grow flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-[32px] px-4 md:px-0 min-[1440px]:px-[160px] pb-14 pt-26 lg:pt-40 w-full md:max-w-[680px] lg:max-w-[1440px] mx-auto md:mb-[64px] lg:mb-[128px]">
-          {/* БЛОК КАРТИНКИ (строго 332x332 на планшете, 544x544 на десктопе, не сжимается) */}
           <div className="shrink-0 w-[332px] lg:w-[544px] flex justify-center">
             <img
               src={`http://localhost:8000${product.images[0]?.image_url}`}
@@ -147,8 +146,8 @@ export function ProductPage() {
             </div>
 
             {/* БЛОК ДЕЙСТВИЙ */}
-            <div className="flex flex-col gap-6 md:gap-16 justify-between mt-4 md:mt-0 lg:mt-auto">
-              <div className="flex w-full gap-6 md:gap-8">
+            <div className="flex flex-col gap-6 md:gap-8 lg:gap-16 justify-between mt-4 md:mt-0 lg:mt-auto">
+              <div className="flex w-full gap-5 md:gap-8">
                 <Button
                   variant="primary"
                   onClick={handleAddToCart}
