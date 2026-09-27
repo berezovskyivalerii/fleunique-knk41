@@ -47,8 +47,8 @@ export interface PurchaseCardData {
   imageLayers?: [string, string];
 }
 
-// Поставьте true, чтобы протестировать адаптив пустой страницы без карточек
-const SHOW_EMPTY_STATE = false;
+// temporary flag to force cards generation instead of fetching
+const SHOW_EMPTY_STATE = true;
 
 const statusMap: Record<BackendOrder["status"], CardStatus> = {
   pending: "Confirmed",
@@ -64,7 +64,7 @@ const bouquetLayersByName: Record<string, [string, string]> = {
   "Hestia, Hermes": [bouquetBase, hestiaBouquet],
 };
 
-// Подключенные карточки напрямую из макета Figma
+// mock data
 export const DEFAULT_PURCHASES: PurchaseCardData[] = [
   {
     id: 67,
@@ -120,29 +120,29 @@ const statusStyles: Record<CardStatus, string> = {
   Confirmed: "border-info text-info",
   "In Progress": "border-warning-100 text-warning-100",
   Canceled:
-    "border-silver-200 text-silver-200 md:border-silver-100 md:text-silver-100 lg:border-silver-200 lg:text-silver-200",
+    "border-silver-200 text-silver-200",
   Delivered: "border-success text-success",
 };
 
 const dividerStyles: Record<CardStatus, string> = {
-  Confirmed: "bg-silver-200 md:bg-silver-100 lg:bg-silver-200",
+  Confirmed: "bg-silver-200",
   "In Progress": "bg-silver-200",
-  Canceled: "bg-silver-200 md:bg-silver-100 lg:bg-silver-200",
-  Delivered: "bg-silver-200 md:bg-silver-100 lg:bg-silver-200",
+  Canceled: "bg-silver-200",
+  Delivered: "bg-silver-200",
 };
 
 const dateStyles: Record<CardStatus, string> = {
-  Confirmed: "text-silver-200 md:text-silver-100 lg:text-silver-200",
+  Confirmed: "text-silver-200",
   "In Progress": "text-silver-200",
-  Canceled: "text-silver-200 md:text-silver-100 lg:text-silver-200",
-  Delivered: "text-silver-200 md:text-silver-100 lg:text-silver-200",
+  Canceled: "text-silver-200",
+  Delivered: "text-silver-200",
 };
 
 const orderIdStyles: Record<CardStatus, string> = {
-  Confirmed: "text-black-50 md:text-silver-200 lg:text-black-50",
+  Confirmed: "text-black-50",
   "In Progress": "text-black-50",
-  Canceled: "text-black-50 md:text-silver-200 lg:text-black-50",
-  Delivered: "text-black-50 md:text-silver-200 lg:text-black-50",
+  Canceled: "text-black-50",
+  Delivered: "text-black-50",
 };
 
 const primaryActionLabels: Record<CardStatus, string> = {
@@ -160,103 +160,100 @@ const secondaryActionLabels: Record<CardStatus, string[]> = {
 };
 
 export const PurchaseCard = ({ order }: { order: PurchaseCardData }) => (
-  <article className="flex w-full min-w-0 flex-col items-start justify-start gap-2.5 rounded-2xl bg-rose-50 px-4 py-3 md:min-h-36 lg:w-[722px] lg:min-h-48 lg:px-6 lg:py-4">
-    <div className="flex w-full min-w-0 flex-col items-start justify-start gap-2">
-      <div className="inline-flex w-full min-w-0 items-center justify-start gap-1 overflow-hidden whitespace-nowrap md:w-auto md:justify-center md:gap-2.5">
-        <span
-          className={`flex shrink-0 items-center justify-center rounded-xl border px-6 py-0.5 text-center font-montserrat text-xs font-normal ${statusStyles[order.status]}`}
-        >
-          {order.status}
-        </span>
-        <span
-          aria-hidden="true"
-          className={`h-4 w-px shrink-0 ${dividerStyles[order.status]}`}
-        />
-        <span
-          className={`shrink-0 font-montserrat text-xs font-normal ${dateStyles[order.status]}`}
-        >
-          {order.date}
-        </span>
-        <span
-          className={`min-w-0 truncate font-montserrat text-xs font-normal ${orderIdStyles[order.status]}`}
-        >
-          {order.orderId}
-        </span>
-      </div>
+  <div className="flex w-full min-w-0 flex-col items-start justify-start gap-2 bg-rose-50 rounded-[16px] px-[16px] py-[12px] lg:px-[24px] lg:py-[16px]">
+    <div className="inline-flex w-full items-center justify-start gap-[8px] md:gap-[10px] overflow-hidden whitespace-nowrap">
+      <span
+        className={`flex shrink-0 items-center justify-center rounded-[12px] border px-6 py-0.5 text-center font-montserrat text-helper font-normal ${statusStyles[order.status]}`}
+      >
+        {order.status}
+      </span>
+      <span
+        aria-hidden="true"
+        className={`h-4 w-px shrink-0 ${dividerStyles[order.status]}`}
+      />
+      <span
+        className={`shrink-0 font-montserrat text-helper font-normal ${dateStyles[order.status]}`}
+      >
+        {order.date}
+      </span>
+      <span
+        className={`min-w-0 truncate font-montserrat text-helper font-normal ${orderIdStyles[order.status]}`}
+      >
+        {order.orderId}
+      </span>
+    </div>
 
-      <div className="inline-flex w-full min-w-0 items-center justify-start gap-3 md:gap-12">
-        <div className="flex min-w-0 flex-1 items-center justify-start gap-3.5 lg:w-[465px] lg:flex-none">
-          <div className="relative size-24 shrink-0 overflow-hidden rounded-lg bg-rose-50 lg:size-32">
-            {order.imageLayers ? (
-              order.imageLayers.map((imageLayer) => (
-                <img
-                  key={imageLayer}
-                  src={imageLayer}
-                  alt=""
-                  aria-hidden="true"
-                  className="absolute inset-0 size-full rounded-lg object-cover"
-                />
-              ))
-            ) : (
+    <div className="inline-flex w-full items-center justify-start gap-3">
+      <div className="flex flex-1 items-center justify-start gap-[15px]">
+        <div className="relative size-[90px] shrink-0 overflow-hidden rounded-lg bg-rose-50 lg:size-32">
+          {order.imageLayers ? (
+            order.imageLayers.map((imageLayer) => (
               <img
-                src={order.imageUrl}
-                alt={order.title}
-                className="size-full rounded-lg object-cover"
+                key={imageLayer}
+                src={imageLayer}
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 size-full rounded-lg object-cover"
               />
-            )}
-          </div>
-
-          <div className="inline-flex min-w-0 flex-1 flex-col items-start justify-start gap-2 lg:w-80 lg:flex-none">
-            <div className="flex w-full flex-col items-start justify-start gap-1">
-              <h3 className="w-full break-words font-pt-sans text-base font-bold text-forest-300 md:truncate md:text-lg lg:w-80">
-                {order.title}
-              </h3>
-              <p className="hidden w-full font-montserrat text-xs font-normal text-forest-300 md:line-clamp-1 md:block lg:max-h-10 lg:w-80 lg:line-clamp-3">
-                {order.description}
-              </p>
-            </div>
-            <span className="self-stretch font-pt-sans text-base font-bold text-rose-300 md:text-lg">
-              ${Number(order.price).toFixed(0)}
-            </span>
-          </div>
+            ))
+          ) : (
+            <img
+              src={order.imageUrl}
+              alt={order.title}
+              className="size-full rounded-lg object-cover"
+            />
+          )}
         </div>
 
-        <div className="inline-flex w-32 shrink-0 flex-col items-start justify-center gap-2 md:w-40">
+        <div className="inline-flex min-w-0 flex-1 flex-col items-start justify-start gap-2">
+          <div className="flex w-full flex-col items-start justify-start gap-1">
+            <h3 className="w-full break-words font-pt-sans text-headline-5 font-bold text-forest-300 md:truncate md:text-headline-4">
+              {order.title}
+            </h3>
+            <p className="hidden w-full font-montserrat text-helper font-normal text-forest-300 md:line-clamp-1 lg:line-clamp-3">
+              {order.description}
+            </p>
+          </div>
+          <span className="font-pt-sans text-headline-5 font-bold text-rose-300 md:text-headline-4">
+            ${Number(order.price).toFixed(0)}
+          </span>
+        </div>
+      </div>
+
+      <div className="inline-flex shrink-0 flex-col items-start justify-center gap-2 max-w-[125px] md:max-w-[160px]">
+        <button
+          type="button"
+          className={`inline-flex cursor-pointer items-center justify-center overflow-hidden rounded-[27px] bg-rose-300 w-[125px] md:w-full md:px-[32px] py-2 text-center font-montserrat text-small-button font-medium capitalize text-rose-50 shadow-[0px_1px_1px_0px_rgba(61,59,59,0.20)] whitespace-nowrap${order.status === "Canceled" || order.status === "Delivered"
+            ? "lg:hidden"
+            : ""
+            }`}
+        >
+          {order.status === "Canceled" || order.status === "Delivered"
+            ? "track order"
+            : primaryActionLabels[order.status]}
+        </button>
+
+        {(order.status === "Canceled" || order.status === "Delivered") && (
           <button
             type="button"
-            className={`inline-flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-3xl bg-rose-300 px-4 py-2 text-center font-montserrat text-xs font-medium capitalize text-rose-50 shadow-[0px_1px_1px_0px_rgba(61,59,59,0.20)] whitespace-nowrap md:px-8 ${
-              order.status === "Canceled" || order.status === "Delivered"
-                ? "lg:hidden"
-                : ""
-            }`}
+            className="cursor-pointer items-center justify-center overflow-hidden rounded-[27px] bg-rose-300 w-[125px] md:w-full md:px-[32px] py-2 text-center font-montserrat text-small-button font-medium capitalize text-rose-50 shadow-[0px_1px_1px_0px_rgba(61,59,59,0.20)] whitespace-nowrap"
           >
-            {order.status === "Canceled" || order.status === "Delivered"
-              ? "track order"
-              : primaryActionLabels[order.status]}
+            {primaryActionLabels[order.status]}
           </button>
+        )}
 
-          {(order.status === "Canceled" || order.status === "Delivered") && (
-            <button
-              type="button"
-              className="hidden w-full cursor-pointer items-center justify-center overflow-hidden rounded-3xl bg-rose-300 px-8 py-2 text-center font-montserrat text-xs font-medium capitalize text-rose-50 shadow-[0px_1px_1px_0px_rgba(61,59,59,0.20)] whitespace-nowrap lg:inline-flex"
-            >
-              {primaryActionLabels[order.status]}
-            </button>
-          )}
-
-          {secondaryActionLabels[order.status].map((label) => (
-            <button
-              key={label}
-              type="button"
-              className="inline-flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-3xl border border-silver-200 bg-transparent px-4 py-2 text-center font-montserrat text-xs font-medium capitalize text-silver-200 shadow-[0px_1px_1px_0px_rgba(61,59,59,0.20)] whitespace-nowrap md:px-8"
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        {secondaryActionLabels[order.status].map((label) => (
+          <button
+            key={label}
+            type="button"
+            className="inline-flex cursor-pointer items-center justify-center overflow-hidden rounded-[27px] border border-silver-200 bg-transparent w-[125px] md:w-full md:px-[32px] py-2 text-center font-montserrat text-small-button font-medium capitalize text-silver-200 shadow-[0px_1px_1px_0px_rgba(61,59,59,0.20)] whitespace-nowrap"
+          >
+            {label}
+          </button>
+        ))}
       </div>
     </div>
-  </article>
+  </div>
 );
 
 interface PurchasesListProps {

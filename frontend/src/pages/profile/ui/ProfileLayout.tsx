@@ -173,17 +173,6 @@ export const ProfileLayout = () => {
       <div className={isPurchasesPage ? purchasesFooterClassName : undefined}>
         <Footer />
       </div>
-
-      {isPurchasesPage && (
-        <button
-          type="button"
-          aria-label="Back to top"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-8 right-4 z-40 size-8 cursor-pointer md:right-8 md:size-12 lg:right-24"
-        >
-          <img src={backToTop} alt="" className="block size-full" />
-        </button>
-      )}
     </div>
   );
 };
