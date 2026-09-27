@@ -141,20 +141,8 @@ export const ProfileLayout = () => {
       >
         <Header />
 
-        <div
-          className={
-            isPurchasesPage
-              ? "mx-auto flex w-full max-w-96 flex-col items-center justify-start gap-6 px-0 pt-20 pb-0 md:max-w-[744px] md:px-8 md:pt-28 lg:max-w-[1122px] lg:flex-row lg:items-start lg:gap-8 lg:px-0 lg:pt-36"
-              : "relative z-10 mx-auto mt-20 flex w-full max-w-[1440px] flex-col items-center gap-6 px-4 py-4 md:mt-[88px] md:px-8 md:py-6 lg:mt-28 lg:flex-row lg:items-start lg:gap-8 lg:px-[160px] lg:py-10"
-          }
-        >
-          <aside
-            className={
-              isPurchasesPage
-                ? "hidden w-64 shrink-0 lg:block [&_a[aria-current=page]]:!font-normal [&_a[aria-current=page]]:!text-forest-300 [&_a[aria-current=page]]:!underline"
-                : "hidden w-64 shrink-0 lg:block"
-            }
-          >
+        <div className="max-w-[1440px] mt-28 mx-auto px-10 xl:px-[160px] flex flex-col md:flex-row gap-8 py-10 relative z-10 items-start justify-center">
+          <aside className="w-full md:w-[250px] shrink-0">
             <ProfileSidebar />
           </aside>
 
