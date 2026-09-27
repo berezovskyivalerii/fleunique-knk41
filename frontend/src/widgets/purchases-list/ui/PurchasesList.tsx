@@ -45,7 +45,7 @@ export const PurchasesList = () => {
 
         const data: BackendOrder[] = await res.json();
 
-        const transformedOrders = data.map((order) => {
+        const transformedOrders = data.flatMap((order) => {
           const statusMap: Record<string, string> = {
             pending: "Confirmed",
             processing: "In Progress",
@@ -58,36 +58,35 @@ export const PurchasesList = () => {
           const month = String(d.getMonth() + 1).padStart(2, "0");
           const year = d.getFullYear();
           const formattedDate = `${day}-${month}-${year}`;
-
-          const firstItem = order.items?.[0];
-          const product = firstItem?.product;
-
-          const title = product?.name || "Custom Bouquet";
-          const description =
-            product?.description || "A beautiful selection of fresh flowers.";
-
-          const mainImage =
-            product?.images?.find((img: any) => img.is_main)?.image_url ||
-            product?.images?.[0]?.image_url;
-
-          const imageUrl = mainImage
-            ? `http://localhost:8000${mainImage}`
-            : fallbackPhoto;
-
-          // ... return mapped object ...
           const shortDate = `${day}${month}${String(year).slice(-2)}`;
           const displayOrderId = `#FLEUN-${shortDate}-${order.id}`;
 
-          return {
-            id: order.id,
-            status: statusMap[order.status] || "Confirmed",
-            date: formattedDate,
-            orderId: displayOrderId,
-            title: title,
-            description: description,
-            price: Number(order.total_price),
-            imageUrl: imageUrl,
-          };
+          return (order.items || []).map((item, index) => {
+            const product = item.product;
+
+            const title = product?.name || "Custom Bouquet";
+            const description =
+              product?.description || "A beautiful selection of fresh flowers.";
+
+            const mainImage =
+              product?.images?.find((img: any) => img.is_main)?.image_url ||
+              product?.images?.[0]?.image_url;
+
+            const imageUrl = mainImage
+              ? `http://localhost:8000${mainImage}`
+              : fallbackPhoto;
+
+            return {
+              id: `${order.id}-${index}`,
+              status: statusMap[order.status] || "Confirmed",
+              date: formattedDate,
+              orderId: displayOrderId,
+              title: title,
+              description: description,
+              price: Number(item.price_per_item) * Number(item.quantity),
+              imageUrl: imageUrl,
+            };
+          });
         });
 
         setOrders(transformedOrders);

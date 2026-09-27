@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from sqlalchemy import func
-from sqlalchemy.orm import Session, selectinload
+from sqlalchemy.orm import Session, joinedload, selectinload
 
 from app.models.order import DeliveryType, Order, OrderItem, OrderStatus
 from app.models.product import Product
@@ -70,13 +70,15 @@ def create_order(
         )
 
     db.commit()
-    return get_order_by_id(db, db_order.id)  # type: ignore[return-value]
+    db.refresh(db_order)
+    return db_order
 
 
 def get_order_by_id(db: Session, order_id: int) -> Order | None:
     return (
         db.query(Order)
-        .options(selectinload(Order.items))
+        # Load items and their associated products to prevent N+1 queries during serialization
+        .options(selectinload(Order.items).joinedload(OrderItem.product))
         .filter(Order.id == order_id)
         .first()
     )
@@ -87,7 +89,7 @@ def get_user_orders(
 ) -> list[Order]:
     return (
         db.query(Order)
-        .options(selectinload(Order.items))
+        .options(selectinload(Order.items).joinedload(OrderItem.product))
         .filter(Order.user_id == user_id)
         .order_by(Order.created_at.desc(), Order.id.desc())
         .offset(skip)
@@ -99,7 +101,7 @@ def get_user_orders(
 def get_all_orders(db: Session, skip: int = 0, limit: int = 100) -> list[Order]:
     return (
         db.query(Order)
-        .options(selectinload(Order.items))
+        .options(selectinload(Order.items).joinedload(OrderItem.product))
         .order_by(Order.created_at.desc(), Order.id.desc())
         .offset(skip)
         .limit(limit)
@@ -111,4 +113,5 @@ def update_order_status(db: Session, order: Order, new_status: OrderStatus) -> O
     order.status = new_status
     db.add(order)
     db.commit()
-    return get_order_by_id(db, order.id)  # type: ignore[return-value]
+    db.refresh(order)
+    return order

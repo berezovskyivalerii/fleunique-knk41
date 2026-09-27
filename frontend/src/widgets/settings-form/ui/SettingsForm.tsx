@@ -721,7 +721,7 @@ export const SettingsForm = () => {
   }
 
   return (
-    <div className="w-full flex flex-col font-montserrat">
+    <div className="w-full flex flex-col font-montserrat px-2">
       {/* 1. General Settings */}
       <section className="flex flex-col gap-5 mb-8">
         <div className="flex justify-between items-center">
@@ -738,12 +738,13 @@ export const SettingsForm = () => {
           )}
         </div>
 
-        <div className="pl-6 flex flex-col gap-3 mb-8">
+        <div className="pl-2 md:pl-6 flex flex-col gap-3 mb-8">
           <div className="inline-block border-2 border-info text-info rounded-[8px] px-8 py-1.5 text-[13px] font-medium w-max">
             Personal Account
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+          {/* Инпуты: колонка на мобилках/планшетах, 2 колонки на десктопе (lg) */}
+          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-4 lg:gap-x-8 lg:gap-y-6">
             <Field
               label="Full Name"
               icon={<UserIcon />}
@@ -802,17 +803,17 @@ export const SettingsForm = () => {
 
           {/* Action Buttons for General Settings */}
           {editingGeneral && (
-            <div className="flex gap-4 mt-2 max-w-[496px]">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 w-full lg:max-w-[496px]">
               <button
                 onClick={handleSave}
                 disabled={!isFormValid && Object.keys(touched).length > 0}
-                className="flex-1 text-headline-4 bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:flex-1 text-headline-4 bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Save
               </button>
               <button
                 onClick={handleCancel}
-                className="max-w-[224px] flex-1 border-2 border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-rose-50 font-semibold! py-2.5 rounded-full transition-colors"
+                className="w-full sm:flex-1 border-2 border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-rose-50 font-semibold! py-2.5 rounded-full transition-colors"
               >
                 Cancel
               </button>
@@ -837,7 +838,7 @@ export const SettingsForm = () => {
           )}
         </div>
 
-        <div className="pl-6">
+        <div className="pl-2 lg:pl-6">
           <div className="flex items-center text-success text-[12px] font-medium mb-1">
             <SafeguardIcon /> All data is safeguarded
           </div>
@@ -905,16 +906,16 @@ export const SettingsForm = () => {
                         isInvalid={Boolean(cardTouched.cvv && cardErrors.cvv)}
                       />
                     </div>
-                    <div className="flex gap-4 max-w-[496px]">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 w-full lg:max-w-[496px]">
                       <button
                         onClick={handleSaveInlineCard}
-                        className="flex-1 text-headline-4 bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors"
+                        className="w-full sm:flex-1 text-headline-4 bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors"
                       >
                         Save
                       </button>
                       <button
                         onClick={() => setActiveCardId(null)}
-                        className="max-w-[224px] flex-1 border-2 border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-rose-50 font-semibold! py-2.5 rounded-full transition-colors"
+                        className="w-full sm:flex-1 border-2 border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-rose-50 font-semibold! py-2.5 rounded-full transition-colors"
                       >
                         Cancel
                       </button>
@@ -986,16 +987,16 @@ export const SettingsForm = () => {
                     isInvalid={Boolean(cardTouched.cvv && cardErrors.cvv)}
                   />
                 </div>
-                <div className="flex gap-4 max-w-[496px]">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2 w-full lg:max-w-[496px]">
                   <button
                     onClick={handleSaveInlineCard}
-                    className="flex-1 text-headline-4 bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors"
+                    className="w-full sm:flex-1 text-headline-4 bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors"
                   >
                     Save
                   </button>
                   <button
                     onClick={() => setActiveCardId(null)}
-                    className="max-w-[224px] flex-1 border-2 border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-rose-50 font-semibold! py-2.5 rounded-full transition-colors"
+                    className="w-full sm:flex-1 border-2 border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-rose-50 font-semibold! py-2.5 rounded-full transition-colors"
                   >
                     Cancel
                   </button>
@@ -1006,16 +1007,16 @@ export const SettingsForm = () => {
 
           {/* Action Buttons for Payments */}
           {editingPayments && activeCardId === null && (
-            <div className="flex flex-col gap-3 mt-4 w-full">
+            <div className="flex flex-col sm:flex-row gap-3 mt-5 w-full lg:max-w-[496px]">
               <button
                 onClick={handleAddCard}
-                className="w-full bg-[#B3158E] hover:bg-[#9c127b] text-rose-50 font-semibold! py-3.5 rounded-full transition-colors text-headline-4"
+                className="w-full sm:flex-[5] bg-[#B3158E] hover:bg-[#9c127b] text-rose-50 font-semibold! py-3.5 rounded-full transition-colors text-headline-4"
               >
                 Add New Payment Method
               </button>
               <button
                 onClick={() => setEditingPayments(false)}
-                className="w-full bg-rose-50 hover:bg-gray-50 text-forest-300 font-semibold! py-3.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors text-headline-4"
+                className="w-full sm:flex-[3] bg-rose-50 hover:bg-gray-50 text-forest-300 font-semibold! py-3.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors text-headline-4"
               >
                 Save
               </button>
@@ -1040,7 +1041,7 @@ export const SettingsForm = () => {
           )}
         </div>
 
-        <div className="pl-6">
+        <div className="pl-2 lg:pl-6">
           <div className="flex flex-col gap-4">
             {addresses.map((address) => {
               const isActive =
@@ -1062,18 +1063,18 @@ export const SettingsForm = () => {
             })}
           </div>
 
-          {/* Action Buttons for Addresses[cite: 10] */}
+          {/* Action Buttons for Addresses */}
           {editingAddresses && (
-            <div className="flex flex-col gap-3 mt-4 w-full">
+            <div className="flex flex-col sm:flex-row gap-3 mt-5 w-full lg:max-w-[496px]">
               <button
                 onClick={handleAddAddress}
-                className="w-full bg-[#B3158E] hover:bg-[#9c127b] text-rose-50 font-semibold! py-3.5 rounded-full transition-colors text-headline-4"
+                className="w-full sm:flex-[5] bg-[#B3158E] hover:bg-[#9c127b] text-rose-50 font-semibold! py-3.5 rounded-full transition-colors text-headline-4"
               >
                 Add New Address
               </button>
               <button
                 onClick={handleSaveAddresses}
-                className="w-full bg-rose-50 hover:bg-gray-50 text-forest-300 font-semibold! py-3.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors text-headline-4"
+                className="w-full sm:flex-[3] bg-rose-50 hover:bg-gray-50 text-forest-300 font-semibold! py-3.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors text-headline-4"
               >
                 Save
               </button>
