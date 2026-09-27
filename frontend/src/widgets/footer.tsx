@@ -11,13 +11,13 @@ export function Footer() {
       <div className="flex flex-col justify-between h-auto gap-6 md:flex-row md:justify-between md:items-end md:w-full">
         <div>
           <img src={logo} alt="logo" className="logo_in_footer mb-2 md:mb-0" />
-          <p className="text-rose-50 md:max-w-[352px] font-montserrat font-normal text-[16px] leading-none tracking-normal text-justify">
-            Fleunique crafts bold, artistic, playful bouquets for truly unique
-            people. Our vivid floral charm brightens any gloomy day.
+          <p className="text-rose-50 md:max-w-[352px] font-montserrat font-normal text-base leading-none tracking-normal text-justify">
+            Fleunique crafts bold, artistic, playful bouquets for truly
+            unique people. Our vivid floral charm brightens any gloomy day.
           </p>
         </div>
 
-        <div className="flex justify-between md:justify-start md:gap-4">
+        <div className="flex justify-between md:justify-start md:gap-4 px-[27px] md:px-0">
           <button>
             <img src={phone} alt="phone" />
           </button>
@@ -37,9 +37,7 @@ export function Footer() {
       </div>
 
       <div className="flex flex-col-reverse items-center h-full gap-4 w-full md:flex-row md:justify-between w-full">
-        <p className="text-silver-100 text-helper font-montserrat">
-          ©2026, IT STEP COLLEGE TEAM
-        </p>
+        <p className="text-silver-100 text-helper font-montserrat">©2026, IT STEP COLLEGE TEAM</p>
         <div className="text-silver-100 text-helper w-full md:w-auto flex justify-between md:gap-4 md:justify-start font-montserrat">
           <a
             href="#"
