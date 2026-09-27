@@ -26,7 +26,7 @@ export const ProfileLayout = () => {
       <div>
         <Header />
 
-        <div className="max-w-[1440px] mt-28 mx-auto px-10 xl:px-[160px] flex flex-col md:flex-row gap-8 py-10 relative z-10 items-start">
+        <div className="max-w-[1440px] mt-28 mx-auto px-10 xl:px-[160px] flex flex-col md:flex-row gap-8 py-10 relative z-10 items-start justify-center">
           <aside className="w-full md:w-[250px] shrink-0">
             <ProfileSidebar />
           </aside>
