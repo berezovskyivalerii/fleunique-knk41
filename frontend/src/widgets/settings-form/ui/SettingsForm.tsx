@@ -802,17 +802,17 @@ export const SettingsForm = () => {
 
           {/* Action Buttons for General Settings */}
           {editingGeneral && (
-            <div className="flex flex-col sm:flex-row gap-4 mt-2 w-full sm:max-w-[496px]">
+            <div className="flex flex-row gap-4 mt-8 w-full flex-wrap justify-center md:justify-start">
               <button
                 onClick={handleSave}
                 disabled={!isFormValid && Object.keys(touched).length > 0}
-                className="flex-1 text-headline-4 bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full md:w-auto text-medium-button bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 px-auto md:px-[106px] rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Save
               </button>
               <button
                 onClick={handleCancel}
-                className="max-w-[224px] flex-1 border-2 border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-rose-50 font-semibold! py-2.5 rounded-full transition-colors"
+                className="w-full md:w-auto border-2 border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-rose-50 font-semibold! py-2.5 px-20 rounded-full transition-colors"
               >
                 Cancel
               </button>
@@ -830,7 +830,7 @@ export const SettingsForm = () => {
           {!editingPayments && (
             <button
               onClick={() => setEditingPayments(true)}
-              className="bg-rose-300 hover:bg-rose-200 text-rose-50 text-[12px]! px-8 py-1 rounded-full font-medium transition-colors"
+              className="bg-rose-300 hover:bg-rose-200 text-rose-50 text-small-button px-8 py-1 rounded-full font-medium transition-colors"
             >
               Edit
             </button>
@@ -838,7 +838,7 @@ export const SettingsForm = () => {
         </div>
 
         <div className="pl-2 sm:pl-4">
-          <div className="flex items-center text-success text-[12px] font-medium mb-1">
+          <div className="flex items-center text-success text-small-button font-medium mb-1">
             <SafeguardIcon /> All data is safeguarded
           </div>
 
@@ -866,7 +866,7 @@ export const SettingsForm = () => {
                         cardTouched.number && cardErrors.number,
                       )}
                     />
-                    <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex flex-row gap-8">
                       <Field
                         label="Expiry Date"
                         placeholder="MM/YY"
@@ -905,16 +905,16 @@ export const SettingsForm = () => {
                         isInvalid={Boolean(cardTouched.cvv && cardErrors.cvv)}
                       />
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-4 w-full sm:max-w-[496px]">
+                    <div className="flex flex-col gap-4 w-full">
                       <button
                         onClick={handleSaveInlineCard}
-                        className="flex-1 text-headline-4 bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors"
+                        className="w-full md:w-auto text-medium-button bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 px-auto md:px-[106px] rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Save
                       </button>
                       <button
                         onClick={() => setActiveCardId(null)}
-                        className="max-w-[224px] flex-1 border-2 border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-rose-50 font-semibold! py-2.5 rounded-full transition-colors"
+                        className="w-full md:w-auto border-2 border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-rose-50 font-semibold! py-2.5 px-20 rounded-full transition-colors"
                       >
                         Cancel
                       </button>
@@ -954,7 +954,7 @@ export const SettingsForm = () => {
                   error={cardErrors.number}
                   isInvalid={Boolean(cardTouched.number && cardErrors.number)}
                 />
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-row gap-8">
                   <Field
                     label="Expiry Date"
                     placeholder="MM/YY"
@@ -986,16 +986,16 @@ export const SettingsForm = () => {
                     isInvalid={Boolean(cardTouched.cvv && cardErrors.cvv)}
                   />
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4 w-full sm:max-w-[496px]">
+                <div className="flex flex-row flex-wrap gap-4 w-full">
                   <button
                     onClick={handleSaveInlineCard}
-                    className="flex-1 text-headline-4 bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors"
+                   className="w-full md:w-auto text-medium-button bg-rose-50 hover:bg-forest-300/80 hover:text-rose-50 text-forest-300 font-semibold! py-2.5 px-auto md:px-[106px] rounded-full shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Save
                   </button>
                   <button
                     onClick={() => setActiveCardId(null)}
-                    className="max-w-[224px] flex-1 border-2 border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-rose-50 font-semibold! py-2.5 rounded-full transition-colors"
+                    className="w-full md:w-auto border-2 border-rose-300 text-rose-300 hover:bg-rose-300 hover:text-rose-50 font-semibold! py-2.5 px-20 rounded-full transition-colors"
                   >
                     Cancel
                   </button>
@@ -1040,7 +1040,7 @@ export const SettingsForm = () => {
           )}
         </div>
 
-        <div className="pl-2 sm:pl-4">
+        <div className="pl-2">
           <div className="flex flex-col gap-4">
             {addresses.map((address) => {
               const isActive =

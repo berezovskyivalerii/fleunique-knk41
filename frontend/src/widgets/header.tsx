@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { AuthModal } from "@/features/auth";
@@ -17,14 +17,33 @@ type HeaderProps = {
 export function Header(_props: HeaderProps) {
   const navigate = useNavigate();
   const [authOpen, setAuthOpen] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false); -----
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const { isCartOpen, openCart, closeCart } = useCart();
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setProfileMenuOpen(false);
+      }
+    };
+
+    if (profileMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [profileMenuOpen]);
 
   const handleProfileClick = () => {
     const token = localStorage.getItem("access_token");
     if (token) {
-      setProfileMenuOpen((isOpen) => !isOpen);
+      if (window.innerWidth >= 1440) {
+        navigate("/profile/purchases");
+      } else {
+        setProfileMenuOpen((isOpen) => !isOpen);
+      }
     } else {
       setAuthOpen(true);
     }
@@ -42,8 +61,8 @@ export function Header(_props: HeaderProps) {
           />
         </div>
 
-        <div className="flex items-center gap-6 sm:gap-[28px]">
-          <div className="relative">
+        <div className="flex items-center gap-6">
+          <div className="relative" ref={menuRef}>
             <button
               type="button"
               onClick={handleProfileClick}
@@ -59,32 +78,49 @@ export function Header(_props: HeaderProps) {
             </button>
 
             {profileMenuOpen && (
-              <div className="absolute right-0 top-11 w-[244px] rounded-[28px] border border-white/60 bg-rose-50/90 p-6 shadow-[0_8px_24px_rgba(0,0,0,0.16)] backdrop-blur-[20px] sm:top-14">
-                <nav className="flex flex-col gap-4 font-montserrat text-[16px] text-forest-300">
+              <div className="lg:hidden absolute right-0 top-11 sm:top-14 w-[240px] p-6 bg-rose-50 rounded-3xl shadow-[0px_4px_4px_0px_rgba(61,59,59,0.20)] inline-flex flex-col justify-start items-center gap-8 z-50">
+                <div className="self-stretch flex flex-col justify-start items-start gap-4">
                   <NavLink
                     to="/profile/purchases"
                     onClick={() => setProfileMenuOpen(false)}
-                    className="flex items-center gap-3"
+                    className={({ isActive }) =>
+                      `inline-flex justify-start items-center gap-2 w-full transition-opacity hover:opacity-80 ${
+                        isActive ? "font-bold text-forest-400" : "text-forest-300"
+                      }`
+                    }
                   >
-                    <img src={clockIcon} alt="" className="h-6 w-6" />
-                    Recent Purchases
+                    <img src={clockIcon} alt="" className="size-6 shrink-0" />
+                    <span className="text-forest-300 text-xs font-normal font-montserrat">
+                      Recent Purchases
+                    </span>
                   </NavLink>
+
                   <NavLink
                     to="/profile/settings"
                     onClick={() => setProfileMenuOpen(false)}
-                    className="flex items-center gap-3"
+                    className={({ isActive }) =>
+                      `inline-flex justify-start items-center gap-2 w-full transition-opacity hover:opacity-80 ${
+                        isActive ? "font-bold text-forest-400" : "text-forest-300"
+                      }`
+                    }
                   >
-                    <img src={settingsIcon} alt="" className="h-6 w-6" />
-                    Profile Settings
+                    <img src={settingsIcon} alt="" className="size-6 shrink-0" />
+                    <span className="text-forest-300 text-xs font-normal font-montserrat">
+                      Profile Settings
+                    </span>
                   </NavLink>
-                </nav>
+                </div>
 
-                <div className="mt-6 flex justify-center">
+                <div
+                  onClick={() => setProfileMenuOpen(false)}
+                  className="w-full flex justify-center [&>button]:w-full [&>button]:self-stretch [&>button]:px-8 [&>button]:py-2 [&>button]:rounded-3xl [&>button]:shadow-[0px_1px_1px_0px_rgba(61,59,59,0.20)] [&>button]:outline [&>button]:outline-1 [&>button]:outline-offset-[-0.50px] [&>button]:outline-silver-200 [&>button]:inline-flex [&>button]:justify-center [&>button]:items-center [&>button]:gap-1 [&>button]:overflow-hidden [&>button]:text-silver-200 [&>button]:text-xs [&>button]:font-medium [&>button]:font-montserrat [&>button]:capitalize"
+                >
                   <LogoutButton />
                 </div>
               </div>
             )}
           </div>
+
           <button
             type="button"
             onClick={openCart}

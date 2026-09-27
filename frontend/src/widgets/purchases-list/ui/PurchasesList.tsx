@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchWithAuth } from "@/shared/api/fetchClient";
 import fallbackPhoto from "@/shared/assets/photo_flowers_product.png";
+
 import bouquetBase from "@/shared/assets/profile-purchases/bouquet-base.png";
 import athenaBouquet from "@/shared/assets/profile-purchases/athena.png";
 import zeusBouquet from "@/shared/assets/profile-purchases/zeus.png";
@@ -47,9 +48,6 @@ export interface PurchaseCardData {
   imageLayers?: [string, string];
 }
 
-// temporary flag to force cards generation instead of fetching
-const SHOW_EMPTY_STATE = true;
-
 const statusMap: Record<BackendOrder["status"], CardStatus> = {
   pending: "Confirmed",
   processing: "In Progress",
@@ -63,58 +61,6 @@ const bouquetLayersByName: Record<string, [string, string]> = {
   Artemis: [bouquetBase, artemisBouquet],
   "Hestia, Hermes": [bouquetBase, hestiaBouquet],
 };
-
-// mock data
-export const DEFAULT_PURCHASES: PurchaseCardData[] = [
-  {
-    id: 67,
-    status: "Confirmed",
-    date: "08-09-2026",
-    orderId: "#FLEUN-080926-67",
-    title: "Athena, Aphrodite",
-    description:
-      "Hydrangea, Calla Lily, Chrysanthemum, Rose, Lisianthus, Snapdragon, Dahlia\nRanunculus, Hydrangea, Phalaenopsis Orchid, Lily, Rose, Lisianthus, Stock, Alstroemeria, Chamomile, Eucalyptus",
-    price: 64,
-    imageUrl: fallbackPhoto,
-    imageLayers: [bouquetBase, athenaBouquet],
-  },
-  {
-    id: 1,
-    status: "In Progress",
-    date: "07-09-2026",
-    orderId: "#FLEUN-070926-01",
-    title: "Zeus",
-    description:
-      "Lily, Phalaenopsis Orchid, Hydrangea, Lisianthus, Anthurium, Calla Lily, Lavender, Carnation, Eucalyptus",
-    price: 36,
-    imageUrl: fallbackPhoto,
-    imageLayers: [bouquetBase, zeusBouquet],
-  },
-  {
-    id: 23,
-    status: "Canceled",
-    date: "05-09-2026",
-    orderId: "#FLEUN-050926-23",
-    title: "Artemis",
-    description:
-      "Dahlia, Chrysanthemum, Globe Amaranth, Spray Rose, Chocolate Cosmos, Tweedia, Chamomile, Lily",
-    price: 24,
-    imageUrl: fallbackPhoto,
-    imageLayers: [bouquetBase, artemisBouquet],
-  },
-  {
-    id: 68,
-    status: "Delivered",
-    date: "01-09-2026",
-    orderId: "#FLEUN-010926-67",
-    title: "Hestia, Hermes",
-    description:
-      "Peony, Carnation, Ranunculus, Lisianthus, Spray Rose, Snapdragon\nRanunculus, Hydrangea, Tulip, Rose, Gerbera Daisy, Delphinium, Snapdragon, Lisianthus, Chamomile, Carnation",
-    price: 56,
-    imageUrl: fallbackPhoto,
-    imageLayers: [bouquetBase, hestiaBouquet],
-  },
-];
 
 const statusStyles: Record<CardStatus, string> = {
   Confirmed: "border-info text-info",
@@ -263,12 +209,11 @@ interface PurchasesListProps {
 
 export const PurchasesList = ({
   items,
-  forceEmpty = SHOW_EMPTY_STATE,
+  forceEmpty = false,
 }: PurchasesListProps) => {
-  const [orders, setOrders] = useState<PurchaseCardData[]>(
-    items ?? DEFAULT_PURCHASES
-  );
+  const [orders, setOrders] = useState<PurchaseCardData[]>(items ?? []);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (items) {
@@ -279,15 +224,17 @@ export const PurchasesList = ({
     const fetchOrders = async () => {
       try {
         setIsLoading(true);
+        setError(null);
         const res = await fetchWithAuth("/api/v1/orders/?skip=0&limit=100");
 
         if (!res.ok) {
-          return;
+          throw new Error("Failed to load orders");
         }
 
         const data: BackendOrder[] = await res.json();
 
         if (!Array.isArray(data) || data.length === 0) {
+          setOrders([]);
           return;
         }
 
@@ -320,14 +267,12 @@ export const PurchasesList = ({
 
           return {
             id: order.id,
-            status: statusMap[order.status],
+            status: statusMap[order.status] || "Confirmed",
             date: formattedDate,
             orderId: displayOrderId,
             title: title,
             description: description,
-            price:
-              Number(firstItem?.price_per_item ?? order.total_price) *
-              (firstItem?.quantity ?? 1),
+            price: Number(order.total_price ?? (firstItem?.price_per_item ?? 0)),
             imageUrl: imageUrl,
             imageLayers: mainImage ? undefined : bouquetLayersByName[title],
           };
@@ -336,6 +281,7 @@ export const PurchasesList = ({
         setOrders(transformedOrders);
       } catch (err) {
         console.error(err);
+        setError("Could not load your recent purchases.");
       } finally {
         setIsLoading(false);
       }
@@ -351,14 +297,20 @@ export const PurchasesList = ({
       </div>
     );
   }
-
+  if (error) {
+    return (
+      <div className="flex min-h-[300px] w-full items-center justify-center font-montserrat text-sm text-rose-300 md:min-h-[400px]">
+        {error}
+      </div>
+    );
+  }
   if (forceEmpty || orders.length === 0) {
     return (
       <div className="flex min-h-[360px] w-full flex-1 flex-col items-center justify-center rounded-2xl bg-rose-50/70 px-6 py-12 text-center md:min-h-[520px] lg:w-[722px] lg:min-h-[680px]">
         <p className="font-pt-sans text-base font-bold uppercase text-forest-300 md:text-lg">
           No Recent Purchases Yet
         </p>
-        <p className="mt-2 max-w-xs font-montserrat text-xs font-normal text-silver-200">
+        <p className="mt-2 font-montserrat text-xs font-normal text-silver-200">
           You haven&apos;t made any purchases yet. Once you place an order, your bouquets will appear here.
         </p>
       </div>
