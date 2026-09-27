@@ -8,7 +8,7 @@ import location from "@/shared/assets/location_footer.png";
 export function Footer() {
   return (
     <footer className="w-full bg-forest-400 py-8">
-      <div className="w-full mx-auto px-10 sm:px-7 flex flex-col gap-10 sm:flex-row sm:justify-between sm:items-stretch sm:min-h-[181px]">
+      <div className="w-full mx-auto px-10 desktop:px-80 tablet:px-10 phone:px-10 flex flex-col gap-10 sm:flex-row sm:justify-between sm:items-stretch sm:min-h-[181px]">
 
         <div className="flex flex-col justify-between">
           <div>
@@ -30,7 +30,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col justify-between items-end">
-          <div className="flex gap-4 mt-12">
+          <div className="flex gap-4 mt-20">
             <button>
               <img src={phone} alt="phone" />
             </button>
@@ -48,7 +48,7 @@ export function Footer() {
             </button>
           </div>
 
-          <div className="text-[#BFBFBF] flex gap-4 text-[11px] font-montserrat">
+          <div className="text-[#BFBFBF] flex gap-4 text-[11px] font-montserrat ">
             <a href="#" className="hover:underline underline-offset-3 cursor-pointer">
               Terms of Service
             </a>

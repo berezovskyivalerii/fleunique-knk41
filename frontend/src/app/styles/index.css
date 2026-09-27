@@ -7,8 +7,9 @@
     --font-montserrat: "Montserrat", sans-serif;
     --font-pt-sans: "PT Sans", sans-serif;
 
-    --breakpoint-tablet: 744px;
     --breakpoint-desktop: 1440px;
+    --breakpoint-tablet: 744px;
+    --breakpoint-phone: 390px;
 
     --text-accent-headline: 480px;
     --text-large-button: 32px;
@@ -24,7 +25,7 @@
     --color-forest-400: #04191D;
     --color-rose-100: #FBB2EA33;
     --color-rose-300: #B3158E;
-    --color-siver-200: #828282
+    --color-siver-200: #828282;
     --color-success: #079941;
 }
 

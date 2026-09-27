@@ -87,7 +87,7 @@ export function ProductPage() {
       <div className="relative z-10 flex flex-col flex-grow w-full">
         <Header />
 
-        <main className="flex-grow flex flex-col desktop:flex-row items-center desktop:items-stretch justify-center gap-8 desktop:gap-[32px] px-8 pt-6 desktop:px-[160px] desktop:py-16 w-full max-w-[1440px] mx-auto mb-[128px]">
+        <main className="flex-grow flex flex-col desktop:flex-row items-center desktop:items-stretch justify-center gap-8 desktop:gap-[32px] px-8 pt-6 desktop:px-[160px] desktop:py-16 w-full max-w-[1440px] mx-auto phone:mb-[30px] tablet:mb-[128px] desktop:mb-[128px]">
           <div className="shrink-0 w-full desktop:w-auto max-w-[332px] desktop:max-w-none">
             <img
               src={photo}
@@ -126,13 +126,13 @@ export function ProductPage() {
               />
             </div>
 
-            <div className="flex flex-col gap-16 justify-between">
+            <div className="flex flex-col gap- justify-between">
               <div className="flex gap-3 sm:gap-10 desktop:gap-7 gap">
                 <Button variant="primary">Add To Cart</Button>
                 <Button variant="outline">Buy Now</Button>
               </div>
 
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center mt-[24px]">
                 <p className="text-[11px] text-siver-200 font-montserrat">
                   Delivery And Payment
                 </p>
