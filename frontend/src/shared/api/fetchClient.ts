@@ -28,8 +28,9 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
             localStorage.setItem("refresh_token", data.refresh_token);
           }
 
-          headers.set("Authorization", `Bearer ${data.access_token}`);
-          response = await fetch(url, { ...options, headers });
+          const retryHeaders = new Headers(headers);
+          retryHeaders.set("Authorization", `Bearer ${data.access_token}`);
+          response = await fetch(url, { ...options, headers: retryHeaders });
         } else {
           throw new Error("Refresh token expired");
         }
