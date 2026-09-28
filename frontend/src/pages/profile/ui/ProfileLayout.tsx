@@ -107,13 +107,12 @@ export const ProfileLayout = () => {
       <div>
         <Header />
 
-        <div className="max-w-[1440px] mt-28 mx-auto px-4 md:px-8 lg:px-[160px] flex flex-col md:flex-row gap-4 md:gap-8 pt-6 pb-12  md:pb-24 lg:pb-[192px] lg:pt-12 relative z-10 items-start justify-center">
-          <aside className="hidden lg:block w-[250px] shrink-0">
+        <div className="max-w-[1440px] mt-28 mx-auto px-4 md:px-10 flex flex-col md:flex-row gap-8 lg:py-10 relative z-10 items-start justify-center">
+          <aside className="hidden lg:block w-full md:w-[250px] shrink-0">
             <ProfileSidebar />
           </aside>
 
-          <main
-            className="flex w-full flex-col items-center justify-start gap-4 rounded-[32px] bg-rose-50/0 px-4 py-8 shadow-[0px_4px_4px_0px_rgba(61,59,59,0.20)] backdrop-blur-[20px] md:min-h-[747px] md:max-w-[680px] md:gap-8 md:px-6 lg:max-w-[832px] lg:items-start lg:px-12 lg:pt-8 lg:pb-12">
+          <main className="w-full md:w-[680px] lg:w-[832px] flex flex-col lg:items-center rounded-[32px] bg-transparent justify-center px-1 pt-6 md:p-6 pb-8 bg-white/20 backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)]">
             <Outlet />
           </main>
         </div>

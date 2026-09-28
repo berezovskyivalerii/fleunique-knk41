@@ -47,7 +47,7 @@ def process_login(db: Session, user_id: int):
     refresh_token = secrets.token_urlsafe(32)
 
     refresh_expires_delta = timedelta(days=7)
-    expires_at = datetime.now(timezone.utc).replace(tzinfo=None) + refresh_expires_delta
+    expires_at = datetime.now(timezone.utc) + refresh_expires_delta
 
     crud_token.create_refresh_token(
         db=db, user_id=user_id, token=refresh_token, expires_at=expires_at
@@ -58,9 +58,18 @@ def process_login(db: Session, user_id: int):
 
 def refresh_access_token(db: Session, refresh_token: str):
     db_token = crud_token.get_refresh_token(db, token=refresh_token)
-    if not db_token or db_token.expires_at < datetime.now(timezone.utc).replace(
-        tzinfo=None
-    ):  # type: ignore
+    if not db_token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired refresh token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    token_expires_at = db_token.expires_at
+    if token_expires_at.tzinfo is None:
+        token_expires_at = token_expires_at.replace(tzinfo=timezone.utc)
+
+    if token_expires_at < datetime.now(timezone.utc):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired refresh token",

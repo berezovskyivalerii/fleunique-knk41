@@ -85,7 +85,9 @@ export function Header(_props: HeaderProps) {
                     onClick={() => setProfileMenuOpen(false)}
                     className={({ isActive }) =>
                       `inline-flex justify-start items-center gap-2 w-full transition-opacity hover:opacity-80 ${
-                        isActive ? "font-bold text-forest-400" : "text-forest-300"
+                        isActive
+                          ? "font-bold text-forest-400"
+                          : "text-forest-300"
                       }`
                     }
                   >
@@ -100,11 +102,17 @@ export function Header(_props: HeaderProps) {
                     onClick={() => setProfileMenuOpen(false)}
                     className={({ isActive }) =>
                       `inline-flex justify-start items-center gap-2 w-full transition-opacity hover:opacity-80 ${
-                        isActive ? "font-bold text-forest-400" : "text-forest-300"
+                        isActive
+                          ? "font-bold text-forest-400"
+                          : "text-forest-300"
                       }`
                     }
                   >
-                    <img src={settingsIcon} alt="" className="size-6 shrink-0" />
+                    <img
+                      src={settingsIcon}
+                      alt=""
+                      className="size-6 shrink-0"
+                    />
                     <span className="text-forest-300 text-xs font-normal font-montserrat">
                       Profile Settings
                     </span>
