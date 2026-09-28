@@ -51,7 +51,7 @@ export function Header(_props: HeaderProps) {
 
   return (
     <>
-      <header className="absolute left-4 right-4 top-8 z-[120] mx-auto flex h-12 w-[calc(100%-32px)] transform-none items-center justify-between rounded-[24px] border border-white/20 bg-rose-50/70 px-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] will-change-auto md:fixed md:left-0 md:right-0 md:z-50 md:h-16 md:w-[93%] md:rounded-4xl md:bg-transparent md:px-8">
+      <header className="absolute left-4 right-4 top-8 z-[120] mx-auto flex h-12 w-[calc(100%-32px)] transform-none items-center justify-between rounded-[24px] border border-white/20 bg-rose-50/70 px-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)] backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] will-change-auto md:fixed md:left-0 md:right-0 md:z-50 md:h-16 md:w-[93%] md:rounded-4xl bg-transparent md:px-8">
         <div className="left_part_in_header flex items-center">
           <img
             src={logo}
