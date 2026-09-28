@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useCart } from "@/context/CartContext";
 
 import { Header } from "@/widgets/header";
 
@@ -13,7 +14,6 @@ import receiverIcon from "@/shared/assets/receiver.svg";
 import deliveryIcon from "@/shared/assets/delivery.svg";
 import chevronIcon from "@/shared/assets/chevron-up.svg";
 import checkIcon from "@/shared/assets/check.svg";
-import productImage from "@/shared/assets/photo_flowers_product.png";
 
 type SectionKey = "contact" | "receiver" | "delivery";
 type DeliveryType = "delivery" | "pickup";
@@ -32,11 +32,15 @@ const DATE_RE = /^\d{2}-\d{2}-\d{4}$/;
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
 
-  return <p className="mt-1 ml-2 text-[12px] leading-tight text-error">{message}</p>;
+  return (
+    <p className="mt-1 ml-2 text-[12px] leading-tight text-error">{message}</p>
+  );
 }
 
 export function CheckoutPage() {
   const navigate = useNavigate();
+  const { cartItems, updateQuantity } = useCart();
+
   const [openedSections, setOpenedSections] = useState<
     Record<SectionKey, boolean>
   >({
@@ -49,7 +53,6 @@ export function CheckoutPage() {
   const [scheduleDelivery, setScheduleDelivery] = useState(false);
   const [commentOpened, setCommentOpened] = useState(false);
   const [deliveryType, setDeliveryType] = useState<DeliveryType>("delivery");
-  const [quantities, setQuantities] = useState([1, 1]);
   const [errors, setErrors] = useState<Partial<Record<FieldKey, string>>>({});
 
   const [contactName, setContactName] = useState("");
@@ -61,7 +64,36 @@ export function CheckoutPage() {
   const [apartment, setApartment] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [promocode, setPromocode] = useState(""); // Стейт для промокода
   const [comment, setComment] = useState("");
+  const [userPhone, setUserPhone] = useState("");
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const token = localStorage.getItem("access_token");
+      if (!token) return;
+
+      try {
+        const res = await fetch("/api/v1/users/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+
+          if (data.full_name) setContactName(data.full_name);
+          if (data.email) setEmail(data.email);
+          if (data.phone_number) setUserPhone(data.phone_number);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user profile:", error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const toggleSection = (section: SectionKey) => {
     setOpenedSections((prev) => ({
@@ -125,15 +157,10 @@ export function CheckoutPage() {
     return !message;
   };
 
-  const updateQuantity = (index: number, delta: number) => {
-    setQuantities((prev) =>
-      prev.map((quantity, itemIndex) =>
-        itemIndex === index ? Math.min(99, Math.max(1, quantity + delta)) : quantity,
-      ),
-    );
-  };
-
-  const subtotal = quantities.reduce((sum, quantity) => sum + quantity * 20, 0);
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
   const deliveryCost = deliveryType === "delivery" ? 4 : 0;
   const discount = 0;
   const total = subtotal + deliveryCost - discount;
@@ -147,10 +174,40 @@ export function CheckoutPage() {
       scheduleDelivery ? validateField("date", date) : true,
     ];
 
-    if (checks.every(Boolean)) {
-      navigate("/payment");
+    if (!checks.every(Boolean)) return;
+
+    let finalComment = commentOpened && comment.trim() ? comment.trim() : "";
+    if (scheduleDelivery && date) {
+      const scheduleText = `Schedule Delivery: Date ${date}${time ? `, Time ${time}` : ""}`;
+      finalComment = finalComment
+        ? `${scheduleText}\n\n${finalComment}`
+        : scheduleText;
     }
+
+    const orderPayload = {
+      items: cartItems.map((item) => ({
+        product_id: item.id,
+        quantity: item.quantity,
+      })),
+      receiver_name: receiverName.trim(),
+      receiver_phone: phone.trim(),
+      delivery_type: deliveryType,
+      delivery_address:
+        deliveryType === "delivery" && address.trim() ? address.trim() : null,
+      delivery_floor:
+        deliveryType === "delivery" && floor.trim() ? floor.trim() : null,
+      delivery_apartment:
+        deliveryType === "delivery" && apartment.trim()
+          ? apartment.trim()
+          : null,
+      promocode: promocode.trim() || null,
+      comment: finalComment || null,
+    };
+
+    navigate("/payment", { state: { orderPayload } });
   };
+
+  if (cartItems.length === 0) return <Navigate to="/" replace />;
 
   return (
     <div className="flex min-h-screen pt-24 flex-col bg-[radial-gradient(circle_at_82%_68%,rgba(251,178,234,0.32),transparent_34%),linear-gradient(180deg,#fffafe_0%,#fffafe_62%,#fff5fc_100%)] font-montserrat text-forest-300">
@@ -168,7 +225,6 @@ export function CheckoutPage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-forest-100">
                 <img src={checkWhiteIcon} alt="" className="h-4 w-4" />
               </div>
-
               <span className="hidden sm:inline">Your Cart</span>
             </div>
 
@@ -178,7 +234,6 @@ export function CheckoutPage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-forest-100 bg-transparent">
                 2
               </div>
-
               <span className="hidden sm:inline">Checkout</span>
             </div>
 
@@ -188,7 +243,6 @@ export function CheckoutPage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-silver-100 bg-transparent">
                 3
               </div>
-
               <span className="hidden sm:inline">Order Complete</span>
             </div>
           </div>
@@ -209,7 +263,6 @@ export function CheckoutPage() {
                   <h2 className="font-pt-sans text-[18px] font-bold leading-none sm:text-[22px]">
                     Your Contact Information
                   </h2>
-
                   <img
                     src={chevronIcon}
                     alt=""
@@ -225,14 +278,14 @@ export function CheckoutPage() {
                       <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                         Full Name
                       </span>
-
-                      <div className={`flex h-[48px] items-center gap-2 rounded-[14px] border-[1.5px] px-3 transition-colors sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 ${errors.contactName ? "border-error" : "border-forest-400"}`}>
+                      <div
+                        className={`flex h-[48px] items-center gap-2 rounded-[14px] border-[1.5px] px-3 transition-colors sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 ${errors.contactName ? "border-error" : "border-forest-400"}`}
+                      >
                         <img
                           src={userIcon}
                           alt=""
                           className="h-6 w-6 shrink-0 object-contain sm:h-8 sm:w-8"
                         />
-
                         <input
                           type="text"
                           value={contactName}
@@ -242,9 +295,17 @@ export function CheckoutPage() {
                           onChange={(event) => {
                             const value = sanitizeName(event.target.value);
                             setContactName(value);
-                            if (errors.contactName) validateField("contactName", value);
+
+                            if (isReceiver) {
+                              setReceiverName(value);
+                            }
+
+                            if (errors.contactName)
+                              validateField("contactName", value);
                           }}
-                          onBlur={() => validateField("contactName", contactName)}
+                          onBlur={() =>
+                            validateField("contactName", contactName)
+                          }
                           className="h-full w-full bg-transparent text-[14px] outline-none placeholder:text-silver-100 sm:text-[16px]"
                         />
                       </div>
@@ -255,14 +316,14 @@ export function CheckoutPage() {
                       <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                         E-mail*
                       </span>
-
-                      <div className={`flex h-[48px] items-center gap-2 rounded-[14px] border-[1.5px] px-3 transition-colors sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 ${errors.email ? "border-error" : "border-forest-400"}`}>
+                      <div
+                        className={`flex h-[48px] items-center gap-2 rounded-[14px] border-[1.5px] px-3 transition-colors sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 ${errors.email ? "border-error" : "border-forest-400"}`}
+                      >
                         <img
                           src={emailIcon}
                           alt=""
                           className="h-6 w-6 shrink-0 object-contain sm:h-8 sm:w-8"
                         />
-
                         <input
                           type="email"
                           value={email}
@@ -296,7 +357,6 @@ export function CheckoutPage() {
                   <h2 className="font-pt-sans text-[18px] font-bold leading-none sm:text-[22px]">
                     Your Receiver’s Information
                   </h2>
-
                   <img
                     src={chevronIcon}
                     alt=""
@@ -312,14 +372,14 @@ export function CheckoutPage() {
                       <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                         Full Name*
                       </span>
-
-                      <div className={`flex h-[48px] items-center gap-2 rounded-[14px] border-[1.5px] px-3 transition-colors sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 ${errors.receiverName ? "border-error" : "border-forest-400"}`}>
+                      <div
+                        className={`flex h-[48px] items-center gap-2 rounded-[14px] border-[1.5px] px-3 transition-colors sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 ${errors.receiverName ? "border-error" : "border-forest-400"}`}
+                      >
                         <img
                           src={userIcon}
                           alt=""
                           className="h-6 w-6 shrink-0 object-contain sm:h-8 sm:w-8"
                         />
-
                         <input
                           type="text"
                           value={receiverName}
@@ -330,9 +390,12 @@ export function CheckoutPage() {
                           onChange={(event) => {
                             const value = sanitizeName(event.target.value);
                             setReceiverName(value);
-                            if (errors.receiverName) validateField("receiverName", value);
+                            if (errors.receiverName)
+                              validateField("receiverName", value);
                           }}
-                          onBlur={() => validateField("receiverName", receiverName)}
+                          onBlur={() =>
+                            validateField("receiverName", receiverName)
+                          }
                           className="h-full w-full bg-transparent text-[14px] outline-none placeholder:text-silver-100 sm:text-[16px]"
                         />
                       </div>
@@ -343,14 +406,14 @@ export function CheckoutPage() {
                       <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                         Phone number*
                       </span>
-
-                      <div className={`flex h-[48px] items-center gap-2 rounded-[14px] border-[1.5px] px-3 transition-colors sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 ${errors.phone ? "border-error" : "border-forest-400"}`}>
+                      <div
+                        className={`flex h-[48px] items-center gap-2 rounded-[14px] border-[1.5px] px-3 transition-colors sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 ${errors.phone ? "border-error" : "border-forest-400"}`}
+                      >
                         <img
                           src={phoneIcon}
                           alt=""
                           className="h-6 w-6 shrink-0 object-contain sm:h-8 sm:w-8"
                         />
-
                         <input
                           type="tel"
                           value={phone}
@@ -375,18 +438,31 @@ export function CheckoutPage() {
                       <input
                         type="checkbox"
                         checked={isReceiver}
-                        onChange={(event) =>
-                          setIsReceiver(event.target.checked)
-                        }
+                        onChange={(event) => {
+                          const checked = event.target.checked;
+                          setIsReceiver(checked);
+
+                          if (checked) {
+                            setReceiverName(contactName);
+                            if (userPhone) setPhone(userPhone);
+
+                            setErrors((prev) => ({
+                              ...prev,
+                              receiverName: undefined,
+                              phone: undefined,
+                            }));
+                          } else {
+                            setReceiverName("");
+                            setPhone("");
+                          }
+                        }}
                         className="sr-only"
                       />
-
                       <span className="flex h-5 w-5 items-center justify-center rounded-[5px] border-[2px] border-forest-400">
                         {isReceiver && (
                           <img src={checkIcon} alt="" className="h-3 w-3" />
                         )}
                       </span>
-
                       <span>I am the receiver</span>
                     </label>
                   </div>
@@ -403,7 +479,6 @@ export function CheckoutPage() {
                   <h2 className="font-pt-sans text-[18px] font-bold leading-none sm:text-[22px]">
                     Delivery Information
                   </h2>
-
                   <img
                     src={chevronIcon}
                     alt=""
@@ -424,13 +499,11 @@ export function CheckoutPage() {
                         }
                         className="sr-only"
                       />
-
                       <span className="flex h-5 w-5 items-center justify-center rounded-[5px] border-[2px] border-forest-400">
                         {scheduleDelivery && (
                           <img src={checkIcon} alt="" className="h-3 w-3" />
                         )}
                       </span>
-
                       <span>Schedule delivery</span>
                     </label>
 
@@ -440,7 +513,6 @@ export function CheckoutPage() {
                           <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                             Date*
                           </span>
-
                           <input
                             type="text"
                             value={date}
@@ -449,7 +521,9 @@ export function CheckoutPage() {
                             maxLength={10}
                             placeholder="08-09-2026"
                             onChange={(event) => {
-                              const value = sanitizeDate(event.target.value).slice(0, 10);
+                              const value = sanitizeDate(
+                                event.target.value,
+                              ).slice(0, 10);
                               setDate(value);
                               if (errors.date) validateField("date", value);
                             }}
@@ -463,7 +537,6 @@ export function CheckoutPage() {
                           <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
                             Time
                           </span>
-
                           <input
                             type="text"
                             value={time}
@@ -492,7 +565,6 @@ export function CheckoutPage() {
                         alt=""
                         className="h-6 w-6 shrink-0 object-contain sm:h-8 sm:w-8"
                       />
-
                       <span>Pick Up At Boutique</span>
                     </button>
 
@@ -507,72 +579,71 @@ export function CheckoutPage() {
                         alt=""
                         className="h-6 w-6 shrink-0 object-contain sm:h-8 sm:w-8"
                       />
-
                       <span>Address Delivery</span>
                     </button>
 
                     {deliveryType === "delivery" && (
                       <>
-                    <label className="mt-4 block sm:mt-6">
-                      <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
-                        Address*
-                      </span>
+                        <label className="mt-4 block sm:mt-6">
+                          <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
+                            Address*
+                          </span>
+                          <input
+                            type="text"
+                            value={address}
+                            required
+                            maxLength={160}
+                            autoComplete="street-address"
+                            placeholder="house, Street, City, Odesa oblast, Ukraine"
+                            onChange={(event) => {
+                              const value = event.target.value.slice(0, 160);
+                              setAddress(value);
+                              if (errors.address)
+                                validateField("address", value);
+                            }}
+                            onBlur={() => validateField("address", address)}
+                            className={`h-[48px] w-full rounded-[14px] border-[1.5px] bg-transparent px-3 text-[14px] outline-none transition-colors placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px] ${errors.address ? "border-error" : "border-forest-400"}`}
+                          />
+                          <FieldError message={errors.address} />
+                        </label>
 
-                      <input
-                        type="text"
-                        value={address}
-                        required
-                        maxLength={160}
-                        autoComplete="street-address"
-                        placeholder="house, Street, City, Odesa oblast, Ukraine"
-                        onChange={(event) => {
-                          const value = event.target.value.slice(0, 160);
-                          setAddress(value);
-                          if (errors.address) validateField("address", value);
-                        }}
-                        onBlur={() => validateField("address", address)}
-                        className={`h-[48px] w-full rounded-[14px] border-[1.5px] bg-transparent px-3 text-[14px] outline-none transition-colors placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px] ${errors.address ? "border-error" : "border-forest-400"}`}
-                      />
-                      <FieldError message={errors.address} />
-                    </label>
+                        <div className="mt-4 grid grid-cols-2 gap-4 sm:gap-8">
+                          <label className="block">
+                            <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
+                              Floor
+                            </span>
+                            <input
+                              type="text"
+                              value={floor}
+                              maxLength={3}
+                              inputMode="numeric"
+                              placeholder="floor number"
+                              onChange={(event) =>
+                                setFloor(sanitizeNumbers(event.target.value))
+                              }
+                              className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
+                            />
+                          </label>
 
-                    <div className="mt-4 grid grid-cols-2 gap-4 sm:gap-8">
-                      <label className="block">
-                        <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
-                          Floor
-                        </span>
-
-                        <input
-                          type="text"
-                          value={floor}
-                          maxLength={3}
-                          inputMode="numeric"
-                          placeholder="floor number"
-                          onChange={(event) =>
-                            setFloor(sanitizeNumbers(event.target.value))
-                          }
-                          className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
-                        />
-                      </label>
-
-                      <label className="block">
-                        <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
-                          Apartment
-                        </span>
-
-                        <input
-                          type="text"
-                          value={apartment}
-                          maxLength={6}
-                          inputMode="numeric"
-                          placeholder="apt number"
-                          onChange={(event) =>
-                            setApartment(sanitizeNumbers(event.target.value))
-                          }
-                          className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
-                        />
-                      </label>
-                    </div>
+                          <label className="block">
+                            <span className="mb-[3px] ml-2 block text-[14px] font-normal leading-none sm:text-[18px]">
+                              Apartment
+                            </span>
+                            <input
+                              type="text"
+                              value={apartment}
+                              maxLength={6}
+                              inputMode="numeric"
+                              placeholder="apt number"
+                              onChange={(event) =>
+                                setApartment(
+                                  sanitizeNumbers(event.target.value),
+                                )
+                              }
+                              className="h-[48px] w-full rounded-[14px] border-[1.5px] border-forest-400 bg-transparent px-3 text-[14px] outline-none placeholder:text-silver-100 sm:h-[56px] sm:rounded-[16px] sm:border-[2px] sm:px-4 sm:text-[16px]"
+                            />
+                          </label>
+                        </div>
                       </>
                     )}
                   </div>
@@ -581,7 +652,7 @@ export function CheckoutPage() {
             </form>
           </section>
 
-          {/* RIGHT */}
+          {/* RIGHT (ORDER DETAILS) */}
           <aside className="min-w-0">
             <div className="rounded-[20px] bg-[linear-gradient(180deg,rgba(255,255,255,0.72)_0%,rgba(255,236,249,0.88)_100%)] p-4 shadow-[0_4px_10px_rgba(0,0,0,0.12)] backdrop-blur-[20px] sm:rounded-[28px] sm:p-6 min-[1184px]:p-8">
               <h2 className="font-pt-sans text-[18px] font-bold leading-none sm:text-[22px]">
@@ -589,206 +660,163 @@ export function CheckoutPage() {
               </h2>
 
               <div className="mt-6 sm:mt-8 min-[1184px]:mt-12">
-                {/* Product 1 */}
-                <div className="flex h-[88px] w-full items-center gap-3 rounded-[8px] bg-rose-50/90 p-3 sm:h-[128px] sm:gap-4 sm:p-4 min-[1184px]:h-[160px]">
-                  <div className="h-[64px] w-[64px] shrink-0 overflow-hidden rounded-[8px] sm:h-[96px] sm:w-[96px] min-[1184px]:h-[128px] min-[1184px]:w-[128px]">
-                    <img
-                      src={productImage}
-                      alt="Name of bouquet"
-                      className="h-full w-full object-cover"
-                    />
+                {cartItems.length === 0 ? (
+                  <div className="py-4 text-center text-forest-300 font-medium">
+                    Your cart is empty
                   </div>
-
-                  <div className="flex min-w-0 flex-1 flex-col justify-center sm:h-[96px] min-[1184px]:h-[128px]">
-                    <div className="flex min-w-0 flex-col justify-center">
-                      <h3 className="font-pt-sans text-[12px] font-bold leading-none sm:text-[16px] min-[1184px]:text-[18px]">
-                        Name of bouquet
-                      </h3>
-
-                      <div className="mt-2 flex w-full items-center justify-between sm:mt-3 min-[1184px]:mt-4">
-                        <div className="flex h-5 items-center gap-2 sm:h-6 sm:gap-[10px]">
-                          <button
-                            type="button"
-                            onClick={() => updateQuantity(0, -1)}
-                            disabled={quantities[0] <= 1}
-                            className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100/20 transition-all duration-150 hover:bg-rose-100/40 active:scale-90 disabled:cursor-not-allowed disabled:opacity-40 sm:h-6 sm:w-6"
-                          >
-                            <img
-                              src={minusIcon}
-                              alt="Decrease quantity"
-                              className="h-3 w-3 object-contain"
-                            />
-                          </button>
-
-                          <div className="flex h-5 w-[42px] items-center justify-center rounded-[8px] bg-rose-100/20 text-[12px] sm:h-6 sm:w-[61px]">
-                            {quantities[0]}
-                          </div>
-
-                          <button
-                            type="button"
-                            onClick={() => updateQuantity(0, 1)}
-                            disabled={quantities[0] >= 99}
-                            className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100/20 transition-all duration-150 hover:bg-rose-100/40 active:scale-90 disabled:cursor-not-allowed disabled:opacity-40 sm:h-6 sm:w-6"
-                          >
-                            <img
-                              src={plusIcon}
-                              alt="Increase quantity"
-                              className="h-3 w-3 object-contain"
-                            />
-                          </button>
-                        </div>
-
-                        <span className="shrink-0 font-pt-sans text-[14px] font-bold leading-none text-rose-300 sm:text-[16px] min-[1184px]:text-[18px]">
-                          ${20 * quantities[0]}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Product 2 */}
-                <div className="mt-3 flex h-[88px] w-full items-center gap-3 rounded-[8px] bg-rose-50/90 p-3 sm:mt-4 sm:h-[128px] sm:gap-4 sm:p-4 min-[1184px]:mt-5 min-[1184px]:h-[160px]">
-                  <div className="h-[64px] w-[64px] shrink-0 overflow-hidden rounded-[8px] sm:h-[96px] sm:w-[96px] min-[1184px]:h-[128px] min-[1184px]:w-[128px]">
-                    <img
-                      src={productImage}
-                      alt="Name of bouquet"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-
-                  <div className="flex min-w-0 flex-1 flex-col justify-center sm:h-[96px] min-[1184px]:h-[128px]">
-                    <div className="flex min-w-0 flex-col justify-center">
-                      <h3 className="font-pt-sans text-[12px] font-bold leading-none sm:text-[16px] min-[1184px]:text-[18px]">
-                        Name of bouquet
-                      </h3>
-
-                      <div className="mt-2 flex w-full items-center justify-between sm:mt-3 min-[1184px]:mt-4">
-                        <div className="flex h-5 items-center gap-2 sm:h-6 sm:gap-[10px]">
-                          <button
-                            type="button"
-                            onClick={() => updateQuantity(1, -1)}
-                            disabled={quantities[1] <= 1}
-                            className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100/20 transition-all duration-150 hover:bg-rose-100/40 active:scale-90 disabled:cursor-not-allowed disabled:opacity-40 sm:h-6 sm:w-6"
-                          >
-                            <img
-                              src={minusIcon}
-                              alt="Decrease quantity"
-                              className="h-3 w-3 object-contain"
-                            />
-                          </button>
-
-                          <div className="flex h-5 w-[42px] items-center justify-center rounded-[8px] bg-rose-100/20 text-[12px] sm:h-6 sm:w-[61px]">
-                            {quantities[1]}
-                          </div>
-
-                          <button
-                            type="button"
-                            onClick={() => updateQuantity(1, 1)}
-                            disabled={quantities[1] >= 99}
-                            className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100/20 transition-all duration-150 hover:bg-rose-100/40 active:scale-90 disabled:cursor-not-allowed disabled:opacity-40 sm:h-6 sm:w-6"
-                          >
-                            <img
-                              src={plusIcon}
-                              alt="Increase quantity"
-                              className="h-3 w-3 object-contain"
-                            />
-                          </button>
-                        </div>
-
-                        <span className="shrink-0 font-pt-sans text-[14px] font-bold leading-none text-rose-300 sm:text-[16px] min-[1184px]:text-[18px]">
-                          ${20 * quantities[1]}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Promocode */}
-                <div className="mt-5 sm:mt-6 min-[1184px]:mt-8">
-                  <label className="mb-2 block text-[14px] sm:text-[18px] font-normal leading-none">
-                    Promocode
-                  </label>
-
-                  <div className="flex h-[40px] w-full overflow-hidden rounded-[12px] border-[1.5px] border-forest-400 sm:h-[44px] sm:rounded-[14px] sm:border-[2px]">
-                    <input
-                      type="text"
-                      maxLength={32}
-                      placeholder="Your Promocode"
-                      className="min-w-0 flex-1 bg-transparent px-4 text-[16px] font-normal outline-none placeholder:font-normal placeholder:text-silver-100"
-                    />
-
-                    <button
-                      type="button"
-                      className="w-[96px] shrink-0 bg-forest-300 text-[14px] font-semibold text-white sm:w-[128px] sm:text-[16px] min-[1184px]:w-[160px] min-[1184px]:text-[18px]"
+                ) : (
+                  cartItems.map((item, index) => (
+                    <div
+                      key={item.id}
+                      className={`${
+                        index > 0 ? "mt-3 sm:mt-4 min-[1184px]:mt-5 " : ""
+                      }flex h-[88px] w-full items-center gap-3 rounded-[8px] bg-rose-50/90 p-3 sm:h-[128px] sm:gap-4 sm:p-4 min-[1184px]:h-[160px]`}
                     >
-                      Apply
-                    </button>
-                  </div>
-                </div>
+                      <div className="h-[64px] w-[64px] shrink-0 overflow-hidden rounded-[8px] sm:h-[96px] sm:w-[96px] min-[1184px]:h-[128px] min-[1184px]:w-[128px]">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
 
-                {/* Summary */}
-                <div className="mt-4 space-y-2 text-[13px] font-normal leading-[16px] sm:mt-5 sm:text-[14px] sm:leading-[18px] min-[1184px]:mt-6 min-[1184px]:space-y-3 min-[1184px]:text-[16px] min-[1184px]:leading-[20px]">
-                  <div className="flex justify-between text-forest-200">
-                    <span>Subtotal:</span>
-                    <span>${subtotal}</span>
-                  </div>
+                      <div className="flex min-w-0 flex-1 flex-col justify-center sm:h-[96px] min-[1184px]:h-[128px]">
+                        <div className="flex min-w-0 flex-col justify-center">
+                          <h3 className="font-pt-sans text-[12px] font-bold leading-none sm:text-[16px] min-[1184px]:text-[18px]">
+                            {item.name}
+                          </h3>
 
-                  <div className="flex justify-between text-forest-200">
-                    <span>Delivery:</span>
-                    <span>${deliveryCost}</span>
-                  </div>
+                          <div className="mt-2 flex w-full items-center justify-between sm:mt-3 min-[1184px]:mt-4">
+                            <div className="flex h-5 items-center gap-2 sm:h-6 sm:gap-[10px]">
+                              <button
+                                type="button"
+                                onClick={() => updateQuantity(item.id, -1)}
+                                disabled={item.quantity <= 1}
+                                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100/20 transition-all duration-150 hover:bg-rose-100/40 active:scale-90 disabled:cursor-not-allowed disabled:opacity-40 sm:h-6 sm:w-6"
+                              >
+                                <img
+                                  src={minusIcon}
+                                  alt="Decrease quantity"
+                                  className="h-3 w-3 object-contain"
+                                />
+                              </button>
 
-                  <div className="flex justify-between text-forest-200">
-                    <span>Discount:</span>
-                    <span>${discount}</span>
-                  </div>
+                              <div className="flex h-5 w-[42px] items-center justify-center rounded-[8px] bg-rose-100/20 text-[12px] sm:h-6 sm:w-[61px]">
+                                {item.quantity}
+                              </div>
 
-                  <div className="flex justify-between pt-1">
-                    <span>Total:</span>
+                              <button
+                                type="button"
+                                onClick={() => updateQuantity(item.id, 1)}
+                                disabled={item.quantity >= 99}
+                                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100/20 transition-all duration-150 hover:bg-rose-100/40 active:scale-90 disabled:cursor-not-allowed disabled:opacity-40 sm:h-6 sm:w-6"
+                              >
+                                <img
+                                  src={plusIcon}
+                                  alt="Increase quantity"
+                                  className="h-3 w-3 object-contain"
+                                />
+                              </button>
+                            </div>
 
-                    <span className="font-pt-sans text-[12px] font-bold leading-none sm:text-[16px] min-[1184px]:text-[18px]">
-                      ${total}
-                    </span>
-                  </div>
-                </div>
+                            <span className="shrink-0 font-pt-sans text-[14px] font-bold leading-none text-rose-300 sm:text-[16px] min-[1184px]:text-[18px]">
+                              ${(item.price * item.quantity).toFixed(2)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
 
-                {/* Comment */}
-                <div className="mt-5 shrink-0 sm:mt-6 min-[1184px]:mt-8">
+              {/* Promocode */}
+              <div className="mt-5 sm:mt-6 min-[1184px]:mt-8">
+                <label className="mb-2 block text-[14px] sm:text-[18px] font-normal leading-none">
+                  Promocode
+                </label>
+
+                <div className="flex h-[40px] w-full overflow-hidden rounded-[12px] border-[1.5px] border-forest-400 sm:h-[44px] sm:rounded-[14px] sm:border-[2px]">
+                  <input
+                    type="text"
+                    maxLength={32}
+                    value={promocode}
+                    onChange={(e) => setPromocode(e.target.value)}
+                    placeholder="Your Promocode"
+                    className="min-w-0 flex-1 bg-transparent px-4 text-[16px] font-normal outline-none placeholder:font-normal placeholder:text-silver-100"
+                  />
+
                   <button
                     type="button"
-                    onClick={() => setCommentOpened((prev) => !prev)}
-                    className="flex items-center gap-3 text-left text-[13px] leading-none sm:text-[15px] min-[1184px]:gap-4 min-[1184px]:text-[18px]"
+                    className="w-[96px] shrink-0 bg-forest-300 text-[14px] font-semibold text-white sm:w-[128px] sm:text-[16px] min-[1184px]:w-[160px] min-[1184px]:text-[18px]"
                   >
-                    <span>Leave a Comment</span>
-
-                    <img
-                      src={chevronIcon}
-                      alt=""
-                      className={`block h-3 w-3 shrink-0 transition-transform duration-200 ${
-                        commentOpened ? "" : "-rotate-180"
-                      }`}
-                    />
+                    Apply
                   </button>
+                </div>
+              </div>
 
-                  {commentOpened && (
-                    <textarea
-                      value={comment}
-                      maxLength={500}
-                      placeholder="Your Comment"
-                      onChange={(event) => setComment(event.target.value)}
-                      className="mt-4 h-[128px] w-full resize-none rounded-[18px] border-[1.5px] border-forest-400 bg-transparent px-4 py-3 text-[16px] font-normal outline-none placeholder:font-normal placeholder:text-silver-100"
-                    />
-                  )}
+              {/* Summary */}
+              <div className="mt-4 space-y-2 text-[13px] font-normal leading-[16px] sm:mt-5 sm:text-[14px] sm:leading-[18px] min-[1184px]:mt-6 min-[1184px]:space-y-3 min-[1184px]:text-[16px] min-[1184px]:leading-[20px]">
+                <div className="flex justify-between text-forest-200">
+                  <span>Subtotal:</span>
+                  <span>${subtotal.toFixed(2)}</span>
                 </div>
 
+                <div className="flex justify-between text-forest-200">
+                  <span>Delivery:</span>
+                  <span>${deliveryCost.toFixed(2)}</span>
+                </div>
+
+                <div className="flex justify-between text-forest-200">
+                  <span>Discount:</span>
+                  <span>${discount.toFixed(2)}</span>
+                </div>
+
+                <div className="flex justify-between pt-1">
+                  <span>Total:</span>
+                  <span className="font-pt-sans text-[12px] font-bold leading-none sm:text-[16px] min-[1184px]:text-[18px]">
+                    ${total.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Comment */}
+              <div className="mt-5 shrink-0 sm:mt-6 min-[1184px]:mt-8">
                 <button
                   type="button"
-                  onClick={handleCheckout}
-                  className="mt-5 flex h-[40px] w-full items-center justify-center rounded-full bg-rose-300 text-[14px] font-semibold leading-none text-white shadow-[0_3px_5px_rgba(0,0,0,0.12)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-rose-200 hover:shadow-[0_6px_12px_rgba(0,0,0,0.16)] active:translate-y-0 active:scale-[0.98] sm:mt-6 sm:h-[44px] sm:text-[16px] min-[1184px]:mt-8 min-[1184px]:h-[48px] min-[1184px]:text-[18px]"
+                  onClick={() => setCommentOpened((prev) => !prev)}
+                  className="flex items-center gap-3 text-left text-[13px] leading-none sm:text-[15px] min-[1184px]:gap-4 min-[1184px]:text-[18px]"
                 >
-                  Checkout
+                  <span>Leave a Comment</span>
+
+                  <img
+                    src={chevronIcon}
+                    alt=""
+                    className={`block h-3 w-3 shrink-0 transition-transform duration-200 ${
+                      commentOpened ? "" : "-rotate-180"
+                    }`}
+                  />
                 </button>
+
+                {commentOpened && (
+                  <textarea
+                    value={comment}
+                    maxLength={500}
+                    placeholder="Your Comment"
+                    onChange={(event) => setComment(event.target.value)}
+                    className="mt-4 h-[128px] w-full resize-none rounded-[18px] border-[1.5px] border-forest-400 bg-transparent px-4 py-3 text-[16px] font-normal outline-none placeholder:font-normal placeholder:text-silver-100"
+                  />
+                )}
               </div>
+
+              <button
+                type="button"
+                onClick={handleCheckout}
+                disabled={cartItems.length === 0}
+                className="mt-5 flex h-[40px] w-full items-center justify-center rounded-full bg-rose-300 text-[14px] font-semibold leading-none text-white shadow-[0_3px_5px_rgba(0,0,0,0.12)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-rose-200 hover:shadow-[0_6px_12px_rgba(0,0,0,0.16)] active:translate-y-0 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed sm:mt-6 sm:h-[44px] sm:text-[16px] min-[1184px]:mt-8 min-[1184px]:h-[48px] min-[1184px]:text-[18px]"
+              >
+                {"Checkout"}
+              </button>
             </div>
           </aside>
         </div>

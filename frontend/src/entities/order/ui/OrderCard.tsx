@@ -68,7 +68,7 @@ export const OrderCard = ({
   };
 
   return (
-    <div className="w-full max-w-[722px] max-h-[187px] bg-white rounded-[16px] py-[16px] px-[24px] flex flex-col gap-[4px] shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+    <div className="w-full max-w-[722px] bg-white rounded-[16px] py-[11px] lg:py-[16px] px-[14px] lg:px-[24px] flex flex-col gap-[4px] shadow-[0_4px_20px_rgba(0,0,0,0.03)] lg:max-h-[187px]">
       <div className="flex items-center gap-3">
         <span
           className={`px-[24px] h-[19px] rounded-full border text-[11px] font-montserrat font-medium flex items-center justify-center ${statusStyles[status]}`}
@@ -85,8 +85,7 @@ export const OrderCard = ({
       </div>
 
       <div className="flex gap-[15px] items-stretch justify-center mt-1">
-        {/* Image wrapper */}
-        <div className="w-[128px] h-[128px] shrink-0 rounded-[12px] overflow-hidden bg-gray-100">
+        <div className="w-[90px] h-[90px] lg:w-[128px] lg:h-[128px] shrink-0 rounded-[12px] overflow-hidden bg-gray-100">
           <img
             src={imageUrl}
             alt={title}
@@ -95,18 +94,20 @@ export const OrderCard = ({
         </div>
 
         <div className="flex flex-col flex-1 justify-center gap-1">
-          <h3 className="text-forest-300 font-bold text-headline-4 font-pt-sans">
+          <h3 className="text-forest-300 font-bold font-pt-sans text-headline-4 lg:text-headline-4">
             {title}
           </h3>
-          <p className="text-forest-300 text-[11px] leading-3.5 font-montserrat max-w-[322px]">
+
+          <p className="hidden md:block md:truncate lg:whitespace-normal lg:line-clamp-3 text-forest-300 text-[11px] leading-3.5 font-montserrat max-w-[322px]">
             {description}
           </p>
-          <div className="text-rose-300 font-bold text-headline-4 font-pt-sans">
+
+          <div className="text-rose-300 font-bold font-pt-sans text-[18px] lg:text-headline-4">
             ${price}
           </div>
         </div>
 
-        <div className="flex flex-col gap-[8px] shrink-0 w-[160px] justify-center">
+        <div className="flex flex-col gap-[8px] shrink-0 w-[124px] md:w-[155px] lg:w-[160px] justify-center">
           {renderActionButtons()}
         </div>
       </div>

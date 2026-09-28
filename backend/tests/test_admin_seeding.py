@@ -17,17 +17,17 @@ def _admin_settings(monkeypatch):
 
 
 @pytest.fixture(autouse=True)
-def _cleanup_admin(db_session):
+def _cleanup_admin(db):
     """Чистимо за собою, щоб тести не залежали один від одного"""
     yield
-    db_session.query(User).filter(User.email == "admin@test.local").delete()
-    db_session.commit()
+    db.query(User).filter(User.email == "admin@test.local").delete()
+    db.commit()
 
 
-def test_seed_admin_creates_admin_user(db_session):
-    seed_admin(db_session)
+def test_seed_admin_creates_admin_user(db):
+    seed_admin(db)
 
-    admin = crud_user.get_user_by_email(db_session, email=settings.ADMIN_EMAIL)
+    admin = crud_user.get_user_by_email(db, email=settings.ADMIN_EMAIL)
 
     assert admin is not None
     assert admin.is_admin is True
@@ -35,10 +35,10 @@ def test_seed_admin_creates_admin_user(db_session):
     assert admin.phone_number == settings.ADMIN_PHONE_NUMBER
 
 
-def test_seed_admin_hashes_password_correctly(db_session):
-    seed_admin(db_session)
+def test_seed_admin_hashes_password_correctly(db):
+    seed_admin(db)
 
-    admin = crud_user.get_user_by_email(db_session, email=settings.ADMIN_EMAIL)
+    admin = crud_user.get_user_by_email(db, email=settings.ADMIN_EMAIL)
 
     # пароль не зберігається у відкритому вигляді
     assert admin.hashed_password != settings.ADMIN_PASSWORD
@@ -46,14 +46,10 @@ def test_seed_admin_hashes_password_correctly(db_session):
     assert verify_password(settings.ADMIN_PASSWORD, admin.hashed_password) is True
 
 
-def test_seed_admin_is_idempotent(db_session):
-    seed_admin(db_session)
-    seed_admin(db_session)
+def test_seed_admin_is_idempotent(db):
+    seed_admin(db)
+    seed_admin(db)
 
-    admins = (
-        db_session.query(User)
-        .filter(User.email == settings.ADMIN_EMAIL)
-        .all()
-    )
+    admins = db.query(User).filter(User.email == settings.ADMIN_EMAIL).all()
 
     assert len(admins) == 1

@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
+import { useCart } from "@/context/CartContext";
 import card from "@/shared/assets/card-icon.svg";
 import back from "@/shared/assets/arrow-left.svg";
 import logo from "@/shared/assets/logo.svg";
@@ -8,21 +9,18 @@ const formatCardNumber = (value: string) =>
   value
     .replace(/\D/g, "")
     .slice(0, 16)
-    .replace(/(\d{4})(?=\d)/g, "$1 ");
+    .replace(/(\d{4})(?=\d)/g, "$1 ")
+    .trim();
 
 const formatExpiry = (value: string) => {
   const digits = value.replace(/\D/g, "").slice(0, 4);
-
   if (digits.length <= 2) {
     return digits;
   }
-
   return `${digits.slice(0, 2)}/${digits.slice(2)}`;
 };
 
-const cardIcon = (
-  <img src={card}></img>
-);
+const cardIcon = <img src={card} alt="Card icon" />;
 
 function PaymentCheckbox({ checked }: { checked: boolean }) {
   return (
@@ -31,8 +29,18 @@ function PaymentCheckbox({ checked }: { checked: boolean }) {
       className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[8px] border-[1.5px] border-forest-300 bg-rose-50"
     >
       {checked && (
-        <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-forest-300">
-          <path d="m5 12.5 4.2 4.2L19 7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          className="h-6 w-6 text-forest-300"
+        >
+          <path
+            d="m5 12.5 4.2 4.2L19 7"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
         </svg>
       )}
     </span>
@@ -50,17 +58,36 @@ function PaymentBackground() {
 
 export function PaymentPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { cartItems, clearCart } = useCart();
+
+  const orderPayload = location.state?.orderPayload;
+
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvv, setCvv] = useState("");
   const [savePayment, setSavePayment] = useState(false);
-  const [paymentState, setPaymentState] = useState<"form" | "pressed" | "loading" | "loadingFinish" | "complete">("form");
+
+  const [paymentState, setPaymentState] = useState<
+    "form" | "pressed" | "loading" | "loadingFinish" | "complete" | "error"
+  >("form");
   const [isLeaving, setIsLeaving] = useState(false);
   const [loadingMotionStarted, setLoadingMotionStarted] = useState(false);
   const [completeMotionStarted, setCompleteMotionStarted] = useState(false);
+  const [createdOrderId, setCreatedOrderId] = useState<number | null>(null);
+
+  if (!orderPayload) {
+    return <Navigate to="/checkout" replace />;
+  }
+
+  const cartSummary = cartItems.map((item) => `${item.name} x${item.quantity}`);
 
   useEffect(() => {
-    if (paymentState !== "pressed" && paymentState !== "loading" && paymentState !== "loadingFinish") {
+    if (
+      paymentState !== "pressed" &&
+      paymentState !== "loading" &&
+      paymentState !== "loadingFinish"
+    ) {
       return;
     }
 
@@ -69,46 +96,96 @@ export function PaymentPage() {
         if (paymentState === "pressed") {
           setPaymentState("loading");
         } else if (paymentState === "loading") {
-          setPaymentState("loadingFinish");
-        } else {
+        } else if (paymentState === "loadingFinish") {
           setPaymentState("complete");
         }
       },
-      paymentState === "pressed" ? 260 : paymentState === "loading" ? 1400 : 650,
+      paymentState === "pressed"
+        ? 260
+        : paymentState === "loading"
+          ? 1400
+          : 650,
     );
 
     return () => window.clearTimeout(timer);
   }, [paymentState]);
 
-  useEffect(() => {
-    setLoadingMotionStarted(false);
-    setCompleteMotionStarted(false);
-
-    if (paymentState === "loading" || paymentState === "loadingFinish") {
-      const timer = window.setTimeout(() => setLoadingMotionStarted(true), 20);
-
-      return () => window.clearTimeout(timer);
-    }
-
-    if (paymentState === "complete") {
-      const timer = window.setTimeout(() => setCompleteMotionStarted(true), 20);
-
-      return () => window.clearTimeout(timer);
-    }
-  }, [paymentState]);
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (paymentState !== "form") {
+    if (paymentState !== "form") return;
+
+    const cleanCard = cardNumber.replace(/\s/g, "");
+    if (cleanCard.length !== 16 || expiry.length !== 5 || cvv.length !== 3) {
+      alert("Please fill in valid card details.");
       return;
     }
 
     setPaymentState("pressed");
+    const token = localStorage.getItem("access_token");
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 260));
+      setPaymentState("loading");
+
+      const createOrderPromise = fetch("/api/v1/orders/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(orderPayload),
+      }).then(async (res) => {
+        if (!res.ok) throw new Error("Order creation failed");
+        return res.json();
+      });
+
+      const savePaymentPromise =
+        savePayment && token
+          ? fetch("/api/v1/users/me/payment-methods", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                card_name: cleanCard.startsWith("4") ? "Visa" : "Mastercard",
+                last_four_digits: cleanCard.slice(-4),
+                expiry_date: expiry,
+              }),
+            })
+          : Promise.resolve();
+
+      const animationDelay = new Promise((resolve) =>
+        setTimeout(resolve, 1400),
+      );
+
+      const [orderData] = await Promise.all([
+        createOrderPromise,
+        savePaymentPromise,
+        animationDelay,
+      ]);
+
+      setCreatedOrderId(orderData.id);
+      clearCart();
+
+      setPaymentState("loadingFinish");
+
+      await new Promise((resolve) => setTimeout(resolve, 650));
+      setPaymentState("complete");
+    } catch (error) {
+      console.error(error);
+      alert("Payment processing failed. Please try again.");
+      setPaymentState("form");
+    }
   };
 
   const handleBackToHome = () => {
     setIsLeaving(true);
     window.setTimeout(() => navigate("/"), 260);
+  };
+
+  const goBackToCheckout = () => {
+    navigate("/checkout");
   };
 
   if (paymentState === "loading" || paymentState === "loadingFinish") {
@@ -121,13 +198,32 @@ export function PaymentPage() {
             alt="Fleunique"
             className={`h-[48px] w-[141px] transition-opacity duration-700 ${loadingMotionStarted ? "opacity-100" : "opacity-0"}`}
           />
-          <div className="relative h-20 w-20" aria-label={paymentState === "loadingFinish" ? "Payment successful" : "Processing payment"} role="status">
+          <div
+            className="relative h-20 w-20"
+            aria-label={
+              paymentState === "loadingFinish"
+                ? "Payment successful"
+                : "Processing payment"
+            }
+            role="status"
+          >
             <span className="absolute inset-0 rounded-full border-[8px] border-rose-100" />
             {paymentState === "loading" ? (
               <span className="absolute inset-0 animate-spin rounded-full border-[8px] border-transparent border-l-rose-300" />
             ) : (
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="absolute left-2.5 top-2.5 h-[60px] w-[60px] text-rose-300">
-                <path d="m5 12.5 4.2 4.2L19 7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.4" />
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+                className="absolute left-2.5 top-2.5 h-[60px] w-[60px] text-rose-300"
+              >
+                <path
+                  d="m5 12.5 4.2 4.2L19 7"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.4"
+                />
               </svg>
             )}
           </div>
@@ -140,28 +236,42 @@ export function PaymentPage() {
     <div className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-[linear-gradient(90deg,_#fffafe_0%,_#fdf7fb_42%,_#edf7fb_100%)] px-4 py-6 font-montserrat text-forest-300 md:px-8 min-[1440px]:px-0">
       <PaymentBackground />
       <div className="relative z-10 w-full max-w-[608px]">
-        <div className={`mb-12 flex justify-center transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${paymentState === "form" || completeMotionStarted ? "translate-y-0 opacity-100" : "translate-y-[58px] opacity-0"}`}>
-          <img src={logo} alt="Fleunique" className="h-[48px] w-[141px] object-contain" />
+        <div
+          className={`mb-12 flex justify-center transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${paymentState === "form" || completeMotionStarted ? "translate-y-0 opacity-100" : "translate-y-[58px] opacity-0"}`}
+        >
+          <img
+            src={logo}
+            alt="Fleunique"
+            className="h-[48px] w-[141px] object-contain"
+          />
         </div>
         {paymentState === "complete" ? (
           <div className="mx-auto w-full animate-[fade-in_300ms_ease-out]">
             <div className="rounded-[32px] bg-white/[0.01] px-8 py-8 text-forest-300 shadow-[0_4px_4px_rgba(61,59,59,0.2)]">
-              <h1 className="text-center font-pt-sans text-headline-3 md:text-headline-2 font-bold uppercase leading-none">Your order is complete!</h1>
+              <h1 className="text-center font-pt-sans text-headline-3 md:text-headline-2 font-bold uppercase leading-none">
+                Your order is complete!
+              </h1>
 
               <div className="mt-6 space-y-6">
                 <p className=" text-label">
-                  Order ID: <span className="ml-2 font-pt-sans text-headline-3 font-bold">#FLEUN-100926-67</span>
+                  Order ID:{" "}
+                  <span className="ml-2 font-pt-sans text-headline-3 font-bold">
+                    #{createdOrderId || "UNKNOWN"}
+                  </span>
                 </p>
                 <div>
                   <p className=" text-label">You Ordered:</p>
                   <div className="ml-8 mt-4 font-pt-sans font-bold text-headline-4 space-y-2">
-                    <p>Name of bouquet x1</p>
-                    <p>Name of bouquet x1</p>
+                    {cartSummary.map((str, idx) => (
+                      <p key={idx}>{str}</p>
+                    ))}
                   </div>
                 </div>
                 <div>
                   <p className=" text-label">For:</p>
-                  <p className="ml-8 mt-4 font-pt-sans font-bold text-headline-4">Receiver&apos;s Full Name</p>
+                  <p className="ml-8 mt-4 font-pt-sans font-bold text-headline-4">
+                    {orderPayload.receiver_name}
+                  </p>
                 </div>
               </div>
             </div>
@@ -184,11 +294,15 @@ export function PaymentPage() {
                   </span>
 
                   <div className="flex h-[56px] items-center gap-2 rounded-[16px] border-[1.5px] border-forest-400 bg-rose-50 px-4 py-3 transition-colors hover:border-[#033438]">
-                    <span className="flex h-8 w-8 items-center justify-center text-forest-300 ">{cardIcon}</span>
+                    <span className="flex h-8 w-8 items-center justify-center text-forest-300 ">
+                      {cardIcon}
+                    </span>
                     <input
                       type="text"
                       value={cardNumber}
-                      onChange={(event) => setCardNumber(formatCardNumber(event.target.value))}
+                      onChange={(event) =>
+                        setCardNumber(formatCardNumber(event.target.value))
+                      }
                       className="h-full w-full bg-transparent text-[16px] text-forest-300 outline-none placeholder:text-silver-200"
                       placeholder="0000 0000 0000 0000"
                       inputMode="numeric"
@@ -205,7 +319,9 @@ export function PaymentPage() {
                     <input
                       type="text"
                       value={expiry}
-                      onChange={(event) => setExpiry(formatExpiry(event.target.value))}
+                      onChange={(event) =>
+                        setExpiry(formatExpiry(event.target.value))
+                      }
                       className="h-[56px] w-full rounded-[16px] border-[1.5px] border-forest-400 bg-rose-50 px-6 py-3 text-[16px] text-forest-300 outline-none placeholder:text-silver-200"
                       placeholder="MM/YY"
                       inputMode="numeric"
@@ -220,7 +336,11 @@ export function PaymentPage() {
                     <input
                       type="text"
                       value={cvv}
-                      onChange={(event) => setCvv(event.target.value.replace(/\D/g, "").slice(0, 3))}
+                      onChange={(event) =>
+                        setCvv(
+                          event.target.value.replace(/\D/g, "").slice(0, 3),
+                        )
+                      }
                       className="h-[56px] w-full rounded-[16px] border-[1.5px] border-forest-400 bg-rose-50 px-6 py-3 text-[16px] text-forest-300 outline-none placeholder:text-silver-200"
                       placeholder="●●●"
                       maxLength={3}
@@ -252,9 +372,10 @@ export function PaymentPage() {
             <div className="mt-12 text-center">
               <button
                 type="button"
+                onClick={goBackToCheckout}
                 className="mx-auto flex items-center justify-center gap-2 text-small font-normal text-silver-200 transition hover:text-forest-300"
               >
-                <img src={back}></img>
+                <img src={back} alt="back"></img>
                 Back
               </button>
             </div>
